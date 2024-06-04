@@ -18,6 +18,7 @@ import ComplaintsPage from "./ComplaintsPage.jsx";
 import StudentsAttendancePage from "./AttendancePage.jsx";
 import InventoryPage from "./InventoryPage.jsx";
 import AdministratorDashboard from "./AdministratorDashboard.jsx";
+import CoursesPage from "./Courses.jsx";
 
 const Content = () => {
     return (
@@ -25,7 +26,10 @@ const Content = () => {
             <Sider className="h-full"/>
             <div className="flex flex-col flex-1">
                 <NavBar />
-                <AdministratorDashboard/>
+                <CoursesPage/>
+
+                
+                {/*<AdministratorDashboard/> */}
                 {/*<InventoryPage/> */}
                 {/*<StudentsAttendancePage/> */}
 
