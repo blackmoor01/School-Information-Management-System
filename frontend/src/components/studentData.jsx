@@ -11,7 +11,16 @@ const studentData = [
        payment_status: 'Have Paid',
        date_of_birth: '3rd February, 2024',
        address: '3rd Avenue OH',
-       email: 'klvnafriyie123@gmail.com'
+       email: 'klvnafriyie123@gmail.com',
+       intake:"",
+       official_receipt:"",
+       payment_method:"",
+       date:"",
+       amount_due:"",
+       tuition_fee:"",
+       miscellaneous:"",
+       balance:"",
+       remarks:""
    },
     {
         name: 'John Lee',
@@ -25,7 +34,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Andy Tay',
@@ -39,7 +57,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Bryan Adu',
@@ -53,7 +80,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Angel Ford',
@@ -67,7 +103,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Wilmette Arthur',
@@ -81,7 +126,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Gloria John',
@@ -95,7 +149,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Sandra Sia',
@@ -109,7 +172,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Ben Greenlish',
@@ -123,7 +195,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Samuel Johnson',
@@ -137,7 +218,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Gloria John',
@@ -151,7 +241,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Sandra Sia',
@@ -165,7 +264,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Ben Greenlish',
@@ -179,7 +287,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Samuel Johnson',
@@ -193,7 +310,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Gloria John',
@@ -207,7 +333,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
     {
         name: 'Sandra Sia',
@@ -221,7 +356,16 @@ const studentData = [
         payment_status: 'Have Paid',
         date_of_birth: '3rd February, 2024',
         address: '3rd Avenue OH',
-        email: 'klvnafriyie123@gmail.com'
+        email: 'klvnafriyie123@gmail.com',
+        intake:"",
+        official_receipt:"",
+        payment_method:"",
+        date:"",
+        amount_due:"",
+        tuition_fee:"",
+        miscellaneous:"",
+        balance:"",
+        remarks:""
     },
 ];
 

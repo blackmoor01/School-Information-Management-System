@@ -77,12 +77,73 @@ const TeachersDataisplay = () => {
     );
   };
 
+
+const TeacherDetail = () => {
+    const teacher = teachersData[0];
+
+    return (
+        <div className="w-3/12 p-6 bg-white shadow-md mt-10">
+            <div className={"pb-5 flex"}>
+                <h3 className="text-gray-900 font-bold mb-5">ID:</h3>
+                <p className={"mx-2 text-gray-500 font-bold"}>{teacher.ID}</p>
+            </div>
+            <div className="mb-4 py-2">
+                <img
+                    src="https://via.placeholder.com/88"
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full mx-auto border border-blue-500"
+                />
+                <div className={""}>
+                    <div className={"py-3 flex "}>
+                        <button className="mr-2">📞</button>
+                        <h2 className="font-bold mx-2 text-gray-500">{teacher.contact}</h2>
+                    </div>
+
+                    <div className={"py-3 flex"}>
+                        <button>✉️</button>
+                        <p className="text-gray-500 font-bold mx-2">{teacher.email}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="space-y-2 py-1">
+                <div className={"py-2 flex"}>
+                    <h1 className="text-gray-900 font-bold mb-5">Teacher Name:</h1>
+                    <h2 className="text-gray-500 font-bold mx-2">{teacher.name.toUpperCase()}</h2>
+                </div>
+                <div className={"py-1 flex"}>
+                    <h3 className="text-gray-900 font-bold">Description:</h3>
+                    <p>{teacher.description}</p>
+                </div>
+                <div className={"py-3 flex"}>
+                    <h3 className="text-gray-900 font-bold">Date of admission:</h3>
+                    <p className={"text-gray-500 font-bold mx-2"}>{teacher.date_of_employment}</p>
+                </div>
+
+
+                <div className={"py-3 flex"}>
+                    <h3 className="text-gray-900 font-bold">Date of Birth:</h3>
+                    <p className={"text-gray-500 font-bold mx-2"}>{teacher.date_of_birth.toUpperCase()}</p>
+                </div>
+                <div className={"py-3 flex"}>
+                    <h3 className="text-gray-900 font-bold">Address:</h3>
+                    <p className={"text-gray-500 font-bold mx-2"}>{teacher.address}</p>
+                </div>
+            </div>
+
+          
+        </div>
+    );
+};
+
+
     return(
         <div className={"mx-2 mt-2"}>
             <Header/>
 
             <div className={"mt-4"}>
                 <TeachersDataisplay/>
+                <TeacherDetail/>
                 <Pagination/>
             </div>
 

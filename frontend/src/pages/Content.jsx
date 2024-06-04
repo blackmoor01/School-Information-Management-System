@@ -9,6 +9,11 @@ import StudentsDashboard from "./StudentsDashboard.jsx";
 import StudentsAssetsPage from "./StudentsAssetsPage.jsx";
 import NewAdmission from "./NewAdmission.jsx";
 import TeachersPage from "./TeachersPage.jsx";
+import NewTeacherAdmission from "./NewTeacherAdmission.jsx";
+import FinanacePage from "./FinancePage.jsx";
+import EditFinancePage from "./FinancePage_Edit.jsx";
+import Payment from "./PaymentsPage.jsx";
+import IssuancePage from "./IssuancePage.jsx";
 
 const Content = () => {
     return (
@@ -16,7 +21,13 @@ const Content = () => {
             <Sider className="h-full"/>
             <div className="flex flex-col flex-1">
                 <NavBar />
-                <TeachersPage/>
+                {/* <IssuancePage/> */}
+                {/*<Payment/>*/}
+
+                {/*<EditFinancePage/>*/}
+                {/*<FinanacePage/>*/}
+                {/*<NewTeacherAdmission/>*/}
+                {/*<TeachersPage/>*/}
                 {/*<NewAdmission/>*/}
                 {/*<StudentsAssetsPage/>*/}
                {/* <StudentsDashboard/>
