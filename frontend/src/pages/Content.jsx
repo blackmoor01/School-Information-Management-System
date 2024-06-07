@@ -1,10 +1,7 @@
 import React from "react";
 import Sider from "../components/Sider.jsx";
-import StudentDetail from "../components/studentDetails.jsx";
 import NavBar from "../components/NavBar.jsx";
-import Header from "../components/Header.jsx";
 import StudentsPage from "./StudentsPage.jsx";
-import Pagination from "../components/Pagination.jsx";
 import StudentsDashboard from "./StudentsDashboard.jsx";
 import StudentsAssetsPage from "./StudentsAssetsPage.jsx";
 import NewAdmission from "./NewAdmission.jsx";
@@ -19,38 +16,45 @@ import StudentsAttendancePage from "./AttendancePage.jsx";
 import InventoryPage from "./InventoryPage.jsx";
 import AdministratorDashboard from "./AdministratorDashboard.jsx";
 import CoursesPage from "./Courses.jsx";
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "../components/studentPageMainLayout/mainLayout.jsx";
 
 const Content = () => {
     return (
         <div className="flex min-h-screen">
-            <Sider className="h-full"/>
+            <Sider className="h-full" />
             <div className="flex flex-col flex-1">
                 <NavBar />
-                <CoursesPage/>
 
-                
-                {/*<AdministratorDashboard/> */}
-                {/*<InventoryPage/> */}
-                {/*<StudentsAttendancePage/> */}
+                <Routes>
+                    <Route path="/" element={<AdministratorDashboard/>}/>
 
+                    <Route path="/studentspage" element={<MainLayout/>}/>
+                    <Route path="/studentspage/studentsassetspage" element={<StudentsAssetsPage/>}/>
+                    <Route path="/studentspage/newstudentsadmission" element={<NewAdmission/>}/>
+                    
+                    <Route path="/teacherspage" element={<TeachersPage/>}/>
+                    <Route path="/teacherspage/newteacheradmission" element={<NewTeacherAdmission/>}/>
 
-                {/*<ComplaintsPage/> */}
+                    <Route path="/financepage" element={<FinanacePage/>}>
+                        <Route path="editfinancedata" element={<EditFinancePage/>}/>
+                    </Route>
 
-                
-                {/* <IssuancePage/> */}
-                {/*<Payment/>*/}
+                    <Route path="/paymentspage" element={<Payment/>}/>
 
-                {/*<EditFinancePage/>*/}
-                {/*<FinanacePage/>*/}
-                {/*<NewTeacherAdmission/>*/}
-                {/*<TeachersPage/>*/}
-                {/*<NewAdmission/>*/}
-                {/*<StudentsAssetsPage/>*/}
-               {/* <StudentsDashboard/>
-                <Header/>
-                <StudentsPage/>
-                <StudentDetail/>
-                <Pagination/>*/}
+                    <Route path="/issuancepage" element={<IssuancePage/>}/>
+
+                    <Route path="/complaintspage" element={<ComplaintsPage/>}/>
+                    
+                    <Route path="/studentsattendance" element={<StudentsAttendancePage/>}/>
+
+                    <Route path="/inventory" element={<InventoryPage/>}/>
+
+                    <Route path="/studentsdashboard" element={<StudentsDashboard/>}/>
+
+                    <Route path="/coursespage" element={<CoursesPage/>}/>
+                </Routes>
+
             </div>
         </div>
     );

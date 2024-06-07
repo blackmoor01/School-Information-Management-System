@@ -1,4 +1,5 @@
 import React from "react";
+import { FaSearch } from 'react-icons/fa';
 import SearchBar from "../components/issuancePage_components/SearchBar";
 import FilterButtons from "../components/issuancePage_components/FilterButtton";
 import OrderTable from "../components/issuancePage_components/OrderTable";
@@ -11,7 +12,14 @@ const IssuancePage = () => {
         <div className="min-h-screen bg-gray-100 p-4">
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between mb-4">
-                    <SearchBar />
+                    <div className="flex items-center bg-[#fff] rounded-full p-2 flex-grow max-w-lg ml-16">
+                        <FaSearch className="text-gray-400 mr-2" />
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            className="bg-[#fff] outline-none flex-grow"
+                        />
+                    </div>
                     <FilterButtons />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">

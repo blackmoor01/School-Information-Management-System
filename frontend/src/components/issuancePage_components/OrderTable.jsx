@@ -1,4 +1,5 @@
 import React from 'react';
+import Pagination from '../Pagination';
 
 const orders = [
     { id: 1, name: 'James Smith', item: 'Pen', sku: '121rr01i28e', quantity: 50 },
@@ -42,9 +43,7 @@ const OrderTable = () => {
                 </tbody>
             </table>
             <div className="flex justify-center mt-4">
-                <button className="p-2 border border-gray-300 rounded-l-lg">1</button>
-                <button className="p-2 border border-gray-300">2</button>
-                <button className="p-2 border border-gray-300 rounded-r-lg">3</button>
+               <Pagination/>
             </div>
         </div>
     );

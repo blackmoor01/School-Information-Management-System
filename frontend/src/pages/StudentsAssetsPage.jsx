@@ -56,13 +56,13 @@ const StudentsAssetsPage = () => {
                 <AssetsDisplay/>
                 <StudentDetail/>
 
-                <div className={"flex mt-5"}>
+                <div className={"flex mt-5 item-center justify-evenly"}>
                     <button
-                        className={"h-10 w-36 border border-gray-500 bg-blue-500 rounded-lg  shadow-2xl hover:scale-110 cursor-pointer text-lg font-bold text-white text-center mt-2"}>Edit
+                        className={"h-10 w-36 border border-gray-500 bg-blue-500 rounded-lg  shadow-2xl hover:bg-blue-700 cursor-pointer text-lg font-bold text-white text-center mt-2"}>Edit
                         Asset
                     </button>
                     <button
-                        className={"h-10 w-36 border border-gray-500 bg-blue-500 rounded-lg  shadow-2xl hover:scale-110 cursor-pointer text-lg font-bold text-white text-center mt-2 ml-4"}>Add New
+                        className={"h-10 w-36 border border-gray-500 bg-blue-500 rounded-lg  shadow-2xl hover:bg-blue-700 cursor-pointer text-lg font-bold text-white text-center mt-2 ml-4"}>Add New
                         Asset
                     </button>
                 </div>

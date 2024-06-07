@@ -9,7 +9,7 @@ const FinanacePage = () => {
     const StudentFinancialDetail = () => {
         const student = studentData[0]
         return (
-            <div className="w-3/12 p-6 bg-white shadow-md mt-5">
+            <div className="w-3/12 p-6 bg-white shadow-md mt-5 rounded-lg">
                 <div className="mb-4 py-2">
                     <img
                         src="https://via.placeholder.com/88"
@@ -85,7 +85,7 @@ const FinanacePage = () => {
                             className="bg-gray-100 outline-none flex-grow"
                         />
                     </div>
-                    <button className="bg-blue-500 text-white px-2 py-3 rounded-md hover:bg-blue-700">+ New item</button>
+                    <button className="bg-blue-500 text-white px-3 py-2s rounded-md hover:bg-blue-700">+ New item</button>
                 </div>
             </div>
         );
@@ -98,7 +98,7 @@ const FinanacePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/exercise-books.jpg"
+                imageUrl: "frontend/src/assets/4735.jpg"
             },
             {
                 id: 2,
@@ -199,7 +199,7 @@ const FinanacePage = () => {
     };
 
     return (
-        <div className="mx-2 mt-2">
+        <div className="flex flex-col mx-2 mt-2 min-h-screen">
             <Header />
 
             <div className="mt-10">
@@ -224,7 +224,7 @@ const FinanacePage = () => {
 
                             </div>
                         </div>
-                        <div className="h-10 w-2/12 rounded-lg bg-blue-500 border border-blue-500 mr-10 hover:bg-blue-700">
+                        <div className="h-10 w-2/12 rounded-lg bg-blue-500 border border-blue-500 mr-10 hover:bg-blue-700 cursor-pointer">
                             <div className="flex items-center justify-between mx-8 mt-1.5">
                                 <FaFileExport className="text-[#fff]" />
                                 <p className="text-[#fff] font-medium">Export</p>

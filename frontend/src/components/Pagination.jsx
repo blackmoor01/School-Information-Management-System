@@ -1,30 +1,36 @@
 import React, { useState } from "react";
-import { IoCaretBackOutline } from "react-icons/io5";
-import { IoCaretForwardOutline } from "react-icons/io5";
+import { IoCaretBackOutline, IoCaretForwardOutline } from "react-icons/io5";
 
-
-const Pagination = () => {
-    const number = 1;
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     return (
         <div className="flex justify-end mt-10 mr-44">
-            <IoCaretBackOutline size={24} className="text-blue-500 hover:text-blue-700 cursor-pointer" />
+            <IoCaretBackOutline
+                size={24}
+                className={`text-blue-500 hover:text-blue-700 cursor-pointer ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+                onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
+            />
 
-            <div className="h-8 w-8 rounded-full bg-white border border-gray-500 cursor-pointer">
-                <p className="font-lg font-bold text-black text-center justify-center mt-1">{number}</p>
-            </div>
+            {[...Array(totalPages)].map((_, index) => {
+                const pageNumber = index + 1;
+                return (
+                    <div
+                        key={pageNumber}
+                        className={`h-8 w-8 rounded-full border border-gray-500 cursor-pointer mx-1 ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-white text-black'
+                            }`}
+                        onClick={() => onPageChange(pageNumber)}
+                    >
+                        <p className="font-lg font-bold text-center mt-1">{pageNumber}</p>
+                    </div>
+                );
+            })}
 
-            <div className="h-8 w-8 rounded-full bg-blue-500 border border-gray-500 mx-2 cursor-pointer">
-            <p className="font-lg font-bold text-white text-center justify-center mt-1">{number +1}</p>
-            </div>
-
-            <div className="h-8 w-8 rounded-full bg-white border border-gray-500 cursor-pointer">
-            <p className="font-lg font-bold text-black text-center justify-center mt-1">{number + 2}</p>
-            </div>
-
-            <IoCaretForwardOutline size={24} className="text-blue-500 hover:text-blue-700 cursor-pointer" />
-
+            <IoCaretForwardOutline
+                size={24}
+                className={`text-blue-500 hover:text-blue-700 cursor-pointer ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+                onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+            />
         </div>
-    )
+    );
 };
 
 export default Pagination;

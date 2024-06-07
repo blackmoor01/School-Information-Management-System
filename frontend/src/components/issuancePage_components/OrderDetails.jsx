@@ -21,7 +21,7 @@ const OrderDetails = () => {
             <p className="text-gray-600 mb-2"><strong>Quantity:</strong> 40</p>
             <p className="text-gray-600 mb-2"><strong>Unit Price:</strong> $20</p>
             <p className="text-gray-600 mb-4"><strong>Note:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam auctor mollis mauris sit amet dictum. Nullam vitae nisi ac sem condimentum malesuada.</p>
-            <button className="bg-blue-500 text-white p-2 rounded-lg shadow-sm w-full">Notify Student</button>
+            <button className="bg-blue-500 text-white p-2 rounded-lg shadow-sm w-full hover:bg-blue-700">Notify Student</button>
         </div>
     );
 };

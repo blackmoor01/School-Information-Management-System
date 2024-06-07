@@ -1,27 +1,26 @@
-import React,{useState} from 'react';
-import {FaSearch} from "react-icons/fa";
+import React, { useState } from 'react';
+import { FaSearch } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
-    {/*The state change for the button when toggled*/}
-     const [selected, setSelected] = useState('Students');
+    {/*The state change for the button when toggled*/ }
+    const [selected, setSelected] = useState('Students');
 
-    {/*The buttton function for the toggling effect*/}
-     const Button = () => {
+    {/*The buttton function for the toggling effect*/ }
+    const Button = () => {
         return (
             <div className="">
                 <div className="flex  border border-gray-200 rounded-xl overflow-hidden">
                     <button
-                        className={`px-1 py-2 font-bold ${
-                            selected === 'Students' ? 'bg-white text-gray-900' : 'bg-blue-500 text-white'
-                        }`}
+                        className={`px-1 py-2 font-bold ${selected === 'Students' ? 'bg-white text-gray-900' : 'bg-blue-500 text-white'
+                            }`}
                         onClick={() => setSelected('Students')}
                     >
                         Students
                     </button>
                     <button
-                        className={`px-2 py-2 font-bold ${
-                            selected === 'Teachers' ? 'bg-white text-gray-900' : 'bg-blue-500 text-white'
-                        }`}
+                        className={`px-2 py-2 font-bold ${selected === 'Teachers' ? 'bg-white text-gray-900' : 'bg-blue-500 text-white'
+                            }`}
                         onClick={() => setSelected('Teachers')}
                     >
                         Teachers
@@ -37,16 +36,18 @@ const Header = () => {
                 <p >Hi Samuel, Welcome to the students database</p>
             </div>
             <div className="flex items-center space-x-24 justify-between">
-                <Button/>
+                <Button />
                 <div className="flex items-center bg-gray-100 rounded-full p-2 flex-grow max-w-lg ml-16">
-                    <FaSearch className="text-gray-400 mr-2"/>
+                    <FaSearch className="text-gray-400 mr-2" />
                     <input
                         type="text"
                         placeholder="Search"
                         className="bg-gray-100 outline-none flex-grow"
                     />
                 </div>
-                <button className="bg-blue-500 text-white px-2 py-3 rounded-md hover:scale-105">+ New admission</button>
+                <Link to={"/studentspage/newstudentsadmission"}>
+                    <button className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-700">+ New admission</button>
+                </Link>
             </div>
         </div>
     );
