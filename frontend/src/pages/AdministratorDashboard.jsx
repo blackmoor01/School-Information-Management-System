@@ -1,10 +1,11 @@
 import React from "react";
-import { IoReturnDownForwardOutline } from "react-icons/io5";
+import { IoReturnDownForwardOutline,IoChevronForwardOutline } from "react-icons/io5";
 import groupofstudents from "../assets/group-of-students.jpg";
 import events from "../assets/events.jpg";
 import groupofteachers from "../assets/teacher-group.jpg";
 import totalinventory from "../assets/3d-cartoon-lumberjack-character.jpg";
 import runningbacktoschool from "../assets/running to school.jpg"
+import MonthDropdown from "../components/monthsDropDown";
 
 const AdministratorDashboard = () => {
     return (
@@ -13,26 +14,30 @@ const AdministratorDashboard = () => {
                 <h1 className={"font-extrabold text-4xl"}>Dashboard</h1>
 
                 <div className={"h-1/12 w-6/12 shadow-2xl rounded-2xl border p-5 flex"}>
-                    <div>
-                        <p className={"text-4xl font-extrabold"}>Good Morning Samuel</p>
-                        <div className={"max-w-sm mt-2"}>
-                            <p className={"text-lg font-medium text-gray-700"}>Lorem Ipsum dolor sit amet, consecteur
-                                adipiscing elit, sed do eiusmod tempor incididunt ut labore et </p>
+                    <div className="flex flex-col justify-between">
+                        <div>
+                            <p className={"text-4xl font-extrabold"}>Good Morning Samuel</p>
+                            <div className={"max-w-sm mt-2"}>
+                                <p className={"text-lg font-medium text-gray-700"}>
+                                    Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                                </p>
+                            </div>
                         </div>
+
                         <div className={"mt-5"}>
                             <div
-                                className={"h-10 w-4/12 border border-gray-700 rounded-lg shadow-2xl bg-blue-500 cursor-pointer hover:scale-y-110 flex-1"}>
+                                className={"h-10 w-full sm:w-6/12 md:w-4/12 border border-gray-700 rounded-lg shadow-2xl bg-blue-500 cursor-pointer hover:bg-blue-700 transform transition duration-300 ease-in-out"}>
                                 <div className={"mx-2 text-center justify-center mt-1.5 flex"}>
-                                    <p className={"text-white font-bold"}>Go to tasks for today</p>
-                                    <IoReturnDownForwardOutline className={"text-white font-extrabold ml-3"} size={22}/>
+                                    <p className={"text-white font-bold text-xs"}>Go to tasks for today</p>
+                                    <IoReturnDownForwardOutline className={"text-white font-extrabold ml-3"} size={22} />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="ml-10 items-center justify-center">
-                        <img src={runningbacktoschool} alt={"Group of Students"}
-                             className="h-24 w-28 rounded-lg object-fill"/>
+                    <div className="ml-10 flex items-center justify-center">
+                        <img src={runningbacktoschool} alt="Group of Students"
+                            className="h-44 w-72 rounded-lg object-fill" />
                     </div>
                 </div>
             </div>
@@ -40,7 +45,7 @@ const AdministratorDashboard = () => {
             <div className={"grid grid-cols-4 gap-4 mt-8"}>
                 <div className={"flex shadow-2xl rounded-2xl border p-5 hover:scale-95 cursor-pointer"}>
                     <div className="">
-                    <p className={"text-4xl font-extrabold"}>1,400</p>
+                        <p className={"text-4xl font-extrabold"}>1,400</p>
                         <p className={"py-2 text-lg font-bold text-gray-700"}>Total Students</p>
                         <p className={"text-green-600 flex text-sm font-bold"}>9% <span
                             className={"ml-2 text-sm text-gray-700"}>than last month</span></p>
@@ -48,7 +53,7 @@ const AdministratorDashboard = () => {
 
                     <div className="ml-10 items-center justify-center">
                         <img src={groupofstudents} alt={"Group of Students"}
-                             className="h-24 w-28 rounded-lg object-fill"/>
+                            className="h-24 w-28 rounded-lg object-fill" />
                     </div>
 
                 </div>
@@ -95,15 +100,14 @@ const AdministratorDashboard = () => {
                 <div className={"h-80 w-8/12 shadow-2xl rounded-2xl border p-5"}>
                     <div className={"flex justify-between items-center"}>
                         <h1 className={"text-2xl text-gray-900 font-bold"}>School Attendance</h1>
-                        <div className={"p-1 w-2/12 rounded-full border border-gray-600"}>
-                            <p className={"text-lg font-bold text-gray-900 text-center"}>January</p>
-                        </div>
+                        <MonthDropdown />
                         <div className={"h-10 w-3/12 rounded-lg border border-gray-500 shadow-2xl"}>
-                            <div className={"flex items-center justify-center mx-2 py-2.5"}>
+                            <div className={"flex items-center justify-between mx-2 py-2.5"}>
                                 <div className={"flex"}>
                                     <div className={"h-5 w-5 bg-green-600"}></div>
                                     <p className={"text-gray-600 font-bold text-xs ml-1"}>Teachers</p>
                                 </div>
+
                                 <div className={"flex ml-2"}>
                                     <div className={"h-5 w-5 bg-red-600"}></div>
                                     <p className={"text-gray-600 font-bold text-xs ml-1"}>Students</p>

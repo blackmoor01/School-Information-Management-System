@@ -3,16 +3,17 @@ import { FaSearch, FaFilter } from "react-icons/fa";
 import { FaFileExport } from "react-icons/fa6";
 import Pagination from "../components/Pagination";
 import studentData from "../components/studentData";
+import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
 
-const FinanacePage = () => {
+const FinancePage = () => {
 
     const StudentFinancialDetail = () => {
-        const student = studentData[0]
+        const student = studentData[0];
         return (
-            <div className="w-3/12 p-6 bg-white shadow-md mt-5 rounded-lg">
+            <div className="w-4/12 p-6 bg-white shadow-md mt-5 rounded-lg">
                 <div className="mb-4 py-2">
                     <img
-                        src="https://via.placeholder.com/88"
+                        src={profilepic}
                         alt="Profile"
                         className="w-20 h-20 rounded-full mx-auto border border-gray-900"
                     />
@@ -61,7 +62,7 @@ const FinanacePage = () => {
                 </div>
 
                 <div className={"flex justify-center mt-8"}>
-                    <div className={"h-12 w-7/12 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:scale-110 cursor-pointer"}>
+                    <div className={"h-12 w-7/12 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer"}>
                         <p className={"text-lg font-bold text-white text-center mt-2"}>Edit</p>
                     </div>
 
@@ -69,15 +70,15 @@ const FinanacePage = () => {
             </div>
         );
     };
-    const Header = () => {
 
+    const Header = () => {
         return (
-            <div className="flex py-4 px-6 bg-white shadow-md mt-8 justify-between">
+            <div className="flex py-4 px-6 bg-white shadow-md justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold">School Finance</h1>
+                    <h1 className="text-4xl font-bold">FINANCE SHEET</h1>
                 </div>
-                <div className="flex items-center space-x-24 justify-between">
-                    <div className="flex items-center bg-gray-100 rounded-full p-2 flex-grow max-w-lg ml-16">
+                <div className="flex items-center space-x-4">
+                    <div className="flex items-center bg-gray-100 rounded-full p-2 flex-grow max-w-lg">
                         <FaSearch className="text-gray-400 mr-2" />
                         <input
                             type="text"
@@ -85,11 +86,14 @@ const FinanacePage = () => {
                             className="bg-gray-100 outline-none flex-grow"
                         />
                     </div>
-                    <button className="bg-blue-500 text-white px-3 py-2s rounded-md hover:bg-blue-700">+ New item</button>
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                        + New item
+                    </button>
                 </div>
             </div>
         );
     };
+
     const TableComponent = () => {
         const data = [
             {
@@ -166,8 +170,8 @@ const FinanacePage = () => {
             }
         ];
         return (
-            <div className="overflow-x-auto mt-5 md:ml-10" style={{ height: '600px', width: '800px' }}>
-                <table className="min-w-lg bg-white">
+            <div className="overflow-x-auto mt-5 w-11/12">
+                <table className="min-w-full bg-white">
                     <thead>
                         <tr>
                             <th className="px-4 py-2 border">Select</th>
@@ -201,48 +205,15 @@ const FinanacePage = () => {
     return (
         <div className="flex flex-col mx-2 mt-2 min-h-screen">
             <Header />
-
-            <div className="mt-10">
-                <div className="w-[60%] h-58 rounded-lg shadow-2xl">
-                    <h1 className="mt-2 font-bold text-2xl mx-4 text-gray-600">FINANCE SHEET</h1>
-
-                    <div className="flex justify-between mt-5">
-                        <div className="flex items-center bg-gray-100 rounded-full p-2 flex-grow max-w-xs ml-16">
-                            <FaSearch className="text-gray-400 mr-2" />
-                            <input
-                                type="text"
-                                placeholder="Search"
-                                className="bg-gray-100 outline-none flex-grow"
-                            />
-                        </div>
-
-                        <div className="h-10 w-2/12 rounded-lg bg-white border border-blue-500 cursor-pointer hover:bg-gray-300">
-                            <div className="flex items-center justify-between mx-8 mt-1.5">
-                                <FaFilter className="text-blue-500" />
-                                <p className="text-blue-500 font-medium">Filter</p>
-
-
-                            </div>
-                        </div>
-                        <div className="h-10 w-2/12 rounded-lg bg-blue-500 border border-blue-500 mr-10 hover:bg-blue-700 cursor-pointer">
-                            <div className="flex items-center justify-between mx-8 mt-1.5">
-                                <FaFileExport className="text-[#fff]" />
-                                <p className="text-[#fff] font-medium">Export</p>
-                            </div>
-                        </div>
-                    </div>
+            <div className="flex justify-between mt-10">
+                <div className="w-8/12 bg-white rounded-lg shadow-2xl p-4">
                     <TableComponent />
                     <Pagination />
                 </div>
                 <StudentFinancialDetail />
-
-
             </div>
-
-
-
         </div>
-    )
+    );
 };
 
-export default FinanacePage;
+export default FinancePage;

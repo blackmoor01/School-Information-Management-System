@@ -83,12 +83,14 @@ function Sider() {
                 </ul>
             </nav>
 
-            <div className="flex items-center justify-center py-4 mt-20">
+            <Link to={"/settings"}>
+            <div className={`flex items-center justify-center py-4 mt-20 ${getLinkClass('/settings')}`}>
                 <div className="flex items-center">
                     <span className="mr-2">⚙️</span>
                     <span>Settings</span>
                 </div>
             </div>
+            </Link>
         </div>
     );
 }

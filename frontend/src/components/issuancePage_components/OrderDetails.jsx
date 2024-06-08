@@ -1,13 +1,14 @@
 import React from 'react';
+import Orderdetails from "../../assets/orderdetails.jpg"
 
 const OrderDetails = () => {
     return (
         <div className="bg-white p-4 rounded-lg shadow-sm">
             <div className="mb-4">
                 <img
-                    src="https://via.placeholder.com/150"
+                    src={Orderdetails}
                     alt="Order"
-                    className="w-full h-48 object-cover rounded-lg"
+                    className="w-full h-48 object-fill rounded-lg"
                 />
             </div>
             <h2 className="text-xl font-bold mb-2">Details of order</h2>

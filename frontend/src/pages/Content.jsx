@@ -18,6 +18,7 @@ import AdministratorDashboard from "./AdministratorDashboard.jsx";
 import CoursesPage from "./Courses.jsx";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "../components/studentPageMainLayout/mainLayout.jsx";
+import Settings from "./Settings.jsx";
 
 const Content = () => {
     return (
@@ -51,6 +52,8 @@ const Content = () => {
                     <Route path="/inventory" element={<InventoryPage/>}/>
 
                     <Route path="/studentsdashboard" element={<StudentsDashboard/>}/>
+
+                    <Route path="/settings" element={<Settings/>}/>
 
                     <Route path="/coursespage" element={<CoursesPage/>}/>
                 </Routes>

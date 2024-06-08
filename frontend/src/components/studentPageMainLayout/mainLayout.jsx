@@ -7,8 +7,8 @@ import Header from '../Header';
 
 const MainLayout = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 3; // Adjust based on your data pagination logic
-    const selectedStudent = studentData[0]; // Adjust logic to select a student
+    const totalPages = 3; 
+    const selectedStudent = studentData[0];
 
     return (
         <div>

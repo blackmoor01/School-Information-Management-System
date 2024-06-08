@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaSearch, FaCog, FaBell, FaEnvelope } from 'react-icons/fa';
+import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
 
 const Navbar = () => {
     const size = 20;
@@ -20,7 +21,7 @@ const Navbar = () => {
                 <div className="flex items-center space-x-6 px-16">
                     <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border border-purple-500">
                         <img
-                            src="https://via.placeholder.com/32" // Replace with the user's profile image
+                            src={profilepic}
                             alt="Profile"
                             className="rounded-full"
                         />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
 
 const StudentDetail = ({ student }) => {
     if (!student) {
@@ -14,7 +15,7 @@ const StudentDetail = ({ student }) => {
             </div>
             <div className="mb-4 py-2">
                 <img
-                    src="https://via.placeholder.com/88"
+                    src={profilepic}
                     alt="Profile"
                     className="w-20 h-20 rounded-full mx-auto border border-gray-900"
                 />
