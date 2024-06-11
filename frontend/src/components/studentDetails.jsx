@@ -46,7 +46,7 @@ const StudentDetail = ({ student }) => {
                 </div>
                 <div className="py-3">
                     <h3 className="text-gray-900 font-bold">Payment Status:</h3>
-                    <p className={`font-semibold h-10 w-4/12 rounded-lg border border-gray-500 shadow-2xl text-center mt-3 ${student.payment_status === 'Have Paid' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                    <p className={`font-semibold h-8 w-4/12 rounded-lg border border-gray-500 shadow-2xl text-center mt-3 cursor-pointer ${student.payment_status === 'Have Paid' ? 'bg-green-500 text-white py-0.5' : 'bg-red-500 text-white'}`}>
                         {student.payment_status}
                     </p>
                 </div>

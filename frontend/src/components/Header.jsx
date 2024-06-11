@@ -9,18 +9,20 @@ const Header = () => {
 
     {/*The buttton function for the toggling effect*/ }
     const Button = () => {
+        const [selected, setSelected] = useState('Students');
+    
         return (
-            <div className="">
-                <div className="flex  border border-gray-200 rounded-xl overflow-hidden">
+            <div className="flex justify-center mt-4">
+                <div className="flex border border-gray-300 rounded-full overflow-hidden shadow-sm">
                     <button
-                        className={`px-1 py-2 font-bold ${selected === 'Students' ? 'bg-white text-gray-900' : 'bg-blue-500 text-white'
+                        className={`px-4 py-2 font-semibold transition-all duration-300 transform ${selected === 'Students' ? 'bg-white text-gray-900 -translate-x-1' : 'bg-blue-500 text-white translate-x-1'
                             }`}
                         onClick={() => setSelected('Students')}
                     >
                         Students
                     </button>
                     <button
-                        className={`px-2 py-2 font-bold ${selected === 'Teachers' ? 'bg-white text-gray-900' : 'bg-blue-500 text-white'
+                        className={`px-4 py-2 font-semibold transition-all duration-300 transform ${selected === 'Teachers' ? 'bg-white text-gray-900 -translate-x-1' : 'bg-blue-500 text-white translate-x-1'
                             }`}
                         onClick={() => setSelected('Teachers')}
                     >
@@ -30,6 +32,7 @@ const Header = () => {
             </div>
         );
     };
+
     return (
         <div className="flex py-4 px-6 bg-white shadow-md mt-8 justify-between">
             <div>

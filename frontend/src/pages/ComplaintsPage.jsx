@@ -1,5 +1,6 @@
 import React from "react";
 import Pagination from "../components/Pagination";
+import teacher from "../assets/teacher.jpg"
 
 const ComplaintsPage = () => {
     const data = [
@@ -71,7 +72,7 @@ const ComplaintsPage = () => {
                     <div className="shadow-2xl rounded-lg p-3 w-6/12" key={index}>
                         <div className="flex">
                             <div className="items-center justify-center mt-6">
-                                <img src="../assets/4735.jpg" className="h-14 w-24 object-fill" alt="Teachers" />
+                                <img src={teacher} className="h-14 w-24 object-fill rounded-lg" alt="Teachers" />
                             </div>
                             <div className="ml-4">
                                 <p className="text-xs font-bold text-gray-500">{item.name}</p>
@@ -90,7 +91,7 @@ const ComplaintsPage = () => {
             <div className="w-3/12 p-6 bg-white shadow-md mt-5 rounded-lg">
                 <div className="items-center">
                     <img
-                        src="https://via.placeholder.com/88"
+                        src={teacher}
                         alt="Profile"
                         className="w-25 h-25 rounded-full mx-auto border border-gray-900 cursor-pointer hover:scale-110"
                     />

@@ -2,6 +2,7 @@
 import React from 'react';
 import { FaEllipsisV, FaCheckCircle, FaTimesCircle, FaPaperPlane } from 'react-icons/fa';
 import Pagination from './Pagination';
+import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
 
 const invoices = [
     {
@@ -13,7 +14,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Request sent',
         statusType: 'info',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#2375242746064',
@@ -24,7 +25,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Request sent',
         statusType: 'info',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#1236305788746',
@@ -35,7 +36,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Request sent',
         statusType: 'info',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#1328494146774',
@@ -46,7 +47,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Payment Due',
         statusType: 'danger',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#2394714673892',
@@ -57,7 +58,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Payment Due',
         statusType: 'danger',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#1374274923632',
@@ -68,7 +69,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Have paid',
         statusType: 'success',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#2342472365716',
@@ -79,7 +80,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Have paid',
         statusType: 'success',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#3874279721030',
@@ -90,7 +91,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Have paid',
         statusType: 'success',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#3483281837126',
@@ -101,7 +102,7 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Payment Due',
         statusType: 'danger',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
     {
         id: '#1342869123265',
@@ -112,18 +113,18 @@ const invoices = [
         dueDate: '23 March, 2024',
         status: 'Payment Due',
         statusType: 'danger',
-        imageUrl: 'https://via.placeholder.com/40',
+        imageUrl: profilepic,
     },
 ];
 
 const getStatusButton = (status, statusType) => {
     switch (statusType) {
         case 'info':
-            return <button className="bg-blue-500 text-white px-3 py-1 rounded-md flex items-center"><FaPaperPlane className="mr-1" />{status}</button>;
+            return <button className="bg-blue-500 text-white px-3 py-1 rounded-md flex items-center hover:bg-blue-700"><FaPaperPlane className="mr-1" />{status}</button>;
         case 'success':
-            return <button className="bg-green-500 text-white px-3 py-1 rounded-md flex items-center"><FaCheckCircle className="mr-1" />{status}</button>;
+            return <button className="bg-green-500 text-white px-3 py-1 rounded-md flex items-center hover:bg-green-700"><FaCheckCircle className="mr-1" />{status}</button>;
         case 'danger':
-            return <button className="bg-red-500 text-white px-3 py-1 rounded-md flex items-center"><FaTimesCircle className="mr-1" />{status}</button>;
+            return <button className="bg-red-500 text-white px-3 py-1 rounded-md flex items-center hover:bg-red-700"><FaTimesCircle className="mr-1" />{status}</button>;
         default:
             return null;
     }

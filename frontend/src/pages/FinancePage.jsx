@@ -4,6 +4,7 @@ import { FaFileExport } from "react-icons/fa6";
 import Pagination from "../components/Pagination";
 import studentData from "../components/studentData";
 import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
+import { Link } from "react-router-dom";
 
 const FinancePage = () => {
 
@@ -46,7 +47,7 @@ const FinancePage = () => {
                     <div className={"py-3"}>
                         <h3 className="text-gray-900 font-bold">Payment Status:</h3>
                         <p className={
-                            `font-semibold h-10 w-4/12 rounded-lg border border-gray-500 shadow-2xl text-center cursor-pointer ${student.payment_status === 'Have Paid' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`
+                            `font-semibold h-9 w-4/12 rounded-lg border border-gray-500 shadow-2xl text-center cursor-pointer mt-3 ${student.payment_status === 'Have Paid' ? 'bg-green-500 text-white py-1.5' : 'bg-red-500 text-white'}`
                         }>
                             {student.payment_status}
                         </p>
@@ -61,12 +62,14 @@ const FinancePage = () => {
                     </div>
                 </div>
 
-                <div className={"flex justify-center mt-8"}>
-                    <div className={"h-12 w-7/12 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer"}>
-                        <p className={"text-lg font-bold text-white text-center mt-2"}>Edit</p>
+                <Link to={"/financepage/editfinancedata"}>  
+                    <div className={"flex justify-center mt-8"}>
+                        <div className={"h-12 w-7/12 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer"}>
+                            <p className={"text-lg font-bold text-white text-center mt-2"}>Edit</p>
+                        </div>
                     </div>
 
-                </div>
+                </Link>
             </div>
         );
     };
@@ -102,7 +105,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "frontend/src/assets/4735.jpg"
+                imageUrl: profilepic
             },
             {
                 id: 2,
@@ -110,7 +113,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/maths-book.jpg"
+                imageUrl: profilepic
             },
             {
                 id: 3,
@@ -118,7 +121,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/science-books.jpg"
+                imageUrl: profilepic
             },
             {
                 id: 4,
@@ -126,7 +129,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/a4-sheets.jpg"
+                imageUrl: profilepic
             },
             {
                 id: 5,
@@ -134,7 +137,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/stationary.jpg"
+                imageUrl: profilepic
             },
             {
                 id: 6,
@@ -142,7 +145,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/medical-box.jpg"
+                imageUrl: profilepic
             },
             {
                 id: 7,
@@ -150,7 +153,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/school-uniforms.jpg"
+                imageUrl: profilepic
             },
             {
                 id: 8,
@@ -158,7 +161,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/laboratory-coats.jpg"
+                imageUrl: profilepic
             },
             {
                 id: 9,
@@ -166,7 +169,7 @@ const FinancePage = () => {
                 date: "5th May, 2024",
                 course: "Academic",
                 studentId: "121rr0i128e",
-                imageUrl: "path/to/english-books.jpg"
+                imageUrl: profilepic
             }
         ];
         return (

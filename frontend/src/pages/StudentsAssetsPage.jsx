@@ -3,6 +3,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import {FaSearch} from "react-icons/fa";
 import studentsAssetsData from "../components/studentsAssetsData.jsx";
 import StudentDetail from "../components/studentDetails.jsx";
+import Books from "../assets/books.jpg"
 
 const StudentsAssetsPage = () => {
 
@@ -13,7 +14,7 @@ const StudentsAssetsPage = () => {
         <div className="shadow-2xl rounded-lg p-2 w-6/12" key={index}>
           <div className="flex">
             <div className="items-center justify-center mt-6">
-              <img src="../assets/4735.jpg" className="h-14 w-24 object-fill" alt="Student Asset" />
+              <img src={Books} className="h-14 w-24 object-fill" alt="Student Asset" />
             </div>
             <div className="ml-4">
               <p className="text-xs font-bold text-gray-500">{item.name}</p>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Pagination from "../components/Pagination";
+import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
 
 const StudentsAttendancePage = () => {
     const Header = () => {
@@ -54,16 +55,16 @@ const StudentsAttendancePage = () => {
 
     const TableComponent = () => {
         const data = [
-            { id: 1, name: "Anna Watson", studentId: "#00345", program: "Science", attendanceNumber: 300, contact: "jamessam32@gmail.com", imageUrl: "/path/to/anna-watson.jpg" },
-            { id: 2, name: "John Lee", studentId: "#00034", program: "Mathematics", attendanceNumber: 100, contact: "jamessam32@gmail.com", imageUrl: "/path/to/john-lee.jpg" },
-            { id: 3, name: "Andy Tay", studentId: "#00985", program: "Science", attendanceNumber: 100, contact: "jamessam32@gmail.com", imageUrl: "/path/to/andy-tay.jpg" },
-            { id: 4, name: "Bryan Adu", studentId: "#00784", program: "Mathematics", attendanceNumber: 100, contact: "jamessam32@gmail.com", imageUrl: "/path/to/bryan-adu.jpg" },
-            { id: 5, name: "Angel Ford", studentId: "#00431", program: "English", attendanceNumber: 200, contact: "jamessam32@gmail.com", imageUrl: "/path/to/angel-ford.jpg" },
-            { id: 6, name: "Wilmette Arthur", studentId: "#00456", program: "Science", attendanceNumber: 400, contact: "jamessam32@gmail.com", imageUrl: "/path/to/wilmette-arthur.jpg" },
-            { id: 7, name: "Gloria John", studentId: "#00674", program: "Mathematics", attendanceNumber: 200, contact: "jamessam32@gmail.com", imageUrl: "/path/to/gloria-john.jpg" },
-            { id: 8, name: "Sandra Sia", studentId: "#00986", program: "Mathematics", attendanceNumber: 200, contact: "jamessam32@gmail.com", imageUrl: "/path/to/sandra-sia.jpg" },
-            { id: 9, name: "Ben Greenlish", studentId: "#00326", program: "Science", attendanceNumber: 100, contact: "jamessam32@gmail.com", imageUrl: "/path/to/ben-greenlish.jpg" },
-            { id: 10, name: "Samuel Johnson", studentId: "#00325", program: "English", attendanceNumber: 400, contact: "jamessam32@gmail.com", imageUrl: "/path/to/samuel-johnson.jpg" }
+            { id: 1, name: "Anna Watson", studentId: "#00345", program: "Science", attendanceNumber: 300, contact: "jamessam32@gmail.com", imageUrl: profilepic },
+            { id: 2, name: "John Lee", studentId: "#00034", program: "Mathematics", attendanceNumber: 100, contact: "jamessam32@gmail.com", imageUrl: profilepic },
+            { id: 3, name: "Andy Tay", studentId: "#00985", program: "Science", attendanceNumber: 100, contact: "jamessam32@gmail.com", imageUrl: profilepic },
+            { id: 4, name: "Bryan Adu", studentId: "#00784", program: "Mathematics", attendanceNumber: 100, contact: "jamessam32@gmail.com", imageUrl:profilepic },
+            { id: 5, name: "Angel Ford", studentId: "#00431", program: "English", attendanceNumber: 200, contact: "jamessam32@gmail.com", imageUrl: profilepic },
+            { id: 6, name: "Wilmette Arthur", studentId: "#00456", program: "Science", attendanceNumber: 400, contact: "jamessam32@gmail.com", imageUrl: profilepic },
+            { id: 7, name: "Gloria John", studentId: "#00674", program: "Mathematics", attendanceNumber: 200, contact: "jamessam32@gmail.com", imageUrl: profilepic },
+            { id: 8, name: "Sandra Sia", studentId: "#00986", program: "Mathematics", attendanceNumber: 200, contact: "jamessam32@gmail.com", imageUrl: profilepic },
+            { id: 9, name: "Ben Greenlish", studentId: "#00326", program: "Science", attendanceNumber: 100, contact: "jamessam32@gmail.com", imageUrl: profilepic },
+            { id: 10, name: "Samuel Johnson", studentId: "#00325", program: "English", attendanceNumber: 400, contact: "jamessam32@gmail.com", imageUrl: profilepic }
         ];
 
         return (

@@ -2,20 +2,21 @@ import React from "react";
 import Pagination from "../components/Pagination";
 import { FaSearch } from "react-icons/fa";
 import FilterButtons from "../components/issuancePage_components/FilterButtton";
+import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
 
 const InventoryPage = () => {
 
     const InventoryTable = () => {
         const data = [
-            { id: 1, name: "Laptops", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/laptops.jpg" },
-            { id: 2, name: "Uniforms", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/uniforms.jpg" },
-            { id: 3, name: "Addiction support worker handbook", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/handbook.jpg" },
-            { id: 4, name: "PPE", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/ppe.jpg" },
-            { id: 5, name: "Stationary", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/stationary.jpg" },
-            { id: 6, name: "Medical box", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/medical-box.jpg" },
-            { id: 7, name: "School uniforms", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/school-uniforms.jpg" },
-            { id: 8, name: "Laboratory coats", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/lab-coats.jpg" },
-            { id: 9, name: "English books", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: "/path/to/english-books.jpg" },
+            { id: 1, name: "Laptops", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
+            { id: 2, name: "Uniforms", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
+            { id: 3, name: "Addiction support worker handbook", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
+            { id: 4, name: "PPE", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
+            { id: 5, name: "Stationary", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
+            { id: 6, name: "Medical box", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
+            { id: 7, name: "School uniforms", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
+            { id: 8, name: "Laboratory coats", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
+            { id: 9, name: "English books", category: "Academic", sku: "121rr0i128e", date: "5th May, 2024", quantity: 50, location: "School warehouse", imageUrl: profilepic },
         ];
 
         return (

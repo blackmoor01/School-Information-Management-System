@@ -37,9 +37,8 @@ const Content = () => {
                     <Route path="/teacherspage" element={<TeachersPage/>}/>
                     <Route path="/teacherspage/newteacheradmission" element={<NewTeacherAdmission/>}/>
 
-                    <Route path="/financepage" element={<FinanacePage/>}>
-                        <Route path="editfinancedata" element={<EditFinancePage/>}/>
-                    </Route>
+                    <Route path="/financepage" element={<FinanacePage/>}/>
+                    <Route path="/financepage/editfinancedata" element={<EditFinancePage/>}/>
 
                     <Route path="/paymentspage" element={<Payment/>}/>
 

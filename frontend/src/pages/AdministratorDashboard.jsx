@@ -1,5 +1,5 @@
 import React from "react";
-import { IoReturnDownForwardOutline,IoChevronForwardOutline } from "react-icons/io5";
+import { IoReturnDownForwardOutline, IoChevronForwardOutline } from "react-icons/io5";
 import groupofstudents from "../assets/group-of-students.jpg";
 import events from "../assets/events.jpg";
 import groupofteachers from "../assets/teacher-group.jpg";
@@ -130,21 +130,30 @@ const AdministratorDashboard = () => {
                             <div className={"h-3 w-3 border border-gray-600 bg-gray-600 mt-1.5"} />
                             <p className={"ml-2"}>Payment of school fees reminder not sent to students</p>
                             <div className={"h-5 w-20 border border-blue-500 rounded-full ml-auto cursor-pointer hover:scale-110"}>
-                                <p className={"text-xs text-blue-500 text-center"}>Check</p>
+                            <div className="flex items-center justify-between mx-2">
+                                    <p className={"text-xs text-blue-500 text-center"}>Check</p>
+                                    <IoChevronForwardOutline  className="text-blue-500" />
+                                </div>
                             </div>
                         </div>
                         <div className={"flex items-center mt-5"}>
                             <div className={"h-3 w-3 border border-gray-600 bg-gray-600 mt-1.5"} />
                             <p className={"ml-2"}>A general meeting for all staff members to organize at the end of the semester</p>
                             <div className={"h-5 w-20 border border-blue-500 rounded-full ml-auto cursor-pointer hover:scale-110"}>
-                                <p className={"text-xs text-blue-500 text-center"}>Check</p>
+                                <div className="flex items-center justify-between mx-2">
+                                    <p className={"text-xs text-blue-500 text-center"}>Check</p>
+                                    <IoChevronForwardOutline className="text-blue-500"/>
+                                </div>
                             </div>
                         </div>
                         <div className={"flex items-center mt-5"}>
                             <div className={"h-3 w-3 border border-gray-600 bg-gray-600 mt-1.5"} />
                             <p className={"ml-2"}>A meeting with all board members on Saturday</p>
-                            <div className={"h-5 w-20 border border-blue-500 rounded-full ml-auto cursor-pointer hover:scale-110"}>
-                                <p className={"text-xs text-blue-500 text-center"}>Check</p>
+                            <div className={"h-5 w-20 border border-blue-500 rounded-full ml-auto cursor-pointer hover:scale-110 "}>
+                            <div className="flex items-center justify-between mx-2">
+                                    <p className={"text-xs text-blue-500 text-center"}>Check</p>
+                                    <IoChevronForwardOutline className="text-blue-500"/>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaSearch, FaCog, FaBell, FaEnvelope } from 'react-icons/fa';
 import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
+import { IoChevronForwardOutline } from "react-icons/io5";
 
 const Navbar = () => {
     const size = 20;
@@ -15,9 +16,9 @@ const Navbar = () => {
                 />
             </div>
             <div className="flex items-center space-x-6 pl-4">
-                <FaCog className="text-gray-500 cursor-pointer hover:scale-105" size={size} />
-                <FaBell className="text-gray-500 cursor-pointer hover:scale-105" size={size}/>
-                <FaEnvelope className="text-gray-500 cursor-pointer hover:scale-105" size={size} />
+                <FaCog className="text-gray-500 cursor-pointer hover:text-gray-700 hover:scale-110" size={size} />
+                <FaBell className="text-gray-500 cursor-pointer hover:scale-110 hover:text-gray-700" size={size}/>
+                <FaEnvelope className="text-gray-500 cursor-pointer hover:scale-110 hover:text-gray-700" size={size} />
                 <div className="flex items-center space-x-6 px-16">
                     <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border border-purple-500">
                         <img
@@ -27,24 +28,11 @@ const Navbar = () => {
                         />
                     </div>
                     <div className={""}>
-                        <p className="font-bold">Samuel Asante Boakye</p>
+                        <p className="font-bold">Dennis Akpeko Zigah</p>
                         <p className="text-sm text-gray-500">Admin</p>
                     </div>
-                    <div className="cursor-pointer">
-                        <svg
-                            className="w-4 h-4 text-gray-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 9l-7 7-7-7"
-                            ></path>
-                        </svg>
+                    <div className="cursor-pointer hover:rotate-90">
+                    <IoChevronForwardOutline className="text-gray-800"/>
                     </div>
                 </div>
             </div>

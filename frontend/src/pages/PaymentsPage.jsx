@@ -2,6 +2,7 @@ import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaEllipsisV, FaCheckCircle, FaTimesCircle, FaPaperPlane } from 'react-icons/fa';
 import InvoiceTable from "../components/invoiceData";
+import { TbFileExport } from "react-icons/tb";
 
 const Payment = () => {
 
@@ -20,8 +21,13 @@ const Payment = () => {
                             className="bg-gray-100 outline-none flex-grow"
                         />
                     </div>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:scale-105">+ Export CSV</button>
-                    <button className="bg-blue-500 text-white px-3 py-2 rounded-md hover:scale-105">+ New Item</button>
+
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex">
+                        <TbFileExport className="mt-1 mr-2"/>
+                        Export CSV
+                    </button>
+                    
+                    <button className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-700">+ New Item</button>
                 </div>
             </div>
         );
@@ -32,7 +38,7 @@ const Payment = () => {
         <div className="mx-2 mt-2">
             <Header />
 
-            <InvoiceTable/>
+            <InvoiceTable />
         </div>
     )
 };

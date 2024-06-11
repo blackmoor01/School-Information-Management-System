@@ -3,6 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import teachersData from "../components/teachersData";
 import Pagination from "../components/Pagination";
 import { Link, Outlet } from "react-router-dom";
+import teacher from "../assets/teacher.jpg"
 
 const TeachersPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -66,7 +67,7 @@ const TeachersPage = () => {
         );
     };
 
-    const TeachersDataisplay = () => {
+    const TeachersDataDisplay = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const currentData = teachersData.slice(startIndex, startIndex + itemsPerPage);
 
@@ -76,7 +77,7 @@ const TeachersPage = () => {
                     <div className="shadow-2xl rounded-lg p-3" key={index}>
                         <div className="flex">
                             <div className="items-center justify-center mt-6">
-                                <img src="../assets/4735.jpg" className="h-14 w-24 object-fill" alt="Teachers" />
+                                <img src={teacher} className="h-14 w-24 object-fill rounded-lg" alt="Teachers" />
                             </div>
                             <div className="ml-4">
                                 <p className="text-xs font-bold text-gray-500">{item.name}</p>
@@ -101,7 +102,7 @@ const TeachersPage = () => {
                 </div>
                 <div className="mb-4 py-2">
                     <img
-                        src="https://via.placeholder.com/88"
+                        src={teacher}
                         alt="Profile"
                         className="w-20 h-20 rounded-full mx-auto border border-blue-500"
                     />
@@ -149,7 +150,7 @@ const TeachersPage = () => {
             <Header />
             <div className="flex-grow flex justify-between mt-4">
                 <div className="w-8/12 flex flex-col">
-                    <TeachersDataisplay />
+                    <TeachersDataDisplay />
                 </div>
                 <TeacherDetail />
             </div>
