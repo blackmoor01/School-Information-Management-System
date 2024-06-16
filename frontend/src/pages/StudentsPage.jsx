@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import studentData from "../components/studentData";
+
 
 const StudentsPage = () => {
   const ContactList = () => {

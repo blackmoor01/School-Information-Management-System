@@ -1,8 +1,8 @@
 from django.http import JsonResponse, HttpResponse
-from .api.mongo_models import Student
+from .api.mongo_models import Student, Teacher
 from django.shortcuts import render
 from rest_framework import generics
-from .api.serializers import StudentSerializer 
+from .api.serializers import StudentSerializer, TeacherSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -22,6 +22,38 @@ class StudentListView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class TeacherListView(APIView):
+    def get(self, request):
+        teachers_data = list(Teacher.collection.find())
+        for teacher in teachers_data:
+            teacher['_id'] = str(teacher['_id'])
+        serializer = TeacherSerializer(teachers_data,  many=True)
+        return Response({'teachers':serializer.data})
+    
+
+    def post(self, request):
+        serializer = TeacherSerializer(data=request.data)
+        if serializer.is_valid():
+            Teacher.save_or_update_many([serializer.validated_data])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# The below is to be editted.
 def create_student(request):
     if request.method == 'POST':
         data = {

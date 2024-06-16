@@ -247,3 +247,201 @@ students_data = [
 
 # Save or update all students
 Student.save_or_update_many(students_data)
+
+
+
+
+# Teacher data
+class Teacher:
+    collection = db["teachers"]
+
+    def __init__(self, name, image, view_option, downloadable, id, contact, email, description, date_of_employment, subject_taught, date_of_birth, address, teachers_in_the_same_program):
+        self.name = name
+        self.image = image
+        self.view_option = view_option
+        self.downloadable = downloadable
+        self.id = id
+        self.contact = contact
+        self.email = email
+        self.description = description
+        self.date_of_employment = date_of_employment
+        self.subject_taught = subject_taught
+        self.date_of_birth = date_of_birth
+        self.address = address
+        self.teachers_in_the_same_program = teachers_in_the_same_program
+
+    def save(self):
+        teacher_data = {
+            "name": self.name,
+            "image": self.image,
+            "view_option": self.view_option,
+            "downloadable": self.downloadable,
+            "id": self.id,
+            "contact": self.contact,
+            "email": self.email,
+            "description": self.description,
+            "date_of_employment": self.date_of_employment,
+            "subject_taught": self.subject_taught,
+            "date_of_birth": self.date_of_birth,
+            "address": self.address,
+            "teachers_in_the_same_program": self.teachers_in_the_same_program
+        }
+        self.collection.insert_one(teacher_data)
+
+# List of teachers
+teachers_data = [
+    {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+     {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+     {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+     {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+     {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+     {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+     {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+     {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+     {
+        "image": "",
+        "name": "James Sam",
+        "view_option": "View File",
+        "downloadable": "Download",
+        "id": "#00345",
+        "contact": "008000500342",
+        "email": "klvnafriyie123@gmail.com",
+        "description": "",
+        "date_of_employment": "2nd May, 2024",
+        "subject_taught": "Medical Science",
+        "date_of_birth": "2nd May, 2024",
+        "address": "3rd Avenue GH",
+        "teachers_in_the_same_program": "Real Estate"
+    },
+]
+
+# Save all teachers
+for teacher_data in teachers_data:
+    teacher = Teacher(
+        name=teacher_data["name"],
+        image=teacher_data["image"],
+        view_option=teacher_data["view_option"],
+        downloadable=teacher_data["downloadable"],
+        id=teacher_data["id"],
+        contact=teacher_data["contact"],
+        email=teacher_data["email"],
+        description=teacher_data["description"],
+        date_of_employment=teacher_data["date_of_employment"],
+        subject_taught=teacher_data["subject_taught"],
+        date_of_birth=teacher_data["date_of_birth"],
+        address=teacher_data["address"],
+        teachers_in_the_same_program=teacher_data["teachers_in_the_same_program"]
+    )
+    teacher.save()
