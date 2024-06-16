@@ -6,6 +6,9 @@ from .api.serializers import StudentSerializer, TeacherSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 
 class StudentListView(APIView):
     def get(self, request):
@@ -24,6 +27,8 @@ class StudentListView(APIView):
 
 
 
+#teachers_data = list(Teacher.collection.find())
+
 class TeacherListView(APIView):
     def get(self, request):
         teachers_data = list(Teacher.collection.find())
@@ -34,11 +39,21 @@ class TeacherListView(APIView):
     
 
     def post(self, request):
-        serializer = TeacherSerializer(data=request.data)
-        if serializer.is_valid():
-            Teacher.save_or_update_many([serializer.validated_data])
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            data = json.loads(request.body)
+            teacher_id = Teacher.collection.insert_one(data).inserted_id
+            return Response({"status": "success", "teacher_id": str(teacher_id)}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    def add_teacher(request):
+        if request.method == "POST":
+            try:
+                data = json.loads(request.body)
+            
+            except:
+                pass
 
 
 

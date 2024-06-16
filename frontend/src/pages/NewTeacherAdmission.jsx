@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 
 const NewTeacherAdmission = () => {
@@ -6,32 +6,39 @@ const NewTeacherAdmission = () => {
     name: "",
     date_of_employment: "",
     college_degree: "",
-    phone_number: "",
+    contact: "",
     nationality: "",
     government_id: "",
     email: "",
+    image: "",
+    view_option: "",
+    downloadable: "",
+    id: "",
+    description: "",
+    subject_taught: "",
+    date_of_birth: "",
+    address: "",
+    teachers_in_the_same_program: "",
   });
-
   const [formErrors, setFormErrors] = useState({});
   const [submissionStatus, setSubmissionStatus] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
-  };
+    }));
+  }, []);
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const errors = {};
     if (!formData.name) errors.name = "Name is required";
     if (!formData.date_of_employment)
       errors.date_of_employment = "Date of employment is required";
     if (!formData.college_degree)
       errors.college_degree = "College degree is required";
-    if (!formData.phone_number)
-      errors.phone_number = "Phone number is required";
+    if (!formData.contact) errors.contact = "Phone number is required";
     if (!formData.nationality) errors.nationality = "Nationality is required";
     if (!formData.government_id)
       errors.government_id = "Government ID is required";
@@ -41,7 +48,7 @@ const NewTeacherAdmission = () => {
       errors.email = "Email address is invalid";
     }
     return errors;
-  };
+  }, [formData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,6 +57,7 @@ const NewTeacherAdmission = () => {
 
     if (Object.keys(errors).length === 0) {
       try {
+        console.log("FormData to be submitted:", formData);
         const response = await fetch("http://127.0.0.1:8000/api/teachers/", {
           method: "POST",
           headers: {
@@ -67,10 +75,19 @@ const NewTeacherAdmission = () => {
           name: "",
           date_of_employment: "",
           college_degree: "",
-          phone_number: "",
+          contact: "",
           nationality: "",
           government_id: "",
           email: "",
+          image: "",
+          view_option: "",
+          downloadable: "",
+          id: "",
+          description: "",
+          subject_taught: "",
+          date_of_birth: "",
+          address: "",
+          teachers_in_the_same_program: "",
         });
       } catch (error) {
         console.error("Error:", error);
@@ -79,8 +96,13 @@ const NewTeacherAdmission = () => {
     }
   };
 
-  const NewTeacherForm = () => {
-    return (
+  return (
+    <div className="mx-4 mt-2">
+      <div className="flex mt-10">
+        <p className="text-lg font-semibold">Teachers</p>
+        <IoIosArrowForward className="mt-2 mx-1" />
+        <p className="text-lg font-semibold">New Admission</p>
+      </div>
       <form
         onSubmit={handleSubmit}
         className="container mx-auto p-8 bg-white shadow-md rounded-lg mt-8"
@@ -157,15 +179,15 @@ const NewTeacherAdmission = () => {
               </label>
               <input
                 type="text"
-                name="phone_number"
-                value={formData.phone_number}
+                name="contact"
+                value={formData.contact}
                 onChange={handleChange}
                 placeholder="Phone number"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-              {formErrors.phone_number && (
+              {formErrors.contact && (
                 <p className="text-red-500 text-xs italic">
-                  {formErrors.phone_number}
+                  {formErrors.contact}
                 </p>
               )}
             </div>
@@ -236,17 +258,6 @@ const NewTeacherAdmission = () => {
           </button>
         </div>
       </form>
-    );
-  };
-
-  return (
-    <div className="mx-4 mt-2">
-      <div className="flex mt-10">
-        <p className="text-lg font-semibold">Teachers</p>
-        <IoIosArrowForward className="mt-2 mx-1" />
-        <p className="text-lg font-semibold">New Admission</p>
-      </div>
-      <NewTeacherForm />
     </div>
   );
 };

@@ -255,7 +255,7 @@ Student.save_or_update_many(students_data)
 class Teacher:
     collection = db["teachers"]
 
-    def __init__(self, name, image, view_option, downloadable, id, contact, email, description, date_of_employment, subject_taught, date_of_birth, address, teachers_in_the_same_program):
+    def __init__(self, name, image, view_option, downloadable, id, contact, email, description, date_of_employment, subject_taught, date_of_birth, address, teachers_in_the_same_program, college_degree, nationality, government_id):
         self.name = name
         self.image = image
         self.view_option = view_option
@@ -269,6 +269,10 @@ class Teacher:
         self.date_of_birth = date_of_birth
         self.address = address
         self.teachers_in_the_same_program = teachers_in_the_same_program
+        self.college_degree = college_degree
+        self.nationality = nationality
+        self.government_id = government_id
+
 
     def save(self):
         teacher_data = {
@@ -284,7 +288,10 @@ class Teacher:
             "subject_taught": self.subject_taught,
             "date_of_birth": self.date_of_birth,
             "address": self.address,
-            "teachers_in_the_same_program": self.teachers_in_the_same_program
+            "teachers_in_the_same_program": self.teachers_in_the_same_program,
+            "college_degree":self.college_degree,
+            "nationality": self.nationality,
+            "government_id": self.government_id
         }
         self.collection.insert_one(teacher_data)
 
@@ -303,127 +310,10 @@ teachers_data = [
         "subject_taught": "Medical Science",
         "date_of_birth": "2nd May, 2024",
         "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
-    },
-     {
-        "image": "",
-        "name": "James Sam",
-        "view_option": "View File",
-        "downloadable": "Download",
-        "id": "#00345",
-        "contact": "008000500342",
-        "email": "klvnafriyie123@gmail.com",
-        "description": "",
-        "date_of_employment": "2nd May, 2024",
-        "subject_taught": "Medical Science",
-        "date_of_birth": "2nd May, 2024",
-        "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
-    },
-     {
-        "image": "",
-        "name": "James Sam",
-        "view_option": "View File",
-        "downloadable": "Download",
-        "id": "#00345",
-        "contact": "008000500342",
-        "email": "klvnafriyie123@gmail.com",
-        "description": "",
-        "date_of_employment": "2nd May, 2024",
-        "subject_taught": "Medical Science",
-        "date_of_birth": "2nd May, 2024",
-        "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
-    },
-     {
-        "image": "",
-        "name": "James Sam",
-        "view_option": "View File",
-        "downloadable": "Download",
-        "id": "#00345",
-        "contact": "008000500342",
-        "email": "klvnafriyie123@gmail.com",
-        "description": "",
-        "date_of_employment": "2nd May, 2024",
-        "subject_taught": "Medical Science",
-        "date_of_birth": "2nd May, 2024",
-        "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
-    },
-     {
-        "image": "",
-        "name": "James Sam",
-        "view_option": "View File",
-        "downloadable": "Download",
-        "id": "#00345",
-        "contact": "008000500342",
-        "email": "klvnafriyie123@gmail.com",
-        "description": "",
-        "date_of_employment": "2nd May, 2024",
-        "subject_taught": "Medical Science",
-        "date_of_birth": "2nd May, 2024",
-        "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
-    },
-     {
-        "image": "",
-        "name": "James Sam",
-        "view_option": "View File",
-        "downloadable": "Download",
-        "id": "#00345",
-        "contact": "008000500342",
-        "email": "klvnafriyie123@gmail.com",
-        "description": "",
-        "date_of_employment": "2nd May, 2024",
-        "subject_taught": "Medical Science",
-        "date_of_birth": "2nd May, 2024",
-        "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
-    },
-     {
-        "image": "",
-        "name": "James Sam",
-        "view_option": "View File",
-        "downloadable": "Download",
-        "id": "#00345",
-        "contact": "008000500342",
-        "email": "klvnafriyie123@gmail.com",
-        "description": "",
-        "date_of_employment": "2nd May, 2024",
-        "subject_taught": "Medical Science",
-        "date_of_birth": "2nd May, 2024",
-        "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
-    },
-     {
-        "image": "",
-        "name": "James Sam",
-        "view_option": "View File",
-        "downloadable": "Download",
-        "id": "#00345",
-        "contact": "008000500342",
-        "email": "klvnafriyie123@gmail.com",
-        "description": "",
-        "date_of_employment": "2nd May, 2024",
-        "subject_taught": "Medical Science",
-        "date_of_birth": "2nd May, 2024",
-        "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
-    },
-     {
-        "image": "",
-        "name": "James Sam",
-        "view_option": "View File",
-        "downloadable": "Download",
-        "id": "#00345",
-        "contact": "008000500342",
-        "email": "klvnafriyie123@gmail.com",
-        "description": "",
-        "date_of_employment": "2nd May, 2024",
-        "subject_taught": "Medical Science",
-        "date_of_birth": "2nd May, 2024",
-        "address": "3rd Avenue GH",
-        "teachers_in_the_same_program": "Real Estate"
+        "teachers_in_the_same_program": "Real Estate",
+        "college_degree":"Computer science",
+        "nationality":"American",
+        "government_id":"123456789"
     },
 ]
 
@@ -442,6 +332,9 @@ for teacher_data in teachers_data:
         subject_taught=teacher_data["subject_taught"],
         date_of_birth=teacher_data["date_of_birth"],
         address=teacher_data["address"],
-        teachers_in_the_same_program=teacher_data["teachers_in_the_same_program"]
+        teachers_in_the_same_program=teacher_data["teachers_in_the_same_program"],
+        college_degree=teacher_data["college_degree"],
+        nationality=teacher_data["nationality"],
+        government_id=teacher_data["government_id"]
     )
     teacher.save()
