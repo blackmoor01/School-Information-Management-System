@@ -1,8 +1,7 @@
-# student.py
 from .db_connection import db
 
 class Student:
-    collection = db['students']  # Replace 'students' with your desired collection name
+    collection = db['students']
 
     def __init__(self, name, id, level, program, gender, contact, description, date_of_admission, payment_status, date_of_birth, address, email, intake, official_receipt, payment_method, date, amount_due, tuition_fee, miscellaneous, balance, remarks):
         self.name = name

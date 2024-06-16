@@ -1,10 +1,26 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .api.mongo_models import Student
+from django.shortcuts import render
+from rest_framework import generics
+from .api.serializers import StudentSerializer 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
-def list_students(request):
-    students = Student.get_all()
-    return JsonResponse({'students': students}, safe=False)
+class StudentListView(APIView):
+    def get(self, request):
+        students_data = list(Student.collection.find())
+        for student in students_data:
+            student['_id'] = str(student['_id'])  # Convert ObjectId to string
+        serializer = StudentSerializer(students_data, many=True)
+        return Response({'students': serializer.data})
 
+    def post(self, request):
+        serializer = StudentSerializer(data=request.data)
+        if serializer.is_valid():
+            Student.save_or_update_many([serializer.validated_data])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def create_student(request):
     if request.method == 'POST':
@@ -19,7 +35,6 @@ def create_student(request):
         }
         student = Student(**data)
         student_id = student.save()
-  
         return JsonResponse({"student_id": str(student_id)})
 
 def update_student(request, student_id):
