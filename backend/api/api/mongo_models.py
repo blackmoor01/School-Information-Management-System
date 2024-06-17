@@ -1,9 +1,10 @@
 from .db_connection import db
+from .uploadhelper import save_file
 
 class Student:
     collection = db['students']
 
-    def __init__(self, name, id, level, program, gender, contact, description, date_of_admission, payment_status, date_of_birth, address, email, intake, official_receipt, payment_method, date, amount_due, tuition_fee, miscellaneous, balance, remarks):
+    def __init__(self, name, id, level, program, gender, contact, description, date_of_admission, payment_status, date_of_birth, address, email, intake, official_receipt, payment_method, date, amount_due, tuition_fee, miscellaneous, balance, remarks, nationality,government_id, medical_forms, student_id_card, admission_letter):
         self.name = name
         self.id = id
         self.level = level
@@ -25,6 +26,11 @@ class Student:
         self.miscellaneous = miscellaneous
         self.balance = balance
         self.remarks = remarks
+        self.nationality = nationality
+        self.government_id = government_id
+        self.medical_forms = medical_forms
+        self.student_id_card = student_id_card
+        self.admission_letter = admission_letter
 
     @classmethod
     def save_or_update_many(cls, students_data):
@@ -49,8 +55,24 @@ class Student:
                 "tuition_fee": student["tuition_fee"],
                 "miscellaneous": student["miscellaneous"],
                 "balance": student["balance"],
-                "remarks": student["remarks"]
+                "remarks": student["remarks"],
+                "nationality":student["nationality"],
+                "government_id":student["government_id"],
+                "medical_forms":student["medical_forms"],
+                "student_id_card":student["student_id_card"],
+                "admission_letter":student["admission_letter"]
             }
+
+            
+
+              # Save the file and get the file path
+            if 'medical_forms' in student:
+                student_data['medical_forms'] = save_file(student['medical_forms'])
+            if 'student_id_card' in student:
+                student_data['student_id_card'] = save_file(student['student_id_card'])
+            if 'admission_letter' in student:
+                student_data['admission_letter'] = save_file(student['admission_letter'])
+            
             cls.collection.update_one(
                 {"id": student["id"]},
                 {"$set": student_data},
@@ -80,7 +102,12 @@ students_data = [
         "tuition_fee": '',
         "miscellaneous": '',
         "balance": '',
-        "remarks": ''
+        "remarks": '',
+        "nationality": 'American',
+        "government_id":'123456789',
+        "medical_forms":"",
+        "student_id_card":"",
+        "admission_letter":""
     },
     {
         "name": 'Andy Tay',
@@ -103,146 +130,13 @@ students_data = [
         "tuition_fee": '',
         "miscellaneous": '',
         "balance": '',
-        "remarks": ''
+        "remarks": '',
+        "nationality": 'Croatian',
+        "government_id":'987654321',
+        "medical_forms":"",
+        "student_id_card":"",
+        "admission_letter":""
     },
-    {
-        "name": 'Bryan Adu',
-        "id": '#00784',
-        "level": 100,
-        "program": 'Real Estates',
-        "gender": 'Male',
-        "contact": '00800500342',
-        "description": '',
-        "date_of_admission": '2 May 2024',
-        "payment_status": 'Have Paid',
-        "date_of_birth": '3rd February, 2024',
-        "address": '3rd Avenue OH',
-        "email": 'klvnafriyie123@gmail.com',
-        "intake": '',
-        "official_receipt": '',
-        "payment_method": '',
-        "date": '',
-        "amount_due": '',
-        "tuition_fee": '',
-        "miscellaneous": '',
-        "balance": '',
-        "remarks": ''
-    },
-    {
-        "name": 'Angel Ford',
-        "id": '#00431',
-        "level": 200,
-        "program": 'Paralegal',
-        "gender": 'Female',
-        "contact": '00800500342',
-        "description": '',
-        "date_of_admission": '2 May 2024',
-        "payment_status": 'Have Paid',
-        "date_of_birth": '3rd February, 2024',
-        "address": '3rd Avenue OH',
-        "email": 'klvnafriyie123@gmail.com',
-        "intake": '',
-        "official_receipt": '',
-        "payment_method": '',
-        "date": '',
-        "amount_due": '',
-        "tuition_fee": '',
-        "miscellaneous": '',
-        "balance": '',
-        "remarks": ''
-    },
-    {
-        "name": 'Wilmette Arthur',
-        "id": '#00456',
-        "level": 400,
-        "program": 'CSWA',
-        "gender": 'Female',
-        "contact": '00800500342',
-        "description": '',
-        "date_of_admission": '2 May 2024',
-        "payment_status": 'Have Paid',
-        "date_of_birth": '3rd February, 2024',
-        "address": '3rd Avenue OH',
-        "email": 'klvnafriyie123@gmail.com',
-        "intake": '',
-        "official_receipt": '',
-        "payment_method": '',
-        "date": '',
-        "amount_due": '',
-        "tuition_fee": '',
-        "miscellaneous": '',
-        "balance": '',
-        "remarks": ''
-    },
-    {
-        "name": 'Gloria John',
-        "id": '#00674',
-        "level": 200,
-        "program": 'Paralegal',
-        "gender": 'Female',
-        "contact": '00800500342',
-        "description": '',
-        "date_of_admission": '2 May 2024',
-        "payment_status": 'Have Paid',
-        "date_of_birth": '3rd February, 2024',
-        "address": '3rd Avenue OH',
-        "email": 'klvnafriyie123@gmail.com',
-        "intake": '',
-        "official_receipt": '',
-        "payment_method": '',
-        "date": '',
-        "amount_due": '',
-        "tuition_fee": '',
-        "miscellaneous": '',
-        "balance": '',
-        "remarks": ''
-    },
-    {
-        "name": 'Sandra Sia',
-        "id": '#00986',
-        "level": 200,
-        "program": 'OFAD',
-        "gender": 'Female',
-        "contact": '00800500342',
-        "description": '',
-        "date_of_admission": '2 May 2024',
-        "payment_status": 'Have Paid',
-        "date_of_birth": '3rd February, 2024',
-        "address": '3rd Avenue OH',
-        "email": 'klvnafriyie123@gmail.com',
-        "intake": '',
-        "official_receipt": '',
-        "payment_method": '',
-        "date": '',
-        "amount_due": '',
-        "tuition_fee": '',
-        "miscellaneous": '',
-        "balance": '',
-        "remarks": ''
-    },
-    {
-        "name": 'Ben Greenlish',
-        "id": '#00326',
-        "level": 100,
-        "program": 'IT Admin',
-        "gender": 'Male',
-        "contact": '00800500342',
-        "description": '',
-        "date_of_admission": '2 May 2024',
-        "payment_status": 'Have Paid',
-        "date_of_birth": '3rd February, 2024',
-        "address": '3rd Avenue OH',
-        "email": 'klvnafriyie123@gmail.com',
-        "intake": '',
-        "official_receipt": '',
-        "payment_method": '',
-        "date": '',
-        "amount_due": '',
-        "tuition_fee": '',
-        "miscellaneous": '',
-        "balance": '',
-        "remarks": ''
-    }
 ]
 
 # Save or update all students

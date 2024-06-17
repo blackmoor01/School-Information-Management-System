@@ -1,3 +1,4 @@
+import os
 from django.http import JsonResponse, HttpResponse
 from .api.mongo_models import Student, Teacher
 from django.shortcuts import render
@@ -8,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 import json
-
 
 class StudentListView(APIView):
     def get(self, request):
@@ -21,13 +21,35 @@ class StudentListView(APIView):
     def post(self, request):
         serializer = StudentSerializer(data=request.data)
         if serializer.is_valid():
-            Student.save_or_update_many([serializer.validated_data])
+            data = serializer.validated_data
+            if 'medical_forms' in request.FILES:
+                medical_forms = request.FILES['medical_forms']
+                data['medical_forms'] = self.handle_file_upload(medical_forms, 'medical_forms/')
+            if 'student_id_card' in request.FILES:
+                student_id_card = request.FILES['student_id_card']
+                data['student_id_card'] = self.handle_file_upload(student_id_card, 'student_id_cards/')
+            if 'admission_letter' in request.FILES:
+                admission_letter = request.FILES['admission_letter']
+                data['admission_letter'] = self.handle_file_upload(admission_letter, 'admission_letters/')
+
+            # Save or update the student data in the database
+            Student.save_or_update_many([data])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def handle_file_upload(self, file, upload_dir):
+        if not os.path.exists(upload_dir):
+            os.makedirs(upload_dir)
+        file_path = os.path.join(upload_dir, file.name)
+        with open(file_path, "wb") as f:
+            for chunk in file.chunks():
+                f.write(chunk)
+        return file_path
 
 
 
-#teachers_data = list(Teacher.collection.find())
+
 
 class TeacherListView(APIView):
     def get(self, request):
@@ -46,15 +68,25 @@ class TeacherListView(APIView):
         except Exception as e:
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-    
-    def add_teacher(request):
-        if request.method == "POST":
-            try:
-                data = json.loads(request.body)
-            
-            except:
-                pass
 
+
+
+
+
+class FileUploadView(APIView):
+    def post(self, request, *args, **kwargs):
+        student_id = request.data.get('id')
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = StudentSerializer(student, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
