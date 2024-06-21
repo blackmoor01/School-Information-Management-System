@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import Pagination from "../components/Pagination";
 import { Link, Outlet } from "react-router-dom";
-import teacherImage from "../assets/teacher.jpg"; // Ensure the correct path to your image
+import teacherImage from "../assets/teacher.jpg";
 
 const TeachersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);

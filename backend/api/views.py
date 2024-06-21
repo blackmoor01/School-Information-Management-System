@@ -2,6 +2,7 @@ import os
 from django.http import JsonResponse, HttpResponse
 from .api.mongo_models import Student, Teacher
 from django.shortcuts import render
+from django.http import QueryDict
 from rest_framework import generics
 from .api.serializers import StudentSerializer, TeacherSerializer
 from rest_framework.views import APIView
@@ -18,26 +19,6 @@ class StudentListView(APIView):
         serializer = StudentSerializer(students_data, many=True)
         return Response({'students': serializer.data})
 
-    def post(self, request):
-        serializer = StudentSerializer(data=request.data)
-        if serializer.is_valid():
-            data = serializer.validated_data
-            if 'medical_forms' in request.FILES:
-                medical_forms = request.FILES['medical_forms']
-                data['medical_forms'] = self.handle_file_upload(medical_forms, 'medical_forms/')
-            if 'student_id_card' in request.FILES:
-                student_id_card = request.FILES['student_id_card']
-                data['student_id_card'] = self.handle_file_upload(student_id_card, 'student_id_cards/')
-            if 'admission_letter' in request.FILES:
-                admission_letter = request.FILES['admission_letter']
-                data['admission_letter'] = self.handle_file_upload(admission_letter, 'admission_letters/')
-
-            # Save or update the student data in the database
-            Student.save_or_update_many([data])
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
     def handle_file_upload(self, file, upload_dir):
         if not os.path.exists(upload_dir):
             os.makedirs(upload_dir)
@@ -47,6 +28,42 @@ class StudentListView(APIView):
                 f.write(chunk)
         return file_path
 
+    
+    def post(self, request, *args, **kwargs):
+        # Create a mutable copy of the request data
+        if isinstance(request.data, QueryDict):
+            data = request.data.dict()
+        else:
+            data = request.data
+
+        if isinstance(data, list):
+            serializer = StudentSerializer(data=data, many=True)
+        else:
+            serializer = StudentSerializer(data=data)
+
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+
+            if not isinstance(validated_data, list):
+                validated_data = [validated_data]
+
+            for student_data in validated_data:
+                if 'medical_forms' in request.FILES:
+                    medical_forms = request.FILES['medical_forms']
+                    student_data['medical_forms'] = self.handle_file_upload(medical_forms, 'medical_forms/')
+                if 'student_id_card' in request.FILES:
+                    student_id_card = request.FILES['student_id_card']
+                    student_data['student_id_card'] = self.handle_file_upload(student_id_card, 'student_id_cards/')
+                if 'admission_letter' in request.FILES:
+                    admission_letter = request.FILES['admission_letter']
+                    student_data['admission_letter'] = self.handle_file_upload(admission_letter, 'admission_letters/')
+
+            # Save or update the student data in the database
+            Student.save_or_update_many(validated_data)
+            return Response({"message": "Students data saved successfully"}, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 
 

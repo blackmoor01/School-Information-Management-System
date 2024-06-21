@@ -10,7 +10,7 @@ const StudentsPage = () => {
     // Function to fetch student data from Django API
     const fetchStudents = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/students/"); // Replace with your Django API endpoint
+        const response = await fetch("http://127.0.0.1:8000/api/students/");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

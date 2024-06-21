@@ -3,12 +3,12 @@ from rest_framework import serializers;
 
 class StudentSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True, required=False, default="") 
-    name = serializers.CharField(max_length = 100, required=False, default="")
-    id = serializers.CharField(max_length = 100, required=False, default="")
-    level = serializers.IntegerField(required=False, default="")
-    program = serializers.CharField(max_length = 100, required=False, default="")
-    gender = serializers.CharField(max_length = 10, required=False, default="")
-    contact = serializers.CharField(max_length = 15, required=False, default="")
+    name = serializers.CharField(max_length=100, required=False, default="")
+    id = serializers.CharField(max_length=100, required=False, default="")
+    level = serializers.CharField(required=False, allow_null=True)
+    program = serializers.CharField(max_length=100, required=False, default="")
+    gender = serializers.CharField(max_length=10, required=False, default="")
+    contact = serializers.CharField(max_length=15, required=False, default="")
     description = serializers.CharField(allow_blank=True, required=False, default="")
     date_of_admission = serializers.DateField(required=False, default="")
     payment_status = serializers.CharField(max_length=20, required=False, default="")
@@ -30,6 +30,11 @@ class StudentSerializer(serializers.Serializer):
     student_id_card = serializers.FileField(required=False, allow_null=True)
     admission_letter = serializers.FileField(required=False, allow_null=True)
 
+    def to_internal_value(self, data):
+        for field in ['level', 'amount_due', 'tuition_fee', 'balance']:  # Add other integer fields as needed
+            if field in data and data[field] == '':
+                data[field] = None
+        return super().to_internal_value(data)
 
 class TeacherSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True)

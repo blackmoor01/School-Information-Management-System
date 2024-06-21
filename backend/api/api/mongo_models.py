@@ -1,12 +1,38 @@
 from .db_connection import db
+import datetime
+import pymongo
 from .uploadhelper import save_file
 
+
+collection = db['students']
 class Student:
     collection = db['students']
 
-    def __init__(self, name, id, level, program, gender, contact, description, date_of_admission, payment_status, date_of_birth, address, email, intake, official_receipt, payment_method, date, amount_due, tuition_fee, miscellaneous, balance, remarks, nationality,government_id, medical_forms, student_id_card, admission_letter):
+    def generate_student_id():
+        current_year = datetime.datetime.now().year
+    
+    # Fetch the latest student record to determine the last used ID
+        latest_student = collection.find_one(
+        {'id': {'$regex': f'^{current_year}'}},
+        sort=[('id', pymongo.DESCENDING)]
+        )
+
+        if latest_student:
+        # Extract the numerical part and increment it
+            last_id = int(latest_student['id'][4:])
+            new_id = last_id + 1
+        else:
+        # If no student exists for the current year, start with 1
+            new_id = 1
+    
+    # Ensure the ID is 3 digits long
+        student_id = f"{current_year}{new_id:03d}"
+
+        return student_id
+
+    def __init__(self, name, level, program, gender, contact, description, date_of_admission, payment_status, date_of_birth, address, email, intake, official_receipt, payment_method, date, amount_due, tuition_fee, miscellaneous, balance, remarks, nationality, government_id, medical_forms, student_id_card, admission_letter):
         self.name = name
-        self.id = id
+        self.id = generate_student_id()
         self.level = level
         self.program = program
         self.gender = gender
@@ -37,6 +63,7 @@ class Student:
         for student in students_data:
             student_data = {
                 "name": student["name"],
+                "id": generate_student_id(),  # Generate the student ID here
                 "level": student["level"],
                 "program": student["program"],
                 "gender": student["gender"],
@@ -56,23 +83,105 @@ class Student:
                 "miscellaneous": student["miscellaneous"],
                 "balance": student["balance"],
                 "remarks": student["remarks"],
-                "nationality":student["nationality"],
-                "government_id":student["government_id"],
-                "medical_forms":student["medical_forms"],
-                "student_id_card":student["student_id_card"],
-                "admission_letter":student["admission_letter"]
+                "nationality": student["nationality"],
+                "government_id": student["government_id"],
+                "medical_forms": student["medical_forms"],
+                "student_id_card": student["student_id_card"],
+                "admission_letter": student["admission_letter"]
             }
 
-            
+            cls.collection.update_one(
+                {"id": student_data["id"]},
+                {"$set": student_data},
+                upsert=True
+            )
 
-              # Save the file and get the file path
+    def generate_student_id():
+        current_year = datetime.datetime.now().year
+        latest_student = collection.find_one(
+            {'id': {'$regex': f'^{current_year}'}},
+            sort=[('id', pymongo.DESCENDING)]
+        )
+        if latest_student:
+            last_id = int (latest_student['id'][4:1])
+            new_id = last_id + 1
+
+        else:
+            new_id =1 
+        
+
+        student_id = f"{current_year}{new_id:03d}"
+
+        return student_id
+
+    def __init__(self, **kwargs):
+        self.name = kwargs.get('name', '')
+        self.id = kwargs.get('id', '')
+        self.level = kwargs.get('level', None)
+        self.program = kwargs.get('program', '')
+        self.gender = kwargs.get('gender', '')
+        self.contact = kwargs.get('contact', '')
+        self.description = kwargs.get('description', '')
+        self.date_of_admission = kwargs.get('date_of_admission', '')
+        self.payment_status = kwargs.get('payment_status', '')
+        self.date_of_birth = kwargs.get('date_of_birth', '')
+        self.address = kwargs.get('address', '')
+        self.email = kwargs.get('email', '')
+        self.intake = kwargs.get('intake', '')
+        self.official_receipt = kwargs.get('official_receipt', '')
+        self.payment_method = kwargs.get('payment_method', '')
+        self.date = kwargs.get('date', '')
+        self.amount_due = kwargs.get('amount_due', None)
+        self.tuition_fee = kwargs.get('tuition_fee', None)
+        self.miscellaneous = kwargs.get('miscellaneous', '')
+        self.balance = kwargs.get('balance', None)
+        self.remarks = kwargs.get('remarks', '')
+        self.nationality = kwargs.get('nationality', '')
+        self.government_id = kwargs.get('government_id', '')
+        self.medical_forms = kwargs.get('medical_forms', '')
+        self.student_id_card = kwargs.get('student_id_card', '')
+        self.admission_letter = kwargs.get('admission_letter', '')
+
+    @classmethod
+    def save_or_update_many(cls, students_data):
+        for student in students_data:
+            student_data = {
+                "name": student.get("name", ""),
+                "id": student.get("id", ""),
+                "level": student.get("level", None),
+                "program": student.get("program", ""),
+                "gender": student.get("gender", ""),
+                "contact": student.get("contact", ""),
+                "description": student.get("description", ""),
+                "date_of_admission": student.get("date_of_admission", ""),
+                "payment_status": student.get("payment_status", ""),
+                "date_of_birth": student.get("date_of_birth", ""),
+                "address": student.get("address", ""),
+                "email": student.get("email", ""),
+                "intake": student.get("intake", ""),
+                "official_receipt": student.get("official_receipt", ""),
+                "payment_method": student.get("payment_method", ""),
+                "date": student.get("date", ""),
+                "amount_due": student.get("amount_due", None),
+                "tuition_fee": student.get("tuition_fee", None),
+                "miscellaneous": student.get("miscellaneous", ""),
+                "balance": student.get("balance", None),
+                "remarks": student.get("remarks", ""),
+                "nationality": student.get("nationality", ""),
+                "government_id": student.get("government_id", ""),
+                "medical_forms": student.get("medical_forms", ""),
+                "student_id_card": student.get("student_id_card", ""),
+                "admission_letter": student.get("admission_letter", "")
+            }
+
+            # Save the file and get the file path
             if 'medical_forms' in student:
                 student_data['medical_forms'] = save_file(student['medical_forms'])
             if 'student_id_card' in student:
                 student_data['student_id_card'] = save_file(student['student_id_card'])
             if 'admission_letter' in student:
                 student_data['admission_letter'] = save_file(student['admission_letter'])
-            
+
             cls.collection.update_one(
                 {"id": student["id"]},
                 {"$set": student_data},
