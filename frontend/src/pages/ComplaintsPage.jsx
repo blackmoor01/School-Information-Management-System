@@ -1,8 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Pagination from "../components/Pagination";
 import teacher from "../assets/teacher.jpg";
+import { FadeLoader } from "react-spinners";
 
 const ComplaintsPage = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+  const [studentData, setStudentData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const totalPages = Math.ceil(studentData.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const fetchComplaints = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/students/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setStudentData(data.students);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchComplaints();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <FadeLoader color={"#123abc"} loading={loading} size={50} />
+          <p className="text-blue-500 font-semibold mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <p className="font-bold text-red-700">Ooops! {error}</p>
+        </div>
+      </div>
+    );
+  }
+
   const data = [
     {
       name: "James Sam",
@@ -57,9 +110,14 @@ const ComplaintsPage = () => {
   const position_1 = data[0];
 
   const ComplaintsCards = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentData = studentData.slice(
+      startIndex,
+      startIndex + itemsPerPage
+    );
     return (
       <div className="mx-2 grid grid-cols-3 gap-4 mt-8">
-        {data.map((item, index) => (
+        {currentData.map((item, index) => (
           <div className="shadow-2xl rounded-lg p-3 w-6/12" key={index}>
             <div className="flex">
               <div className="items-center justify-center mt-6">
@@ -134,7 +192,13 @@ const ComplaintsPage = () => {
       <ComplaintsCards />
 
       <ComplaintDetails />
-      <Pagination />
+      <div className="mt-auto">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 };

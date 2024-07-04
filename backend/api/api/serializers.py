@@ -52,3 +52,14 @@ class TeacherSerializer(serializers.Serializer):
     government_id = serializers.CharField(allow_blank=True, required=False, default="")
     subject_taught = serializers.CharField(allow_blank=True, required=False, default="")
     college_degree = serializers.CharField(allow_blank=True, required=False, default="")
+
+
+class InventoryDataSerializer(serializers.Serializer):
+    _id = serializers.CharField(read_only=True) 
+    image = serializers.CharField(required=False, default="")
+    itemName = serializers.CharField(max_length=100, default="")
+    category = serializers.CharField(max_length=100, default="")
+    skus = serializers.CharField(max_length=100, default="")
+    date = serializers.DateField(required=False, default="")
+    quantity = serializers.IntegerField(required=False, default="")
+    location = serializers.CharField(max_length = 100, default="")

@@ -3,10 +3,11 @@ import { FaSearch } from "react-icons/fa";
 import Pagination from "../components/Pagination";
 import { Link, Outlet } from "react-router-dom";
 import teacherImage from "../assets/teacher.jpg";
+import { FadeLoader } from "react-spinners";
 
 const TeachersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 15;
   const [teacherData, setTeacherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -31,11 +32,24 @@ const TeachersPage = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <FadeLoader color={"#123abc"} loading={loading} size={50} />
+          <p className="text-blue-500 font-semibold mt-4">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <p className="font-bold text-red-700">Ooops! {error}</p>
+        </div>
+      </div>
+    );
   }
 
   const totalPages = Math.ceil(teacherData.length / itemsPerPage);
@@ -114,8 +128,8 @@ const TeachersPage = () => {
     return (
       <div className="grid grid-cols-3 gap-4 mt-24">
         {currentData.map((item, index) => (
-          <div className="shadow-2xl rounded-lg p-3" key={index}>
-            <div className="flex">
+          <div className="shadow-2xl rounded-lg p-3 mb-10 ml-20" key={index}>
+            <div className="flex justify-evenly">
               <div className="items-center justify-center mt-6">
                 <img
                   src={teacherImage}

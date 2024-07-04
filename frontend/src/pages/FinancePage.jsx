@@ -5,13 +5,14 @@ import Pagination from "../components/Pagination";
 import studentData from "../components/studentData";
 import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg";
 import { Link } from "react-router-dom";
+import { FadeLoader } from "react-spinners";
 
 const FinancePage = () => {
   const [financeData, setFinanceData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 3; 
+  const totalPages = 3;
 
   const fetchFinanceDetails = async () => {
     try {
@@ -33,17 +34,30 @@ const FinancePage = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <FadeLoader color={"#123abc"} loading={loading} size={50} />
+          <p className="text-blue-500 font-semibold mt-4">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <p className="font-bold text-red-700">Ooops! {error}</p>
+        </div>
+      </div>
+    );
   }
 
   const StudentFinancialDetail = () => {
     const student = studentData[0];
     return (
-      <div className="w-4/12 p-6 bg-white shadow-md mt-5 rounded-lg">
+      <div className="w-3/12 p-6 bg-white shadow-md mt-5 rounded-lg">
         <div className="mb-4 py-2">
           <img
             src={profilepic}
@@ -158,7 +172,7 @@ const FinancePage = () => {
             </tr>
           </thead>
           <tbody>
-            {financeData.map((student,index) => (
+            {financeData.map((student, index) => (
               <tr key={student.id} className="hover:bg-gray-100">
                 <td className="px-4 py-2 border text-center">
                   <input type="checkbox" />
@@ -189,10 +203,10 @@ const FinancePage = () => {
         <div className="w-8/12 bg-white rounded-lg shadow-2xl p-4">
           <TableComponent />
           <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={(page) => setCurrentPage(page)}
-                    />
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
         <StudentFinancialDetail />
       </div>

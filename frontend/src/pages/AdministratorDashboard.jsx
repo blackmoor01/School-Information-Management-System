@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   IoReturnDownForwardOutline,
   IoChevronForwardOutline,
@@ -9,6 +9,19 @@ import groupofteachers from "../assets/teacher-group.jpg";
 import totalinventory from "../assets/3d-cartoon-lumberjack-character.jpg";
 import runningbacktoschool from "../assets/running to school.jpg";
 import MonthDropdown from "../components/monthsDropDown";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+} from "recharts";
 
 const AdministratorDashboard = () => {
   const Greeting = () => {
@@ -42,6 +55,101 @@ const AdministratorDashboard = () => {
       </div>
     );
   };
+
+  const data = [
+    { week: 1, Students: 10, Teachers: 40 },
+    { week: 2, Students: 30, Teachers: 70 },
+    { week: 3, Students: 20, Teachers: 50 },
+    { week: 4, Students: 50, Teachers: 80 },
+    { week: 5, Students: 30, Teachers: 60 },
+    { week: 6, Students: 70, Teachers: 90 },
+    { week: 7, Students: 50, Teachers: 70 },
+    { week: 8, Students: 90, Teachers: 100 },
+    { week: 9, Students: 60, Teachers: 80 },
+    { week: 10, Students: 80, Teachers: 90 },
+    { week: 11, Students: 50, Teachers: 60 },
+    { week: 12, Students: 75, Teachers: 85 },
+  ];
+
+  const Graph = () => (
+    <AreaChart
+      width={1000}
+      height={300}
+      data={data}
+      margin={{
+        top: 10,
+        right: 30,
+        left: 0,
+        bottom: 0,
+      }}
+    >
+      <defs>
+        <linearGradient id="colorGreen" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+          <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+        </linearGradient>
+        <linearGradient id="colorRed" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="5%" stopColor="#ff6666" stopOpacity={0.8} />
+          <stop offset="95%" stopColor="#ff6666" stopOpacity={0} />
+        </linearGradient>
+      </defs>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="week" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Area
+        type="monotone"
+        dataKey="Teachers"
+        stroke="#82ca9d"
+        fillOpacity={1}
+        fill="url(#colorGreen)"
+      />
+      <Area
+        type="monotone"
+        dataKey="Students"
+        stroke="#ff6666"
+        fillOpacity={1}
+        fill="url(#colorRed)"
+      />
+      <Line type="monotone" dataKey="Teachers" stroke="#82ca9d" />
+      <Line type="monotone" dataKey="Students" stroke="#ff6666" />
+    </AreaChart>
+  );
+
+  const CustomBarChart = () => {
+    const data = [
+      { name: "Jan", earnings: 400000, fill: "#0088FE" },
+      { name: "Feb", earnings: 600000, fill: "#FF8042" },
+      { name: "Mar", earnings: 1000000, fill: "#A662D6" },
+    ];
+
+    return (
+      <div
+        style={{
+          padding: "20px",
+          background: "#fff",
+          borderRadius: "10px",
+          boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <h3 style={{ marginBottom: "20px", fontWeight:"bold" }}>Earnings</h3>
+        <BarChart
+          width={450}
+          height={300}
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="earnings" />
+        </BarChart>
+      </div>
+    );
+  };
   return (
     <div className={"mt-5 mx-4 flex-1"}>
       <div className={"flex justify-between items-center"}>
@@ -49,7 +157,7 @@ const AdministratorDashboard = () => {
 
         <div className={"h-1/12 w-6/12 shadow-2xl rounded-2xl border p-5 flex"}>
           <div className="flex flex-col justify-between">
-           <Greeting/>
+            <Greeting />
 
             <div className={"mt-5"}>
               <div
@@ -70,7 +178,7 @@ const AdministratorDashboard = () => {
             </div>
           </div>
 
-          <div className="ml-10 flex items-center justify-center">
+          <div className="ml-[20%] flex items-center justify-center">
             <img
               src={runningbacktoschool}
               alt="Group of Students"
@@ -99,11 +207,11 @@ const AdministratorDashboard = () => {
             </p>
           </div>
 
-          <div className="ml-10 items-center justify-center">
+          <div className="ml-[40%] items-center justify-center">
             <img
               src={groupofstudents}
               alt={"Group of Students"}
-              className="h-24 w-28 rounded-lg object-fill"
+              className="h-24 w-36 rounded-lg object-fill"
             />
           </div>
         </div>
@@ -126,10 +234,10 @@ const AdministratorDashboard = () => {
             </p>
           </div>
 
-          <div className="ml-10 items-center justify-center">
+          <div className="ml-[40%] items-center justify-center">
             <img
               src={groupofteachers}
-              className="h-24 w-28 rounded-lg object-fill"
+              className="h-24 w-36 rounded-lg object-fill"
             />
           </div>
         </div>
@@ -152,8 +260,8 @@ const AdministratorDashboard = () => {
             </p>
           </div>
 
-          <div className="ml-10 items-center justify-center">
-            <img src={events} className="h-24 w-28 rounded-lg object-fill" />
+          <div className="ml-[40%] items-center justify-center">
+            <img src={events} className="h-24 w-36 rounded-lg object-fill" />
           </div>
         </div>
 
@@ -175,10 +283,10 @@ const AdministratorDashboard = () => {
             </p>
           </div>
           <div>
-            <div className="ml-10 items-center justify-center">
+            <div className="ml-44 items-center justify-center">
               <img
                 src={totalinventory}
-                className="h-24 w-28 rounded-lg object-fill"
+                className="h-24 w-36 rounded-lg object-fill"
               />
             </div>
           </div>
@@ -186,7 +294,7 @@ const AdministratorDashboard = () => {
       </div>
 
       <div className={"flex mt-10"}>
-        <div className={"h-80 w-8/12 shadow-2xl rounded-2xl border p-5"}>
+        <div className={"h-84 w-8/12 shadow-2xl rounded-2xl border p-5"}>
           <div className={"flex justify-between items-center"}>
             <h1 className={"text-2xl text-gray-900 font-bold"}>
               School Attendance
@@ -214,10 +322,10 @@ const AdministratorDashboard = () => {
               </div>
             </div>
           </div>
+          <Graph />
         </div>
-
-        <div className={"h-80 w-4/12 rounded-lg shadow-2xl border ml-5 p-5"}>
-          <p className={"text-2xl font-bold"}>Earnings</p>
+        <div className="ml-8">
+          <CustomBarChart />
         </div>
       </div>
 

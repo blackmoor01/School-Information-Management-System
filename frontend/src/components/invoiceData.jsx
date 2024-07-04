@@ -162,7 +162,7 @@ const InvoiceTable = () => {
                                 <td className="px-6 py-2">{invoice.amount}</td>
                                 <td className="px-6 py-2">{invoice.dueDate}</td>
                                 <td className="px-6 py-2">{getStatusButton(invoice.status, invoice.statusType)}</td>
-                                <td className="px-6 py-2 text-right">
+                                <td className="px-6 py-2 text-right cursor-pointer">
                                     <FaEllipsisV />
                                 </td>
                             </tr>

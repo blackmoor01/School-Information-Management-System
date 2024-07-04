@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaEllipsisV } from "react-icons/fa";
 import Pagination from "../components/Pagination";
 import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
 
 const StudentsAttendancePage = () => {
     const Header = () => {
-        {/*The state change for the button when toggled*/ }
         const [selected, setSelected] = useState('Students');
 
         {/*The buttton function for the toggling effect*/ }
@@ -68,16 +67,16 @@ const StudentsAttendancePage = () => {
         ];
 
         return (
-            <div className="overflow-x-auto mt-5">
+            <div className="overflow-x-auto mt-5 rounded-lg shadow-2xl">
                 <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-blue-500">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student ID</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Program</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attendance number</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Name</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Student ID</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Program</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Attendance number</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Contact</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -87,11 +86,11 @@ const StudentsAttendancePage = () => {
                                     <img src={item.imageUrl} alt={item.name} className="h-10 w-10 rounded-full mr-4 object-cover" />
                                     {item.name}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{item.studentId}</td>
+                                <td className="px-6 py-4 whitespace-nowrap font-bold">{item.studentId}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-blue-600 cursor-pointer">{item.program}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">{item.attendanceNumber}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">{item.contact}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-center">...</td>
+                                <td className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-red-600">{item.contact}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-center cursor-pointer"><FaEllipsisV /></td>
                             </tr>
                         ))}
                     </tbody>
@@ -104,7 +103,7 @@ const StudentsAttendancePage = () => {
 
 
     return (
-        <div>
+        <div className="mx-4">
             <Header />
             <TableComponent />
             <Pagination />

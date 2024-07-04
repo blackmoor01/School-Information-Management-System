@@ -2,11 +2,14 @@ from .db_connection import db
 import datetime
 import pymongo
 from .uploadhelper import save_file
+import json
+from bson.objectid import ObjectId
 
 
-collection = db['students']
 class Student:
     collection = db['students']
+
+    '''collection = db['students']
 
     def generate_student_id():
         current_year = datetime.datetime.now().year
@@ -94,7 +97,8 @@ class Student:
                 {"id": student_data["id"]},
                 {"$set": student_data},
                 upsert=True
-            )
+            )'''
+    
 
     def generate_student_id():
         current_year = datetime.datetime.now().year
@@ -141,6 +145,7 @@ class Student:
         self.medical_forms = kwargs.get('medical_forms', '')
         self.student_id_card = kwargs.get('student_id_card', '')
         self.admission_letter = kwargs.get('admission_letter', '')
+        self.imageUrl = kwargs.get('imageUrl', '')
 
     @classmethod
     def save_or_update_many(cls, students_data):
@@ -171,7 +176,8 @@ class Student:
                 "government_id": student.get("government_id", ""),
                 "medical_forms": student.get("medical_forms", ""),
                 "student_id_card": student.get("student_id_card", ""),
-                "admission_letter": student.get("admission_letter", "")
+                "admission_letter": student.get("admission_letter", ""),
+                "imageUrl": student.get("imageUrl", "") 
             }
 
             # Save the file and get the file path
@@ -216,7 +222,8 @@ students_data = [
         "government_id":'123456789',
         "medical_forms":"",
         "student_id_card":"",
-        "admission_letter":""
+        "admission_letter":"",
+        "imageurl":"../assets/medium-shot-female-nurse-outdoors.jpg",
     },
     {
         "name": 'Andy Tay',
@@ -244,7 +251,8 @@ students_data = [
         "government_id":'987654321',
         "medical_forms":"",
         "student_id_card":"",
-        "admission_letter":""
+        "admission_letter":"",
+        "imageUrl": "../assets/medium-shot-female-nurse-outdoors.jpg"
     },
 ]
 
@@ -341,3 +349,107 @@ for teacher_data in teachers_data:
         government_id=teacher_data["government_id"]
     )
     teacher.save()
+
+
+
+
+class Inventory_Data:
+    collection = db["inventoryData"]
+
+    def __init__(self, image, itemName, category, skus, date, quantity, location):
+        self._id = str(ObjectId())
+        self.image = image
+        self.itemName = itemName
+        self.category = category
+        self.skus = skus
+        self.date = date
+        self.quantity = quantity
+        self.location = location
+
+
+    def save(self):
+        inventoryData = {
+            "_id": self._id,
+            "image": self.image,
+            "itemName": self.itemName,
+            "category": self.category,
+            "skus": self.skus,
+            "date": self.date,
+            "quantity": self.quantity,
+            "location": self.location
+        }
+        self.collection.insert_one(inventoryData)
+
+
+inventoriesData = [
+    {
+        "image":"/medium-shot-female-nurse-outdoors.jpg",
+        "itemName": "Laptops",
+        "category":"Academic",
+        "skus":"121rr0i128e",
+        "date":"5th May, 2024",
+        "quantity":50,
+        "location":"School Warehouse"
+    }
+    
+]
+
+
+for inventoryData in inventoriesData:
+    #inventoryData = json.loads(inventoryData)
+    inventory_Data = Inventory_Data(
+        image= inventoryData["image"],
+        itemName= inventoryData["itemName"],
+        category= inventoryData["category"],
+        skus= inventoryData["skus"],
+        date= inventoryData["date"],
+        quantity= inventoryData["quantity"],
+        location= inventoryData["location"]
+    )
+    inventory_Data.save()
+
+
+
+class Payments_Data:
+    collection = db["PaymentsData"]
+
+    def __init__(self, id, createdOn, invoiceTo, studentId, amount, dueDate, status, statusType, imageUrl):
+        self.id = id
+        self.createdOn = createdOn
+        self.invoiceTo = invoiceTo
+        self.studentId = studentId
+        self.amount = amount
+        self.dueDate = dueDate
+        self.status = status
+        self.statusType = statusType
+        self.imageUrl = imageUrl
+
+
+    def save(self):
+        PaymentsData = {
+            "id": self.id,
+            "createdOn": self.createdOn,
+            "invoiceTo": self.invoiceTo,
+            "studentId": self.studentId,
+            "amount": self.amount,
+            "dueDate": self.dueDate,
+            "status": self.status,
+            "statusType": self.statusType,
+            "imageUrl": self.imageUrl
+        }
+        self.collection.insert_one(PaymentsData)
+
+
+paymentsData = [
+    {
+        "id":"",
+        "createdOn":"",
+        "invoiceTo":"",
+        "studentId":"#00034",
+        "amount":"",
+        "dueDate":"",
+        "status":"",
+        "statusType":"",
+        "imageUrl":""
+    }
+]      

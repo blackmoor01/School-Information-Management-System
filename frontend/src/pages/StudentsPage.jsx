@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { FadeLoader } from "react-spinners";
 
 const StudentsPage = () => {
   const ContactList = () => {
@@ -29,11 +29,24 @@ const StudentsPage = () => {
     }, []);
 
     if (loading) {
-      return <p>Loading...</p>;
+      return (
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="text-center">
+            <FadeLoader color={"#123abc"} loading={loading} size={50} />
+            <p className="text-blue-500 font-semibold mt-4">Loading...</p>
+          </div>
+        </div>
+      );
     }
 
     if (error) {
-      return <p>Error: {error}</p>;
+      return (
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="text-center">
+            <p className="font-bold text-red-700">Ooops! {error}</p>
+          </div>
+        </div>
+      );
     }
 
     return (

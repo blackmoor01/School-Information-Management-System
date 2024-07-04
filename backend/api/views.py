@@ -1,10 +1,10 @@
 import os
 from django.http import JsonResponse, HttpResponse
-from .api.mongo_models import Student, Teacher
+from .api.mongo_models import Student, Teacher, Inventory_Data
 from django.shortcuts import render
 from django.http import QueryDict
 from rest_framework import generics
-from .api.serializers import StudentSerializer, TeacherSerializer
+from .api.serializers import StudentSerializer, TeacherSerializer, InventoryDataSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -86,7 +86,14 @@ class TeacherListView(APIView):
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 
-
+# Inventory API View class
+class InventoryDataListView(APIView):
+    def get(self, request):
+        inventories_Data = list(Inventory_Data.collection.find())
+        for inventory_Data in inventories_Data:
+            inventory_Data['_id'] = str(inventory_Data['_id'])
+        serializer = InventoryDataSerializer(inventories_Data, many=True)
+        return Response({'inventoryData':serializer.data})
 
 
 
