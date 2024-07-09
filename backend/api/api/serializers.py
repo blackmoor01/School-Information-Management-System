@@ -10,19 +10,19 @@ class StudentSerializer(serializers.Serializer):
     gender = serializers.CharField(max_length=10, required=False, default="")
     contact = serializers.CharField(max_length=15, required=False, default="")
     description = serializers.CharField(allow_blank=True, required=False, default="")
-    date_of_admission = serializers.DateField(required=False, default="")
+    date_of_admission = serializers.DateField(required=False, allow_null = True)
     payment_status = serializers.CharField(max_length=20, required=False, default="")
-    date_of_birth = serializers.DateField(required=False, default="")
+    date_of_birth = serializers.DateField(required=False, allow_null=True)
     address = serializers.CharField(max_length=255, required=False, default="")
     email = serializers.EmailField(required=False, default="")
     intake = serializers.CharField(allow_blank=True, required=False, default="")
     official_receipt = serializers.CharField(allow_blank=True, required=False, default="")
     payment_method = serializers.CharField(allow_blank=True, required=False, default="")
     date = serializers.CharField(allow_blank=True, required=False, default="")
-    amount_due = serializers.CharField(allow_blank=True, required=False, default="")
-    tuition_fee = serializers.CharField(allow_blank=True, required=False, default="")
+    amount_due = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
+    tuition_fee = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
     miscellaneous = serializers.CharField(allow_blank=True, required=False, default="")
-    balance = serializers.CharField(allow_blank=True, required=False, default="") 
+    balance = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True) 
     remarks = serializers.CharField(allow_blank=True, required=False, default="")
     nationality = serializers.CharField(max_length=25, required=False, default="")
     government_id = serializers.CharField(max_length=50, required=False, default="")
@@ -31,10 +31,12 @@ class StudentSerializer(serializers.Serializer):
     admission_letter = serializers.FileField(required=False, allow_null=True)
 
     def to_internal_value(self, data):
-        for field in ['level', 'amount_due', 'tuition_fee', 'balance']:  # Add other integer fields as needed
+        for field in ['level', 'amount_due', 'tuition_fee', 'balance']: 
             if field in data and data[field] == '':
                 data[field] = None
         return super().to_internal_value(data)
+    
+    
 
 class TeacherSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True)

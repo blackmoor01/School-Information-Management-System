@@ -1,3 +1,4 @@
+import os
 from .db_connection import db
 import datetime
 import pymongo
@@ -193,6 +194,35 @@ class Student:
                 {"$set": student_data},
                 upsert=True
             )
+    def create(self, validated_data):
+        # Process file uploads
+        if 'medical_forms' in validated_data:
+            validated_data['medical_forms'] = self.save_file(validated_data['medical_forms'])
+        if 'student_id_card' in validated_data:
+            validated_data['student_id_card'] = self.save_file(validated_data['student_id_card'])
+        if 'admission_letter' in validated_data:
+            validated_data['admission_letter'] = self.save_file(validated_data['admission_letter'])
+        
+        student = Student(**validated_data)
+        Student.collection.insert_one(student.__dict__)
+        return student
+
+    def update(self, instance, validated_data):
+        # Process file uploads
+        if 'medical_forms' in validated_data:
+            validated_data['medical_forms'] = self.save_file(validated_data['medical_forms'])
+        if 'student_id_card' in validated_data:
+            validated_data['student_id_card'] = self.save_file(validated_data['student_id_card'])
+        if 'admission_letter' in validated_data:
+            validated_data['admission_letter'] = self.save_file(validated_data['admission_letter'])
+        
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        Student.collection.update_one({'id': instance.id}, {"$set": instance.__dict__})
+        return instance
+    
+
 
 # List of student data
 students_data = [

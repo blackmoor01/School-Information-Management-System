@@ -10,27 +10,28 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.conf import settings
 
 class StudentListView(APIView):
+
     def get(self, request):
         students_data = list(Student.collection.find())
         for student in students_data:
             student['_id'] = str(student['_id'])  # Convert ObjectId to string
+
+            # Generate file URLs
+            file_fields = ['medical_forms', 'student_id_card', 'admission_letter']
+            for field in file_fields:
+                file_path = student.get(field)
+                if file_path:
+                    student[field] = request.build_absolute_uri(os.path.join(settings.MEDIA_URL, file_path))
+                else:
+                    student[field] = None
+
         serializer = StudentSerializer(students_data, many=True)
         return Response({'students': serializer.data})
 
-    def handle_file_upload(self, file, upload_dir):
-        if not os.path.exists(upload_dir):
-            os.makedirs(upload_dir)
-        file_path = os.path.join(upload_dir, file.name)
-        with open(file_path, "wb") as f:
-            for chunk in file.chunks():
-                f.write(chunk)
-        return file_path
-
-    
     def post(self, request, *args, **kwargs):
-        # Create a mutable copy of the request data
         if isinstance(request.data, QueryDict):
             data = request.data.dict()
         else:
@@ -63,8 +64,19 @@ class StudentListView(APIView):
             return Response({"message": "Students data saved successfully"}, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
+    def handle_file_upload(self, file, directory):
+        if not os.path.exists(os.path.join(settings.MEDIA_ROOT, directory)):
+            os.makedirs(os.path.join(settings.MEDIA_ROOT, directory))
+        
+        file_path = os.path.join(directory, file.name)
+        full_path = os.path.join(settings.MEDIA_ROOT, file_path)
+        
+        with open(full_path, 'wb') as f:
+            for chunk in file.chunks():
+                f.write(chunk)
+        
+        return file_path
 
 
 

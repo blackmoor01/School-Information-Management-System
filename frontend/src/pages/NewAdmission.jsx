@@ -40,8 +40,8 @@ const NewAdmission = () => {
   const [formErrors, setFormErrors] = useState({});
   const [submissionStatus, setSubmissionStatus] = useState("");
 
-  const handleFileChange = (e) => {
-    setFileData({ ...fileData, [e.target.name]: e.target.files[0] });
+  const handleFileChange = (name, file) => {
+    setFileData({ ...fileData, [name]: file });
   };
 
   const handleChange = useCallback((e) => {
@@ -322,8 +322,16 @@ const NewAdmission = () => {
             </div>
 
             <div className="col-span-2 grid grid-cols-1 gap-4">
-              <FileUpload onChange={handleFileChange} />
+              <FileUpload onFileChange={handleFileChange} />
             </div>
+          </div>
+          <div className="flex justify-center items-center mt-6">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white font-bold py-2 px-6 rounded shadow-lg hover:bg-blue-700"
+            >
+              Submit
+            </button>
           </div>
         </div>
       </form>
