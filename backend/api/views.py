@@ -12,6 +12,11 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.conf import settings
 
+
+
+
+
+
 class StudentListView(APIView):
 
     def get(self, request):
@@ -80,6 +85,8 @@ class StudentListView(APIView):
 
 
 
+
+
 class TeacherListView(APIView):
     def get(self, request):
         teachers_data = list(Teacher.collection.find())
@@ -98,6 +105,13 @@ class TeacherListView(APIView):
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 
+
+
+
+
+
+
+
 # Inventory API View class
 class InventoryDataListView(APIView):
     def get(self, request):
@@ -106,6 +120,15 @@ class InventoryDataListView(APIView):
             inventory_Data['_id'] = str(inventory_Data['_id'])
         serializer = InventoryDataSerializer(inventories_Data, many=True)
         return Response({'inventoryData':serializer.data})
+
+
+
+
+
+
+
+
+
 
 
 

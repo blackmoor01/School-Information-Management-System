@@ -40,10 +40,12 @@ const NewAdmission = () => {
   const [formErrors, setFormErrors] = useState({});
   const [submissionStatus, setSubmissionStatus] = useState("");
 
+  // Handles changes in file upload
   const handleFileChange = (name, file) => {
     setFileData({ ...fileData, [name]: file });
   };
 
+  // Updates the form upon changes in input
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -52,6 +54,7 @@ const NewAdmission = () => {
     }));
   }, []);
 
+  //Checking error against form content to be submitted
   const validateForm = useCallback(() => {
     const errors = {};
     if (!formData.name) errors.name = "Name is required";
@@ -70,6 +73,9 @@ const NewAdmission = () => {
     return errors;
   }, [formData]);
 
+  {
+    /* Handles form submission to the endpoint using axios*/
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateForm();
@@ -77,16 +83,20 @@ const NewAdmission = () => {
 
     if (Object.keys(errors).length === 0) {
       try {
+        // Log form data and file data for debugging
+        console.log("Form Data:", formData);
+        console.log("File Data:", fileData);
+
         const formDataToSend = new FormData();
         Object.keys(formData).forEach((key) => {
           formDataToSend.append(key, formData[key]);
-        });
+        }); // Adds each key-value pair from the formData state to the FormData object.
 
         Object.keys(fileData).forEach((key) => {
           if (fileData[key]) {
             formDataToSend.append(key, fileData[key]);
           }
-        });
+        }); // Adds each file from the fileData state to the FormData object, but only if the file exists.
 
         // Log the form data for debugging
         for (let pair of formDataToSend.entries()) {
@@ -247,10 +257,15 @@ const NewAdmission = () => {
                   Phone number
                 </label>
                 <input
-                  type="text"
+                  type="tel"
                   name="contact"
                   value={formData.contact}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    if (/^\d*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   placeholder="Phone number"
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
@@ -328,6 +343,7 @@ const NewAdmission = () => {
           <div className="flex justify-center items-center mt-6">
             <button
               type="submit"
+              onClick={handleSubmit}
               className="bg-blue-500 text-white font-bold py-2 px-6 rounded shadow-lg hover:bg-blue-700"
             >
               Submit

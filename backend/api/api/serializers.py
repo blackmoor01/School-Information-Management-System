@@ -1,5 +1,12 @@
 from rest_framework import serializers;
+from rest_framework.exceptions import ValidationError
+from decimal import Decimal, DecimalException
 
+
+def validate_contact(value):
+    if not value.isdigit():
+        raise ValidationError("Contact field must contain only numbers.")
+    return value
 
 class StudentSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True, required=False, default="") 
@@ -8,7 +15,7 @@ class StudentSerializer(serializers.Serializer):
     level = serializers.CharField(required=False, allow_null=True)
     program = serializers.CharField(max_length=100, required=False, default="")
     gender = serializers.CharField(max_length=10, required=False, default="")
-    contact = serializers.CharField(max_length=15, required=False, default="")
+    contact = serializers.CharField(max_length=15, required=False, default="", validators=[validate_contact])
     description = serializers.CharField(allow_blank=True, required=False, default="")
     date_of_admission = serializers.DateField(required=False, allow_null = True)
     payment_status = serializers.CharField(max_length=20, required=False, default="")
@@ -30,13 +37,22 @@ class StudentSerializer(serializers.Serializer):
     student_id_card = serializers.FileField(required=False, allow_null=True)
     admission_letter = serializers.FileField(required=False, allow_null=True)
 
+
+    # Data conversion to match the content of the serializer before processing.
     def to_internal_value(self, data):
-        for field in ['level', 'amount_due', 'tuition_fee', 'balance']: 
-            if field in data and data[field] == '':
+        for field in ['amount_due', 'tuition_fee', 'balance']:
+            if field in data and isinstance(data[field], str):
+                try:
+                    data[field] = Decimal(data[field])
+                except (ValueError, DecimalException) as e:
+                    data[field] = None  # Handle the conversion error gracefully
+                    print(f"Error converting {field}: {e}")
+            elif field in data and data[field] == '':
                 data[field] = None
         return super().to_internal_value(data)
     
-    
+
+
 
 class TeacherSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True)
