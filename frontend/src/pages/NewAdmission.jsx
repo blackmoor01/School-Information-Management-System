@@ -65,6 +65,9 @@ const NewAdmission = () => {
     if (!formData.nationality) errors.nationality = "Nationality is required";
     if (!formData.government_id)
       errors.government_id = "Government ID is required";
+    if (!formData.tuition_fee) errors.tuition_fee = "Tuition fee is required";
+    if (!formData.amount_due) errors.amount_due = "Amount Due is required";
+    if(!formData.balance) errors.amount_due = "Balance is required";
     if (!formData.email) {
       errors.email = "Email address is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -275,9 +278,7 @@ const NewAdmission = () => {
                   </p>
                 )}
               </div>
-            </div>
 
-            <div>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Nationality
@@ -296,6 +297,9 @@ const NewAdmission = () => {
                   </p>
                 )}
               </div>
+            </div>
+
+            <div>
 
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -331,6 +335,66 @@ const NewAdmission = () => {
                 {formErrors.email && (
                   <p className="text-red-500 text-xs italic">
                     {formErrors.email}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Tuition Fee
+                </label>
+                <input
+                  type="number"
+                  step="0.01" min="0" max="999999.99" id="tuition_fee"
+                  name="tuition_fee"
+                  value={formData.tuition_fee}
+                  onChange={handleChange}
+                  placeholder="Tuition Fee"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {formErrors.tuition_fee && (
+                  <p className="text-red-500 text-xs italic">
+                    {formErrors.tuition_fee}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Amount Due
+                </label>
+                <input
+                  type="number"
+                  step="0.01" min="0" max="999999.99" id="amount_due"
+                  name="amount_due"
+                  value={formData.amount_due}
+                  onChange={handleChange}
+                  placeholder="Amount Due"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {formErrors.amount_due && (
+                  <p className="text-red-500 text-xs italic">
+                    {formErrors.amount_due}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Balance
+                </label>
+                <input
+                  type="number"
+                  step="0.01" min="0" max="999999.99" id="balance"
+                  name="balance"
+                  value={formData.balance}
+                  onChange={handleChange}
+                  placeholder="Balance"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {formErrors.balance && (
+                  <p className="text-red-500 text-xs italic">
+                    {formErrors.balance}
                   </p>
                 )}
               </div>

@@ -1,6 +1,10 @@
 from rest_framework import serializers;
 from rest_framework.exceptions import ValidationError
-from decimal import Decimal, DecimalException
+from decimal import Decimal, InvalidOperation
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 
 def validate_contact(value):
@@ -38,19 +42,19 @@ class StudentSerializer(serializers.Serializer):
     admission_letter = serializers.FileField(required=False, allow_null=True)
 
 
-    # Data conversion to match the content of the serializer before processing.
     def to_internal_value(self, data):
         for field in ['amount_due', 'tuition_fee', 'balance']:
-            if field in data and isinstance(data[field], str):
-                try:
-                    data[field] = Decimal(data[field])
-                except (ValueError, DecimalException) as e:
-                    data[field] = None  # Handle the conversion error gracefully
-                    print(f"Error converting {field}: {e}")
-            elif field in data and data[field] == '':
-                data[field] = None
+            if field in data:
+                value = data[field]
+                if isinstance(value, str) and value.strip() == '':
+                    data[field] = None
+                else:
+                    try:
+                        data[field] = Decimal(value)
+                    except (ValueError, InvalidOperation) as e:
+                        data[field] = None
+                        print(f"Error converting {field} to Decimal: {e}")
         return super().to_internal_value(data)
-    
 
 
 

@@ -5,6 +5,9 @@ import pymongo
 from .uploadhelper import save_file
 import json
 from bson.objectid import ObjectId
+from decimal import Decimal
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 
 class Student:
@@ -100,7 +103,7 @@ class Student:
                 upsert=True
             )'''
     
-
+    @staticmethod
     def generate_student_id():
         current_year = datetime.datetime.now().year
         latest_student = collection.find_one(
@@ -127,9 +130,9 @@ class Student:
         self.gender = kwargs.get('gender', '')
         self.contact = kwargs.get('contact', '')
         self.description = kwargs.get('description', '')
-        self.date_of_admission = kwargs.get('date_of_admission', '')
+        self.date_of_admission = kwargs.get('date_of_admission', None)
         self.payment_status = kwargs.get('payment_status', '')
-        self.date_of_birth = kwargs.get('date_of_birth', '')
+        self.date_of_birth = kwargs.get('date_of_birth', None)
         self.address = kwargs.get('address', '')
         self.email = kwargs.get('email', '')
         self.intake = kwargs.get('intake', '')
@@ -143,9 +146,9 @@ class Student:
         self.remarks = kwargs.get('remarks', '')
         self.nationality = kwargs.get('nationality', '')
         self.government_id = kwargs.get('government_id', '')
-        self.medical_forms = kwargs.get('medical_forms', '')
-        self.student_id_card = kwargs.get('student_id_card', '')
-        self.admission_letter = kwargs.get('admission_letter', '')
+        self.medical_forms = kwargs.get('medical_forms', None)
+        self.student_id_card = kwargs.get('student_id_card', None)
+        self.admission_letter = kwargs.get('admission_letter', None)
         self.imageUrl = kwargs.get('imageUrl', '')
 
     @classmethod
@@ -194,33 +197,40 @@ class Student:
                 {"$set": student_data},
                 upsert=True
             )
-    def create(self, validated_data):
-        # Process file uploads
-        if 'medical_forms' in validated_data:
-            validated_data['medical_forms'] = self.save_file(validated_data['medical_forms'])
-        if 'student_id_card' in validated_data:
-            validated_data['student_id_card'] = self.save_file(validated_data['student_id_card'])
-        if 'admission_letter' in validated_data:
-            validated_data['admission_letter'] = self.save_file(validated_data['admission_letter'])
+    def create(self):
+        # Validate email
+        try:
+            validate_email(self.email)
+        except ValidationError:
+            self.email = ''
         
-        student = Student(**validated_data)
-        Student.collection.insert_one(student.__dict__)
+        # Generate student ID if not provided
+        if not self.id:
+            self.id = self.generate_student_id()
+        
+        # Save files and update paths
+        self.medical_forms = self.save_file(self.medical_forms) if self.medical_forms else None
+        self.student_id_card = self.save_file(self.student_id_card) if self.student_id_card else None
+        self.admission_letter = self.save_file(self.admission_letter) if self.admission_letter else None
+
+        # Insert into database
+        Student.collection.insert_one(self.__dict__)
+        return self
         return student
 
-    def update(self, instance, validated_data):
-        # Process file uploads
-        if 'medical_forms' in validated_data:
-            validated_data['medical_forms'] = self.save_file(validated_data['medical_forms'])
-        if 'student_id_card' in validated_data:
-            validated_data['student_id_card'] = self.save_file(validated_data['student_id_card'])
-        if 'admission_letter' in validated_data:
-            validated_data['admission_letter'] = self.save_file(validated_data['admission_letter'])
+    def update(self, validated_data):
+        # Update instance attributes with validated data
+        for key, value in validated_data.items():
+            setattr(self, key, value)
         
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        
-        Student.collection.update_one({'id': instance.id}, {"$set": instance.__dict__})
-        return instance
+        # Save files and update paths
+        self.medical_forms = self.save_file(self.medical_forms) if self.medical_forms else None
+        self.student_id_card = self.save_file(self.student_id_card) if self.student_id_card else None
+        self.admission_letter = self.save_file(self.admission_letter) if self.admission_letter else None
+
+        # Update in database
+        Student.collection.update_one({'id': self.id}, {"$set": self.__dict__})
+        return self
     
 
 
