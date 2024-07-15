@@ -1,6 +1,6 @@
 import os
 from .db_connection import db
-import datetime
+from datetime import datetime
 import pymongo
 from .uploadhelper import save_file
 import json
@@ -105,21 +105,21 @@ class Student:
     
     @staticmethod
     def generate_student_id():
-        current_year = datetime.datetime.now().year
-        latest_student = collection.find_one(
-            {'id': {'$regex': f'^{current_year}'}},
+        current_year = datetime.now().year
+        year_suffix = str(current_year)[-2:]  # Get the last two digits of the current year
+
+        latest_student = Student.collection.find_one(
+            {'id': {'$regex': f'^{year_suffix}-'}},
             sort=[('id', pymongo.DESCENDING)]
         )
+
         if latest_student:
-            last_id = int (latest_student['id'][4:1])
+            last_id = int(latest_student['id'][3:])  # Extract the numerical part after the '-'
             new_id = last_id + 1
-
         else:
-            new_id =1 
-        
+            new_id = 1 
 
-        student_id = f"{current_year}{new_id:03d}"
-
+        student_id = f"{year_suffix}-{new_id:05d}"  # Format the new ID as YY-00000
         return student_id
 
     def __init__(self, **kwargs):
@@ -139,10 +139,10 @@ class Student:
         self.official_receipt = kwargs.get('official_receipt', '')
         self.payment_method = kwargs.get('payment_method', '')
         self.date = kwargs.get('date', '')
-        self.amount_due = kwargs.get('amount_due', None)
-        self.tuition_fee = kwargs.get('tuition_fee', None)
+        self.amount_due = Decimal(kwargs.get('amount_due', '0'))
+        self.tuition_fee = Decimal(kwargs.get('tuition_fee', '0'))
         self.miscellaneous = kwargs.get('miscellaneous', '')
-        self.balance = kwargs.get('balance', None)
+        self.balance = Decimal(kwargs.get('balance', '0'))
         self.remarks = kwargs.get('remarks', '')
         self.nationality = kwargs.get('nationality', '')
         self.government_id = kwargs.get('government_id', '')
@@ -156,7 +156,7 @@ class Student:
         for student in students_data:
             student_data = {
                 "name": student.get("name", ""),
-                "id": student.get("id", ""),
+                "id": cls.generate_student_id(),
                 "level": student.get("level", None),
                 "program": student.get("program", ""),
                 "gender": student.get("gender", ""),

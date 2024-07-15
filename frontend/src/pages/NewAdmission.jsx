@@ -57,6 +57,8 @@ const NewAdmission = () => {
   //Checking error against form content to be submitted
   const validateForm = useCallback(() => {
     const errors = {};
+    const idPattern = /^#\d{5}$/; // Implement studentID regex format
+
     if (!formData.name) errors.name = "Name is required";
     if (!formData.date_of_birth)
       errors.date_of_birth = "Date of birth is required";
@@ -67,12 +69,24 @@ const NewAdmission = () => {
       errors.government_id = "Government ID is required";
     if (!formData.tuition_fee) errors.tuition_fee = "Tuition fee is required";
     if (!formData.amount_due) errors.amount_due = "Amount Due is required";
-    if(!formData.balance) errors.amount_due = "Balance is required";
+    if (!formData.balance) errors.amount_due = "Balance is required";
     if (!formData.email) {
       errors.email = "Email address is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = "Email address is invalid";
     }
+    if (!formData.address) errors.address = "Address is required";
+    if (!formData.date_of_admission)
+      errors.date_of_admission = "Date of admission is required";
+    if (!formData.gender) errors.gender = "Gender is required";
+    if (!formData.id) {
+      errors.id = "ID is required";
+    } else if (!idPattern.test(formData.id)) {
+      errors.id = "ID must be in the format #XXXXX (e.g., #00345)";
+    }
+    if (!formData.level) errors.level = "Level is required";
+    if (!formData.payment_status)
+      errors.payment_status = "Payment status is required";
     return errors;
   }, [formData]);
 
@@ -84,15 +98,26 @@ const NewAdmission = () => {
     const errors = validateForm();
     setFormErrors(errors);
 
+    // Format the dates to be submitted to the backend
+    const formattedFormData = {
+      ...formData,
+      date_of_admission: formData.date_of_admission
+        ? new Date(formData.date_of_admission).toISOString().split("T")[0]
+        : "",
+      date_of_birth: formData.date_of_birth
+        ? new Date(formData.date_of_birth).toISOString().split("T")[0]
+        : "",
+    };
+
     if (Object.keys(errors).length === 0) {
       try {
         // Log form data and file data for debugging
-        console.log("Form Data:", formData);
+        console.log("Form Data:", formattedFormData);
         console.log("File Data:", fileData);
 
         const formDataToSend = new FormData();
-        Object.keys(formData).forEach((key) => {
-          formDataToSend.append(key, formData[key]);
+        Object.keys(formattedFormData).forEach((key) => {
+          formDataToSend.append(key, formattedFormData[key]);
         }); // Adds each key-value pair from the formData state to the FormData object.
 
         Object.keys(fileData).forEach((key) => {
@@ -149,6 +174,9 @@ const NewAdmission = () => {
         });
       } catch (error) {
         console.error("Error:", error);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+        }
         setSubmissionStatus("Error adding Student");
       }
     }
@@ -226,7 +254,7 @@ const NewAdmission = () => {
                   name="date_of_birth"
                   value={formData.date_of_birth}
                   onChange={handleChange}
-                  placeholder="Date of Birth"
+                  placeholder="YYYY-MM-DD"
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
                 {formErrors.date_of_birth && (
@@ -252,6 +280,23 @@ const NewAdmission = () => {
                   <p className="text-red-500 text-xs italic">
                     {formErrors.program}
                   </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Student ID
+                </label>
+                <input
+                  type="text"
+                  name="id"
+                  value={formData.id}
+                  onChange={handleChange}
+                  placeholder="eg. #00345"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {formErrors.id && (
+                  <p className="text-red-500 text-xs italic">{formErrors.id}</p>
                 )}
               </div>
 
@@ -297,9 +342,87 @@ const NewAdmission = () => {
                   </p>
                 )}
               </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  placeholder="Address"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {formErrors.address && (
+                  <p className="text-red-500 text-xs italic">
+                    {formErrors.address}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Date of Admission
+                </label>
+                <input
+                  type="date"
+                  name="date_of_admission"
+                  value={formData.date_of_admission}
+                  onChange={handleChange}
+                  placeholder="YYYY-MM-DD"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {formErrors.date_of_admission && (
+                  <p className="text-red-500 text-xs italic">
+                    {formErrors.date_of_admission}
+                  </p>
+                )}
+              </div>
             </div>
 
             <div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Gender
+                </label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+                {formErrors.gender && (
+                  <p className="text-red-500 text-xs italic">
+                    {formErrors.gender}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Level
+                </label>
+                <input
+                  type="text"
+                  name="level"
+                  value={formData.level}
+                  onChange={handleChange}
+                  placeholder="eg.Level 100"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {formErrors.level && (
+                  <p className="text-red-500 text-xs italic">
+                    {formErrors.level}
+                  </p>
+                )}
+              </div>
 
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -345,7 +468,10 @@ const NewAdmission = () => {
                 </label>
                 <input
                   type="number"
-                  step="0.01" min="0" max="999999.99" id="tuition_fee"
+                  step="0.01"
+                  min="0"
+                  max="999999.99"
+                  id="tuition_fee"
                   name="tuition_fee"
                   value={formData.tuition_fee}
                   onChange={handleChange}
@@ -365,7 +491,10 @@ const NewAdmission = () => {
                 </label>
                 <input
                   type="number"
-                  step="0.01" min="0" max="999999.99" id="amount_due"
+                  step="0.01"
+                  min="0"
+                  max="999999.99"
+                  id="amount_due"
                   name="amount_due"
                   value={formData.amount_due}
                   onChange={handleChange}
@@ -385,7 +514,10 @@ const NewAdmission = () => {
                 </label>
                 <input
                   type="number"
-                  step="0.01" min="0" max="999999.99" id="balance"
+                  step="0.01"
+                  min="0"
+                  max="999999.99"
+                  id="balance"
                   name="balance"
                   value={formData.balance}
                   onChange={handleChange}
@@ -398,6 +530,28 @@ const NewAdmission = () => {
                   </p>
                 )}
               </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Payment Status
+                </label>
+                <select
+                  name="payment_status"
+                  value={formData.payment_status}
+                  onChange={handleChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                >
+                  <option value="">Select Payment Status</option>
+                  <option value="Have Paid">Have Paid</option>
+                  <option value="Part Payment">Part Payment</option>
+                  <option value="Payment Due">Payment Due</option>
+                </select>
+                {formErrors.payment_status && (
+                  <p className="text-red-500 text-xs italic">
+                    {formErrors.payment_status}
+                  </p>
+                )}
+              </div>
             </div>
 
             <div className="col-span-2 grid grid-cols-1 gap-4">
@@ -407,7 +561,6 @@ const NewAdmission = () => {
           <div className="flex justify-center items-center mt-6">
             <button
               type="submit"
-              onClick={handleSubmit}
               className="bg-blue-500 text-white font-bold py-2 px-6 rounded shadow-lg hover:bg-blue-700"
             >
               Submit

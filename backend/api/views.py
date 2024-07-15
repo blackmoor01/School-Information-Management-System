@@ -11,77 +11,146 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.conf import settings
+from decimal import Decimal, InvalidOperation
+from rest_framework.exceptions import APIException
+from datetime import datetime, date
+import logging
 
 
 
 
 
+logger = logging.getLogger(__name__)
 
 class StudentListView(APIView):
 
+    # Type conversion logic
+    @staticmethod
+    def convert_to_decimal(value):
+        if value is None:
+            return None
+        try:
+            return Decimal(value)
+        except(ValueError,InvalidOperation):
+            return None
+
+    @staticmethod   
+    def convert_to_date(value):
+        if value is None:
+            return None
+        try:
+            if isinstance(value, str):
+                return datetime.strptime(value, '%Y-%m-%d').date()
+            elif isinstance(value,(datetime,date)):
+                return value
+        except ValueError:
+            return None
+        
+
+
     def get(self, request):
-        students_data = list(Student.collection.find())
-        for student in students_data:
-            student['_id'] = str(student['_id'])  # Convert ObjectId to string
+        try:
+            students_data = list(Student.collection.find())
+            for student in students_data:
+                student['_id'] = str(student['_id'])  # Convert ObjectId to string
 
-            # Generate file URLs
-            file_fields = ['medical_forms', 'student_id_card', 'admission_letter']
-            for field in file_fields:
-                file_path = student.get(field)
-                if file_path:
-                    student[field] = request.build_absolute_uri(os.path.join(settings.MEDIA_URL, file_path))
-                else:
-                    student[field] = None
+                # Convert Decimal Fields
+                student['amount_due'] = self.convert_to_decimal(student.get('amount_due'))
+                student['tuition_fee'] = self.convert_to_decimal(student.get('tuition_fee'))
+                student['balance'] = self.convert_to_decimal(student.get('balance'))
 
-        serializer = StudentSerializer(students_data, many=True)
-        return Response({'students': serializer.data})
+                #Convert Date Fields
+                student['date_of_admission'] = self.convert_to_date(student.get('date_of_admission'))
+                student['date_of_birth'] = self.convert_to_date(student.get('date_of_birth'))
+
+                # Generate file URLs
+                file_fields = ['medical_forms', 'student_id_card', 'admission_letter']
+                for field in file_fields:
+                    file_path = student.get(field)
+                    if file_path:
+                        student[field] = request.build_absolute_uri(os.path.join(settings.MEDIA_URL, file_path))
+                    else:
+                        student[field] = None
+
+            serializer = StudentSerializer(students_data, many=True)
+            return Response({'students': serializer.data})
+        except Exception as e:
+            logger.error(f"Failed to fetch students data: {str(e)}")
+            return Response({'error':str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, *args, **kwargs):
-        if isinstance(request.data, QueryDict):
-            data = request.data.dict()
-        else:
-            data = request.data
+        try:
+            if isinstance(request.data, QueryDict):
+                data = request.data.dict()
+            else:
+                data = request.data
 
-        if isinstance(data, list):
-            serializer = StudentSerializer(data=data, many=True)
-        else:
-            serializer = StudentSerializer(data=data)
+            if isinstance(data, list):
+                serializer = StudentSerializer(data=data, many=True)
+            else:
+                serializer = StudentSerializer(data=data)
 
-        if serializer.is_valid():
-            validated_data = serializer.validated_data
+            if serializer.is_valid():
+                validated_data = serializer.validated_data
 
-            if not isinstance(validated_data, list):
-                validated_data = [validated_data]
+                if not isinstance(validated_data, list):
+                    validated_data = [validated_data]
 
-            for student_data in validated_data:
-                if 'medical_forms' in request.FILES:
-                    medical_forms = request.FILES['medical_forms']
-                    student_data['medical_forms'] = self.handle_file_upload(medical_forms, 'medical_forms/')
-                if 'student_id_card' in request.FILES:
-                    student_id_card = request.FILES['student_id_card']
-                    student_data['student_id_card'] = self.handle_file_upload(student_id_card, 'student_id_cards/')
-                if 'admission_letter' in request.FILES:
-                    admission_letter = request.FILES['admission_letter']
-                    student_data['admission_letter'] = self.handle_file_upload(admission_letter, 'admission_letters/')
+                for student_data in validated_data:
+                    if 'medical_forms' in request.FILES:
+                        medical_forms = request.FILES['medical_forms']
+                        student_data['medical_forms'] = self.handle_file_upload(medical_forms, 'medical_forms/')
+                    if 'student_id_card' in request.FILES:
+                        student_id_card = request.FILES['student_id_card']
+                        student_data['student_id_card'] = self.handle_file_upload(student_id_card, 'student_id_cards/')
+                    if 'admission_letter' in request.FILES:
+                        admission_letter = request.FILES['admission_letter']
+                        student_data['admission_letter'] = self.handle_file_upload(admission_letter, 'admission_letters/')
 
-            # Save or update the student data in the database
-            Student.save_or_update_many(validated_data)
-            return Response({"message": "Students data saved successfully"}, status=status.HTTP_201_CREATED)
+
+                    # Convert Decimal fields to string format for JSON
+                    student_data['amount_due'] = str(student_data['amount_due']) if student_data.get('amount_due') is not None else None
+                    student_data['tuition_fee'] = str(student_data['tuition_fee']) if student_data.get('tuition_fee') is not None else None
+                    student_data['balance'] = str(student_data['balance']) if student_data.get('balance') is not None else None
+
+
+                     # Convert Date fields to string format for JSON
+                    student_data['date_of_admission'] = student_data['date_of_admission'].strftime('%Y-%m-%d') if student_data.get('date_of_admission') else None
+                    student_data['date_of_birth'] = student_data['date_of_birth'].strftime('%Y-%m-%d') if student_data.get('date_of_birth') else None
+
+
+                # Save or update the student data in the database
+                Student.save_or_update_many(validated_data)
+                return Response({"message": "Students data saved successfully"}, status=status.HTTP_201_CREATED)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+        except Exception as e:
+            logger.error(f"Failed to process student data: {str(e)}")
+            return Response({'error':str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+        
     def handle_file_upload(self, file, directory):
-        if not os.path.exists(os.path.join(settings.MEDIA_ROOT, directory)):
-            os.makedirs(os.path.join(settings.MEDIA_ROOT, directory))
+        try:
+            if not os.path.exists(os.path.join(settings.MEDIA_ROOT, directory)):
+                os.makedirs(os.path.join(settings.MEDIA_ROOT, directory))
         
-        file_path = os.path.join(directory, file.name)
-        full_path = os.path.join(settings.MEDIA_ROOT, file_path)
+            file_path = os.path.join(directory, file.name)
+            full_path = os.path.join(settings.MEDIA_ROOT, file_path)
         
-        with open(full_path, 'wb') as f:
-            for chunk in file.chunks():
-                f.write(chunk)
+            with open(full_path, 'wb') as f:
+                for chunk in file.chunks():
+                    f.write(chunk)
         
-        return file_path
+            return file_path
+
+
+        except Exception as e:
+            logger.error(f"Failed to upload {file.name}: {str(e)}")
+            raise APIException(detail=f"failed to upload {file.name}:{str(e)}")
+            
 
 
 

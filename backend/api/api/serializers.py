@@ -2,6 +2,7 @@ from rest_framework import serializers;
 from rest_framework.exceptions import ValidationError
 from decimal import Decimal, InvalidOperation
 import logging
+from datetime import datetime, date
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +13,16 @@ def validate_contact(value):
         raise ValidationError("Contact field must contain only numbers.")
     return value
 
+
+class FlexibleDateField(serializers.DateField):
+    def to_internal_value(self, value):
+        if isinstance(value, datetime):
+            return value.date()
+        elif isinstance(value, date):
+            return value
+        else:
+            return super().to_internal_value(value)
+
 class StudentSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True, required=False, default="") 
     name = serializers.CharField(max_length=100, required=False, default="")
@@ -21,9 +32,9 @@ class StudentSerializer(serializers.Serializer):
     gender = serializers.CharField(max_length=10, required=False, default="")
     contact = serializers.CharField(max_length=15, required=False, default="", validators=[validate_contact])
     description = serializers.CharField(allow_blank=True, required=False, default="")
-    date_of_admission = serializers.DateField(required=False, allow_null = True)
+    date_of_admission = FlexibleDateField(required=False, allow_null = True)
     payment_status = serializers.CharField(max_length=20, required=False, default="")
-    date_of_birth = serializers.DateField(required=False, allow_null=True)
+    date_of_birth = FlexibleDateField(required=False, allow_null=True)
     address = serializers.CharField(max_length=255, required=False, default="")
     email = serializers.EmailField(required=False, default="")
     intake = serializers.CharField(allow_blank=True, required=False, default="")
