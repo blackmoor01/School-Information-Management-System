@@ -19,6 +19,7 @@ import CoursesPage from "./Courses.jsx";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "../components/studentPageMainLayout/mainLayout.jsx";
 import Settings from "./Settings.jsx";
+import PaymentsEditPage from "../components/PaymentsEditPage.jsx";
 
 const Content = () => {
     return (
@@ -30,7 +31,7 @@ const Content = () => {
                 <Routes>
                     <Route path="/" element={<AdministratorDashboard/>}/>
 
-                    <Route path="/studentspage" element={<MainLayout/>}/>
+                    <Route path="/studentspage" element={<StudentsPage/>}/>
                     <Route path="/studentspage/studentsassetspage" element={<StudentsAssetsPage/>}/>
                     <Route path="/studentspage/newstudentsadmission" element={<NewAdmission/>}/>
                     
@@ -41,6 +42,7 @@ const Content = () => {
                     <Route path="/financepage/editfinancedata" element={<EditFinancePage/>}/>
 
                     <Route path="/paymentspage" element={<Payment/>}/>
+                    <Route path="/paymentspage/editpaymentsdata/" element={<PaymentsEditPage/>}/>
 
                     <Route path="/issuancepage" element={<IssuancePage/>}/>
 

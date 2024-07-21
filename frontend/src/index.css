@@ -38,9 +38,9 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -2px; /* Adjust the value for the padding beneath the text */
-  height: 2px; /* Adjust the value for the underline thickness */
-  background-color: currentColor; /* Use the current text color for the underline */
+  bottom: -2px;
+  height: 2px;
+  background-color: currentColor;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -49,3 +49,4 @@
 .custom-underline:hover::after {
   transform: scaleX(1);
 }
+

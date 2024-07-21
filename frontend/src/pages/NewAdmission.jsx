@@ -32,17 +32,29 @@ const NewAdmission = () => {
   });
 
   const [fileData, setFileData] = useState({
-    medical_forms: null,
-    student_id_card: null,
-    admission_letter: null,
+    medical_forms: new File([], ""),
+    student_id_card: new File([], ""),
+    admission_letter: new File([], ""),
   });
 
   const [formErrors, setFormErrors] = useState({});
   const [submissionStatus, setSubmissionStatus] = useState("");
+  const [messageVisible, setMessageVisible] = useState(false);
+  const [resetFiles, setResetFiles] = useState(false);
 
   // Handles changes in file upload
   const handleFileChange = (name, file) => {
-    setFileData({ ...fileData, [name]: file });
+    if (file instanceof File) {
+      setFileData((prevFileData) => ({
+        ...prevFileData,
+        [name]: file,
+      }));
+    } else {
+      setFileData((prevFileData) => ({
+        ...prevFileData,
+        [name]: new File([], ""),
+      }));
+    }
   };
 
   // Updates the form upon changes in input
@@ -69,7 +81,7 @@ const NewAdmission = () => {
       errors.government_id = "Government ID is required";
     if (!formData.tuition_fee) errors.tuition_fee = "Tuition fee is required";
     if (!formData.amount_due) errors.amount_due = "Amount Due is required";
-    if (!formData.balance) errors.amount_due = "Balance is required";
+    if (!formData.balance) errors.balance = "Balance is required";
     if (!formData.email) {
       errors.email = "Email address is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -121,10 +133,14 @@ const NewAdmission = () => {
         }); // Adds each key-value pair from the formData state to the FormData object.
 
         Object.keys(fileData).forEach((key) => {
-          if (fileData[key]) {
-            formDataToSend.append(key, fileData[key]);
+          const file = fileData[key];
+          if (file && file instanceof File && file.size > 0) {
+            formDataToSend.append(key, file);
+          } else {
+            console.log(`No valid file for ${key}`); // Debugging line
           }
-        }); // Adds each file from the fileData state to the FormData object, but only if the file exists.
+        });
+        // Adds each file from the fileData state to the FormData object, but only if the file exists.
 
         // Log the form data for debugging
         for (let pair of formDataToSend.entries()) {
@@ -141,7 +157,15 @@ const NewAdmission = () => {
           }
         );
 
+        // Set success message and visibility
         setSubmissionStatus("Student added successfully!");
+        setMessageVisible(true);
+
+        // Hide the message after 5 seconds
+        setTimeout(() => {
+          setMessageVisible(false);
+        }, 5000); // 5000 milliseconds = 5 seconds
+
         setFormData({
           name: "",
           program: "",
@@ -172,12 +196,17 @@ const NewAdmission = () => {
           student_id_card: null,
           admission_letter: null,
         });
+  
+
+        setResetFiles(true); // Trigger reset in child component
+
       } catch (error) {
         console.error("Error:", error);
         if (error.response) {
           console.error("Response data:", error.response.data);
         }
         setSubmissionStatus("Error adding Student");
+        setMessageVisible(true);
       }
     }
   };
@@ -210,10 +239,12 @@ const NewAdmission = () => {
       <form
         onSubmit={handleSubmit}
         className="container mx-auto p-8 bg-white rounded-lg mt-8"
+        method="post"
+        encType="multipart/form-data"
       >
         <div className="container mx-auto p-8 bg-white shadow-md rounded-lg mt-8">
           <h1 className="text-2xl font-bold mb-6">New Student's Info</h1>
-          {submissionStatus && (
+          {messageVisible && (
             <p
               className={`text-center mb-4 ${
                 submissionStatus.includes("Error")
@@ -555,7 +586,10 @@ const NewAdmission = () => {
             </div>
 
             <div className="col-span-2 grid grid-cols-1 gap-4">
-              <FileUpload onFileChange={handleFileChange} />
+              <FileUpload
+                onFileChange={handleFileChange}
+                resetFiles={resetFiles}
+              />
             </div>
           </div>
           <div className="flex justify-center items-center mt-6">

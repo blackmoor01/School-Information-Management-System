@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FaEllipsisV, FaCheckCircle, FaTimesCircle, FaPaperPlane } from 'react-icons/fa';
 import Pagination from './Pagination';
@@ -49,72 +48,7 @@ const invoices = [
         statusType: 'danger',
         imageUrl: profilepic,
     },
-    {
-        id: '#2394714673892',
-        createdOn: '23 March, 2024',
-        invoiceTo: 'Angel Ford',
-        studentId: '#00431',
-        amount: '$2300',
-        dueDate: '23 March, 2024',
-        status: 'Payment Due',
-        statusType: 'danger',
-        imageUrl: profilepic,
-    },
-    {
-        id: '#1374274923632',
-        createdOn: '23 March, 2024',
-        invoiceTo: 'Wilmette Arthur',
-        studentId: '#00456',
-        amount: '$2300',
-        dueDate: '23 March, 2024',
-        status: 'Have paid',
-        statusType: 'success',
-        imageUrl: profilepic,
-    },
-    {
-        id: '#2342472365716',
-        createdOn: '23 March, 2024',
-        invoiceTo: 'Gloria John',
-        studentId: '#00674',
-        amount: '$2300',
-        dueDate: '23 March, 2024',
-        status: 'Have paid',
-        statusType: 'success',
-        imageUrl: profilepic,
-    },
-    {
-        id: '#3874279721030',
-        createdOn: '23 March, 2024',
-        invoiceTo: 'Sandra Sia',
-        studentId: '#00986',
-        amount: '$2300',
-        dueDate: '23 March, 2024',
-        status: 'Have paid',
-        statusType: 'success',
-        imageUrl: profilepic,
-    },
-    {
-        id: '#3483281837126',
-        createdOn: '23 March, 2024',
-        invoiceTo: 'Ben Greenlish',
-        studentId: '#00326',
-        amount: '$2300',
-        dueDate: '23 March, 2024',
-        status: 'Payment Due',
-        statusType: 'danger',
-        imageUrl: profilepic,
-    },
-    {
-        id: '#1342869123265',
-        createdOn: '23 March, 2024',
-        invoiceTo: 'Samuel Johnson',
-        studentId: '#00325',
-        amount: '$2300',
-        dueDate: '23 March, 2024',
-        status: 'Payment Due',
-        statusType: 'danger',
-        imageUrl: profilepic,
-    },
+
 ];
 
 const getStatusButton = (status, statusType) => {

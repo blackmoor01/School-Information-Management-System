@@ -57,7 +57,7 @@ const NewTeacherAdmission = () => {
 
     if (Object.keys(errors).length === 0) {
       try {
-         console.log("FormData to be submitted:", formData);
+        console.log("FormData to be submitted:", formData);
         const response = await fetch("http://127.0.0.1:8000/api/teachers/", {
           method: "POST",
           headers: {
@@ -103,7 +103,7 @@ const NewTeacherAdmission = () => {
         <IoIosArrowForward className="mt-2 mx-1" />
         <p className="text-lg font-semibold">New Admission</p>
       </div>
-      
+
       <form
         onSubmit={handleSubmit}
         className="container mx-auto p-8 bg-white shadow-md rounded-lg mt-8"
@@ -182,7 +182,12 @@ const NewTeacherAdmission = () => {
                 type="text"
                 name="contact"
                 value={formData.contact}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  if (/^\d*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 placeholder="Phone number"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />

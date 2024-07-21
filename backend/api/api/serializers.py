@@ -26,7 +26,7 @@ class FlexibleDateField(serializers.DateField):
 class StudentSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True, required=False, default="") 
     name = serializers.CharField(max_length=100, required=False, default="")
-    id = serializers.CharField(max_length=100, required=False, default="")
+    id = serializers.CharField(max_length=15, required=False, default="")
     level = serializers.CharField(required=False, allow_null=True)
     program = serializers.CharField(max_length=100, required=False, default="")
     gender = serializers.CharField(max_length=10, required=False, default="")
@@ -48,9 +48,9 @@ class StudentSerializer(serializers.Serializer):
     remarks = serializers.CharField(allow_blank=True, required=False, default="")
     nationality = serializers.CharField(max_length=25, required=False, default="")
     government_id = serializers.CharField(max_length=50, required=False, default="")
-    medical_forms = serializers.FileField(required=False, allow_null=True)
-    student_id_card = serializers.FileField(required=False, allow_null=True)
-    admission_letter = serializers.FileField(required=False, allow_null=True)
+    medical_forms = serializers.FileField(required=False, allow_null=True,write_only=False)
+    student_id_card = serializers.FileField(required=False, allow_null=True,write_only=False)
+    admission_letter = serializers.FileField(required=False, allow_null=True, write_only=False)
 
 
     def to_internal_value(self, data):
@@ -96,3 +96,15 @@ class InventoryDataSerializer(serializers.Serializer):
     date = serializers.DateField(required=False, default="")
     quantity = serializers.IntegerField(required=False, default="")
     location = serializers.CharField(max_length = 100, default="")
+
+
+class PaymentsDataSerializer(serializers.Serializer):
+    _id = serializers.CharField(read_only=True)
+    imageUrl = serializers.ImageField(required=False, default="")
+    invoiceId = serializers.CharField(max_length=20, required=False, default="")
+    createdOn= FlexibleDateField(required=False, allow_null = True)
+    invoiceTo = serializers.CharField(max_length=100, required=False, default="")
+    studentId = serializers.CharField(max_length=30, required=False, default="")
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
+    dueDate = FlexibleDateField(required=False, allow_null = True)
+    statusType = serializers.CharField(max_length=20, required=False, default="")

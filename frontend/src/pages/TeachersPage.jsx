@@ -7,7 +7,7 @@ import { FadeLoader } from "react-spinners";
 
 const TeachersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const itemsPerPage = 12;
   const [teacherData, setTeacherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -126,23 +126,26 @@ const TeachersPage = () => {
     );
 
     return (
-      <div className="grid grid-cols-3 gap-4 mt-24">
+      <div className="grid grid-cols-3 gap-4 bg-white rounded-lg shadow-2xl p-6">
         {currentData.map((item, index) => (
-          <div className="shadow-2xl rounded-lg p-3 mb-10 ml-20" key={index}>
-            <div className="flex justify-evenly">
-              <div className="items-center justify-center mt-6">
+          <div
+            className="shadow-lg rounded-lg p-4 mb-10 ml-4 hover:shadow-2xl transition-shadow duration-300"
+            key={index}
+          >
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
                 <img
                   src={teacherImage}
-                  className="h-14 w-24 object-fill rounded-lg"
+                  className="h-14 w-24 object-cover rounded-lg"
                   alt="Teacher"
                 />
               </div>
               <div className="ml-4">
-                <p className="text-xs font-bold text-gray-500">{item.name}</p>
-                <p className="text-xs py-2 text-red-900 font-semibold cursor-pointer hover:scale-110">
+                <p className="text-sm font-bold text-gray-700">{item.name}</p>
+                <p className="text-sm py-2 text-red-900 font-semibold cursor-pointer hover:scale-105 transition-transform duration-200">
                   {item.view_option}
                 </p>
-                <p className="text-xs text-gray-500 font-semibold cursor-pointer hover:scale-110">
+                <p className="text-sm text-gray-600 font-semibold cursor-pointer hover:scale-105 transition-transform duration-200">
                   {item.downloadable}
                 </p>
               </div>
@@ -157,7 +160,7 @@ const TeachersPage = () => {
     const teacher = teacherData[0];
 
     return (
-      <div className="w-3/12 p-6 bg-white shadow-md mt-10 rounded-lg">
+      <div className="flex flex-col bg-white shadow-md rounded-lg p-6 min-h-full">
         <div className="pb-5 flex">
           <h3 className="text-gray-900 font-bold mb-5">ID:</h3>
           <p className="mx-2 text-gray-500 font-bold">{teacher.id}</p>
@@ -218,18 +221,20 @@ const TeachersPage = () => {
   return (
     <div className="flex flex-col min-h-screen mx-2 mt-2">
       <Header />
-      <div className="flex-grow flex justify-between mt-4">
-        <div className="w-8/12 flex flex-col">
+      <div className="flex flex-row mt-24">
+        <div className="flex-1 min-h-full">
           <TeachersDataDisplay />
+          <div className="mt-auto">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
-        <TeacherDetail />
-      </div>
-      <div className="mt-auto">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        <div className="w-1/4 flex-shrink-0 min-h-full">
+          <TeacherDetail />
+        </div>
       </div>
     </div>
   );

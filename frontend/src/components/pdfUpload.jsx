@@ -1,103 +1,91 @@
-import React, { useState } from "react";
-import { CgSoftwareUpload } from "react-icons/cg";
-import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 
-const FileUpload = ({ onFileChange }) => {
-    const [medicalForms, setMedicalForms] = useState(null);
-    const [studentIdCard, setStudentIdCard] = useState(null);
-    const [admissionLetter, setAdmissionLetter] = useState(null);
+const FileUpload = ({ onFileChange, resetFiles }) => {
+  const [fileNames, setFileNames] = useState({
+    medical_forms: "",
+    student_id_card: "",
+    admission_letter: "",
+  });
 
-    const handleFileChange = (event, name) => {
-        const file = event.target.files[0];
-        if (file && file.size <= 20 * 1024 * 1024) { // 20MB size limit
-            onFileChange(name, file);
-            if (name === 'medical_forms') {
-                setMedicalForms(file);
-            } else if (name === 'student_id_card') {
-                setStudentIdCard(file);
-            } else if (name === 'admission_letter') {
-                setAdmissionLetter(file);
-            }
-        } else {
-            alert("Please select a valid file not exceeding 20MB.");
+  const fileInputRefs = {
+    medical_forms: useRef(null),
+    student_id_card: useRef(null),
+    admission_letter: useRef(null),
+  };
+
+  useEffect(() => {
+    if (resetFiles) {
+      Object.values(fileInputRefs).forEach((ref) => {
+        if (ref.current) {
+          ref.current.value = null;
         }
-    };
+      });
+      setFileNames({
+        medical_forms: "",
+        student_id_card: "",
+        admission_letter: "",
+      });
+    }
+  }, [resetFiles]); // Only reset when `resetFiles` changes
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    const file = files[0] || null;
+    setFileNames((prev) => ({
+      ...prev,
+      [name]: file ? file.name : "",
+    }));
+    onFileChange(name, file);
+  };
 
   return (
     <div>
-      <div className="">
+      <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Medical Forms
         </label>
-        <div className="items-center">
-          <label className="bg-gray-300 text-gray-700 rounded p-2 shadow-2xl flex hover:scale-x-110 cursor-pointer w-full md:w-1/12">
-            <CgSoftwareUpload size={20} className="mr-4" />
-            Upload
-            <input
-              type="file"
-              onChange={(e) => handleFileChange(e, "medical_forms")}
-              className="hidden"
-            />
-          </label>
-        </div>
-        {medicalForms && (
-          <p className="mt-2 text-sm text-gray-500">
-            Selected file: {medicalForms.name}
-          </p>
+        <input
+          type="file"
+          name="medical_forms"
+          ref={fileInputRefs.medical_forms}
+          onChange={handleFileChange}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+        {fileNames.medical_forms && (
+          <p className="mt-1 text-gray-600">{fileNames.medical_forms}</p>
         )}
-        <span className="text-xs text-gray-500 font-medium">
-          File size shouldn't exceed 20mb
-        </span>
       </div>
 
-      <div className="mt-4">
+      <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Student ID Card
         </label>
-        <div className="items-center">
-          <label className="bg-gray-300 text-gray-700 rounded p-2 shadow-2xl flex hover:scale-x-110 cursor-pointer w-full md:w-1/12">
-            <CgSoftwareUpload size={20} className="mr-4" />
-            Upload
-            <input
-              type="file"
-              onChange={(e) => handleFileChange(e, "student_id_card")}
-              className="hidden"
-            />
-          </label>
-        </div>
-        {studentIdCard && (
-          <p className="mt-2 text-sm text-gray-500">
-            Selected file: {studentIdCard.name}
-          </p>
+        <input
+          type="file"
+          name="student_id_card"
+          ref={fileInputRefs.student_id_card}
+          onChange={handleFileChange}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+        {fileNames.student_id_card && (
+          <p className="mt-1 text-gray-600">{fileNames.student_id_card}</p>
         )}
-        <span className="text-xs text-gray-500 font-medium">
-          File size shouldn't exceed 20mb
-        </span>
       </div>
 
-      <div className="mt-4">
+      <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Admission Letter
         </label>
-        <div className="items-center">
-          <label className="bg-gray-300 text-gray-700 rounded p-2 shadow-2xl flex hover:scale-x-110 cursor-pointer w-full md:w-1/12">
-            <CgSoftwareUpload size={20} className="mr-4" />
-            Upload
-            <input
-              type="file"
-              onChange={(e) => handleFileChange(e, "admission_letter")}
-              className="hidden"
-            />
-          </label>
-        </div>
-        {admissionLetter && (
-          <p className="mt-2 text-sm text-gray-500">
-            Selected file: {admissionLetter.name}
-          </p>
+        <input
+          type="file"
+          name="admission_letter"
+          ref={fileInputRefs.admission_letter}
+          onChange={handleFileChange}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+        {fileNames.admission_letter && (
+          <p className="mt-1 text-gray-600">{fileNames.admission_letter}</p>
         )}
-        <span className="text-xs text-gray-500 font-medium">
-          File size shouldn't exceed 20mb
-        </span>
       </div>
     </div>
   );

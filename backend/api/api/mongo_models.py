@@ -11,149 +11,70 @@ from django.core.validators import validate_email
 
 
 class Student:
-    collection = db['students']
+    collection = db["students"]
 
-    '''collection = db['students']
-
-    def generate_student_id():
-        current_year = datetime.datetime.now().year
-    
-    # Fetch the latest student record to determine the last used ID
-        latest_student = collection.find_one(
-        {'id': {'$regex': f'^{current_year}'}},
-        sort=[('id', pymongo.DESCENDING)]
-        )
-
-        if latest_student:
-        # Extract the numerical part and increment it
-            last_id = int(latest_student['id'][4:])
-            new_id = last_id + 1
-        else:
-        # If no student exists for the current year, start with 1
-            new_id = 1
-    
-    # Ensure the ID is 3 digits long
-        student_id = f"{current_year}{new_id:03d}"
-
-        return student_id
-
-    def __init__(self, name, level, program, gender, contact, description, date_of_admission, payment_status, date_of_birth, address, email, intake, official_receipt, payment_method, date, amount_due, tuition_fee, miscellaneous, balance, remarks, nationality, government_id, medical_forms, student_id_card, admission_letter):
-        self.name = name
-        self.id = generate_student_id()
-        self.level = level
-        self.program = program
-        self.gender = gender
-        self.contact = contact
-        self.description = description
-        self.date_of_admission = date_of_admission
-        self.payment_status = payment_status
-        self.date_of_birth = date_of_birth
-        self.address = address
-        self.email = email
-        self.intake = intake
-        self.official_receipt = official_receipt
-        self.payment_method = payment_method
-        self.date = date
-        self.amount_due = amount_due
-        self.tuition_fee = tuition_fee
-        self.miscellaneous = miscellaneous
-        self.balance = balance
-        self.remarks = remarks
-        self.nationality = nationality
-        self.government_id = government_id
-        self.medical_forms = medical_forms
-        self.student_id_card = student_id_card
-        self.admission_letter = admission_letter
-
-    @classmethod
-    def save_or_update_many(cls, students_data):
-        for student in students_data:
-            student_data = {
-                "name": student["name"],
-                "id": generate_student_id(),  # Generate the student ID here
-                "level": student["level"],
-                "program": student["program"],
-                "gender": student["gender"],
-                "contact": student["contact"],
-                "description": student["description"],
-                "date_of_admission": student["date_of_admission"],
-                "payment_status": student["payment_status"],
-                "date_of_birth": student["date_of_birth"],
-                "address": student["address"],
-                "email": student["email"],
-                "intake": student["intake"],
-                "official_receipt": student["official_receipt"],
-                "payment_method": student["payment_method"],
-                "date": student["date"],
-                "amount_due": student["amount_due"],
-                "tuition_fee": student["tuition_fee"],
-                "miscellaneous": student["miscellaneous"],
-                "balance": student["balance"],
-                "remarks": student["remarks"],
-                "nationality": student["nationality"],
-                "government_id": student["government_id"],
-                "medical_forms": student["medical_forms"],
-                "student_id_card": student["student_id_card"],
-                "admission_letter": student["admission_letter"]
-            }
-
-            cls.collection.update_one(
-                {"id": student_data["id"]},
-                {"$set": student_data},
-                upsert=True
-            )'''
-    
     @staticmethod
     def generate_student_id():
         current_year = datetime.now().year
-        year_suffix = str(current_year)[-2:]  # Get the last two digits of the current year
+        year_suffix = str(current_year)[
+            -2:
+        ]  # Get the last two digits of the current year
 
         latest_student = Student.collection.find_one(
-            {'id': {'$regex': f'^{year_suffix}-'}},
-            sort=[('id', pymongo.DESCENDING)]
+            {"id": {"$regex": f"^{year_suffix}-"}}, sort=[("id", pymongo.DESCENDING)]
         )
 
         if latest_student:
-            last_id = int(latest_student['id'][3:])  # Extract the numerical part after the '-'
+            last_id = int(
+                latest_student["id"][3:]
+            )  # Extract the numerical part after the '-'
             new_id = last_id + 1
         else:
-            new_id = 1 
+            new_id = 1
 
         student_id = f"{year_suffix}-{new_id:05d}"  # Format the new ID as YY-00000
         return student_id
 
     def __init__(self, **kwargs):
-        self.name = kwargs.get('name', '')
-        self.id = kwargs.get('id', '')
-        self.level = kwargs.get('level', None)
-        self.program = kwargs.get('program', '')
-        self.gender = kwargs.get('gender', '')
-        self.contact = kwargs.get('contact', '')
-        self.description = kwargs.get('description', '')
-        self.date_of_admission = kwargs.get('date_of_admission', None)
-        self.payment_status = kwargs.get('payment_status', '')
-        self.date_of_birth = kwargs.get('date_of_birth', None)
-        self.address = kwargs.get('address', '')
-        self.email = kwargs.get('email', '')
-        self.intake = kwargs.get('intake', '')
-        self.official_receipt = kwargs.get('official_receipt', '')
-        self.payment_method = kwargs.get('payment_method', '')
-        self.date = kwargs.get('date', '')
-        self.amount_due = Decimal(kwargs.get('amount_due', '0'))
-        self.tuition_fee = Decimal(kwargs.get('tuition_fee', '0'))
-        self.miscellaneous = kwargs.get('miscellaneous', '')
-        self.balance = Decimal(kwargs.get('balance', '0'))
-        self.remarks = kwargs.get('remarks', '')
-        self.nationality = kwargs.get('nationality', '')
-        self.government_id = kwargs.get('government_id', '')
-        self.medical_forms = kwargs.get('medical_forms', None)
-        self.student_id_card = kwargs.get('student_id_card', None)
-        self.admission_letter = kwargs.get('admission_letter', None)
-        self.imageUrl = kwargs.get('imageUrl', '')
+        self.name = kwargs.get("name", "")
+        self.id = kwargs.get("id", "") or self.generate_student_id
+        self.level = kwargs.get("level", None)
+        self.program = kwargs.get("program", "")
+        self.gender = kwargs.get("gender", "")
+        self.contact = kwargs.get("contact", "")
+        self.description = kwargs.get("description", "")
+        self.date_of_admission = kwargs.get("date_of_admission", None)
+        self.payment_status = kwargs.get("payment_status", "")
+        self.date_of_birth = kwargs.get("date_of_birth", None)
+        self.address = kwargs.get("address", "")
+        self.email = kwargs.get("email", "")
+        self.intake = kwargs.get("intake", "")
+        self.official_receipt = kwargs.get("official_receipt", "")
+        self.payment_method = kwargs.get("payment_method", "")
+        self.date = kwargs.get("date", "")
+        self.amount_due = Decimal(kwargs.get("amount_due", "0"))
+        self.tuition_fee = Decimal(kwargs.get("tuition_fee", "0"))
+        self.miscellaneous = kwargs.get("miscellaneous", "")
+        self.balance = Decimal(kwargs.get("balance", "0"))
+        self.remarks = kwargs.get("remarks", "")
+        self.nationality = kwargs.get("nationality", "")
+        self.government_id = kwargs.get("government_id", "")
+        self.medical_forms = kwargs.get("medical_forms", None)
+        self.student_id_card = kwargs.get("student_id_card", None)
+        self.admission_letter = kwargs.get("admission_letter", None)
+        self.imageUrl = kwargs.get("imageUrl", "")
 
     @classmethod
     def save_or_update_many(cls, students_data):
         for student in students_data:
+             # Use the provided id or generate a new one if not provided
+            student_id = student.get("id", cls.generate_student_id())
+
+            # Check if the student already exists
+            existing_student = cls.collection.find_one({"id": student["id"]})
+            if existing_student:
+                continue
+
             student_data = {
                 "name": student.get("name", ""),
                 "id": cls.generate_student_id(),
@@ -181,37 +102,44 @@ class Student:
                 "medical_forms": student.get("medical_forms", ""),
                 "student_id_card": student.get("student_id_card", ""),
                 "admission_letter": student.get("admission_letter", ""),
-                "imageUrl": student.get("imageUrl", "") 
+                "imageUrl": student.get("imageUrl", ""),
             }
 
             # Save the file and get the file path
-            if 'medical_forms' in student:
-                student_data['medical_forms'] = save_file(student['medical_forms'])
-            if 'student_id_card' in student:
-                student_data['student_id_card'] = save_file(student['student_id_card'])
-            if 'admission_letter' in student:
-                student_data['admission_letter'] = save_file(student['admission_letter'])
+            if "medical_forms" in student:
+                student_data["medical_forms"] = save_file(student["medical_forms"])
+            if "student_id_card" in student:
+                student_data["student_id_card"] = save_file(student["student_id_card"])
+            if "admission_letter" in student:
+                student_data["admission_letter"] = save_file(
+                    student["admission_letter"]
+                )
 
             cls.collection.update_one(
-                {"id": student["id"]},
-                {"$set": student_data},
-                upsert=True
+                {"id": student["id"]}, {"$set": student_data}, upsert=True
             )
+
     def create(self):
         # Validate email
         try:
             validate_email(self.email)
         except ValidationError:
-            self.email = ''
-        
+            self.email = ""
+
         # Generate student ID if not provided
         if not self.id:
             self.id = self.generate_student_id()
-        
+
         # Save files and update paths
-        self.medical_forms = self.save_file(self.medical_forms) if self.medical_forms else None
-        self.student_id_card = self.save_file(self.student_id_card) if self.student_id_card else None
-        self.admission_letter = self.save_file(self.admission_letter) if self.admission_letter else None
+        self.medical_forms = (
+            save_file(self.medical_forms) if self.medical_forms else None
+        )
+        self.student_id_card = (
+            save_file(self.student_id_card) if self.student_id_card else None
+        )
+        self.admission_letter = (
+            save_file(self.admission_letter) if self.admission_letter else None
+        )
 
         # Insert into database
         Student.collection.insert_one(self.__dict__)
@@ -222,78 +150,54 @@ class Student:
         # Update instance attributes with validated data
         for key, value in validated_data.items():
             setattr(self, key, value)
-        
+
         # Save files and update paths
-        self.medical_forms = self.save_file(self.medical_forms) if self.medical_forms else None
-        self.student_id_card = self.save_file(self.student_id_card) if self.student_id_card else None
-        self.admission_letter = self.save_file(self.admission_letter) if self.admission_letter else None
+        self.medical_forms = (
+            save_file(self.medical_forms) if self.medical_forms else None
+        )
+        self.student_id_card = (
+            save_file(self.student_id_card) if self.student_id_card else None
+        )
+        self.admission_letter = (
+            save_file(self.admission_letter) if self.admission_letter else None
+        )
 
         # Update in database
-        Student.collection.update_one({'id': self.id}, {"$set": self.__dict__})
+        Student.collection.update_one({"id": self.id}, {"$set": self.__dict__})
         return self
-    
 
 
 # List of student data
 students_data = [
     {
-        "name": 'John Lee',
-        "id": '#00034',
+        "name": "John Lee",
+        "id": "#00034",
         "level": 100,
-        "program": 'OFAD',
-        "gender": 'Male',
-        "contact": '00800500342',
-        "description": '',
-        "date_of_admission": '2 May 2024',
-        "payment_status": 'Have Paid',
-        "date_of_birth": '3rd February, 2024',
-        "address": '3rd Avenue OH',
-        "email": 'klvnafriyie123@gmail.com',
-        "intake": '',
-        "official_receipt": '',
-        "payment_method": '',
-        "date": '',
-        "amount_due": '',
-        "tuition_fee": '',
-        "miscellaneous": '',
-        "balance": '',
-        "remarks": '',
-        "nationality": 'American',
-        "government_id":'123456789',
-        "medical_forms":"",
-        "student_id_card":"",
-        "admission_letter":"",
-        "imageurl":"../assets/medium-shot-female-nurse-outdoors.jpg",
-    },
-    {
-        "name": 'Andy Tay',
-        "id": '#00985',
-        "level": 100,
-        "program": 'IT Admin',
-        "gender": 'Male',
-        "contact": '00800500342',
-        "description": '',
-        "date_of_admission": '2 May 2024',
-        "payment_status": 'Have Paid',
-        "date_of_birth": '3rd February, 2024',
-        "address": '3rd Avenue OH',
-        "email": 'klvnafriyie123@gmail.com',
-        "intake": '',
-        "official_receipt": '',
-        "payment_method": '',
-        "date": '',
-        "amount_due": '',
-        "tuition_fee": '',
-        "miscellaneous": '',
-        "balance": '',
-        "remarks": '',
-        "nationality": 'Croatian',
-        "government_id":'987654321',
-        "medical_forms":"",
-        "student_id_card":"",
-        "admission_letter":"",
-        "imageUrl": "../assets/medium-shot-female-nurse-outdoors.jpg"
-    },
+        "program": "OFAD",
+        "gender": "Male",
+        "contact": "00800500342",
+        "description": "",
+        "date_of_admission": "2 May 2024",
+        "payment_status": "Have Paid",
+        "date_of_birth": "3rd February, 2024",
+        "address": "3rd Avenue OH",
+        "email": "klvnafriyie123@gmail.com",
+        "intake": "",
+        "official_receipt": "",
+        "payment_method": "",
+        "date": "",
+        "amount_due": "",
+        "tuition_fee": "",
+        "miscellaneous": "",
+        "balance": "",
+        "remarks": "",
+        "nationality": "American",
+        "government_id": "123456789",
+        "medical_forms": "",
+        "student_id_card": "",
+        "admission_letter": "",
+        "imageurl": "../assets/medium-shot-female-nurse-outdoors.jpg",
+    }
 ]
 
 # Save or update all students
@@ -306,7 +210,25 @@ Student.save_or_update_many(students_data)
 class Teacher:
     collection = db["teachers"]
 
-    def __init__(self, name, image, view_option, downloadable, id, contact, email, description, date_of_employment, subject_taught, date_of_birth, address, teachers_in_the_same_program, college_degree, nationality, government_id):
+    def __init__(
+        self,
+        name,
+        image,
+        view_option,
+        downloadable,
+        id,
+        contact,
+        email,
+        description,
+        date_of_employment,
+        subject_taught,
+        date_of_birth,
+        address,
+        teachers_in_the_same_program,
+        college_degree,
+        nationality,
+        government_id,
+    ):
         self.name = name
         self.image = image
         self.view_option = view_option
@@ -324,7 +246,6 @@ class Teacher:
         self.nationality = nationality
         self.government_id = government_id
 
-
     def save(self):
         teacher_data = {
             "name": self.name,
@@ -340,11 +261,12 @@ class Teacher:
             "date_of_birth": self.date_of_birth,
             "address": self.address,
             "teachers_in_the_same_program": self.teachers_in_the_same_program,
-            "college_degree":self.college_degree,
+            "college_degree": self.college_degree,
             "nationality": self.nationality,
-            "government_id": self.government_id
+            "government_id": self.government_id,
         }
         self.collection.insert_one(teacher_data)
+
 
 # List of teachers
 teachers_data = [
@@ -362,14 +284,17 @@ teachers_data = [
         "date_of_birth": "2nd May, 2024",
         "address": "3rd Avenue GH",
         "teachers_in_the_same_program": "Real Estate",
-        "college_degree":"Computer science",
-        "nationality":"American",
-        "government_id":"123456789"
+        "college_degree": "Computer science",
+        "nationality": "American",
+        "government_id": "123456789",
     },
 ]
 
 # Save all teachers
 for teacher_data in teachers_data:
+    existing_teacher = Teacher.collection.find_one({"id": teacher_data["id"]})
+    if existing_teacher:
+        continue
     teacher = Teacher(
         name=teacher_data["name"],
         image=teacher_data["image"],
@@ -386,9 +311,10 @@ for teacher_data in teachers_data:
         teachers_in_the_same_program=teacher_data["teachers_in_the_same_program"],
         college_degree=teacher_data["college_degree"],
         nationality=teacher_data["nationality"],
-        government_id=teacher_data["government_id"]
+        government_id=teacher_data["government_id"],
     )
     teacher.save()
+
 
 
 
@@ -406,7 +332,6 @@ class Inventory_Data:
         self.quantity = quantity
         self.location = location
 
-
     def save(self):
         inventoryData = {
             "_id": self._id,
@@ -416,80 +341,114 @@ class Inventory_Data:
             "skus": self.skus,
             "date": self.date,
             "quantity": self.quantity,
-            "location": self.location
+            "location": self.location,
         }
         self.collection.insert_one(inventoryData)
 
 
+# Inventory data to be inserted
 inventoriesData = [
     {
-        "image":"/medium-shot-female-nurse-outdoors.jpg",
+        "image": "/medium-shot-female-nurse-outdoors.jpg",
         "itemName": "Laptops",
-        "category":"Academic",
-        "skus":"121rr0i128e",
-        "date":"5th May, 2024",
-        "quantity":50,
-        "location":"School Warehouse"
+        "category": "Academic",
+        "skus": "121rr0i128e",
+        "date": "5th May, 2024",
+        "quantity": 50,
+        "location": "School Warehouse",
     }
-    
 ]
 
-
+# Process each inventory data
 for inventoryData in inventoriesData:
-    #inventoryData = json.loads(inventoryData)
+    # Check if the inventory already exists in the database based on itemName and skus
+    existing_inventory = Inventory_Data.collection.find_one(
+        {"itemName": inventoryData["itemName"], "skus": inventoryData["skus"]}
+    )
+    if existing_inventory:
+        continue
+
+    # Create an Inventory_Data object and save it to the database
     inventory_Data = Inventory_Data(
-        image= inventoryData["image"],
-        itemName= inventoryData["itemName"],
-        category= inventoryData["category"],
-        skus= inventoryData["skus"],
-        date= inventoryData["date"],
-        quantity= inventoryData["quantity"],
-        location= inventoryData["location"]
+        image=inventoryData["image"],
+        itemName=inventoryData["itemName"],
+        category=inventoryData["category"],
+        skus=inventoryData["skus"],
+        date=inventoryData["date"],
+        quantity=inventoryData["quantity"],
+        location=inventoryData["location"],
     )
     inventory_Data.save()
 
+
+    
 
 
 class Payments_Data:
     collection = db["PaymentsData"]
 
-    def __init__(self, id, createdOn, invoiceTo, studentId, amount, dueDate, status, statusType, imageUrl):
-        self.id = id
+    def __init__(
+        self,
+        invoiceId,
+        createdOn,
+        invoiceTo,
+        studentId,
+        amount,
+        dueDate,
+        statusType,
+        imageUrl,
+    ):
+        self.invoiceId = invoiceId
         self.createdOn = createdOn
         self.invoiceTo = invoiceTo
         self.studentId = studentId
         self.amount = amount
         self.dueDate = dueDate
-        self.status = status
         self.statusType = statusType
         self.imageUrl = imageUrl
 
-
     def save(self):
         PaymentsData = {
-            "id": self.id,
+            "invoiceId": self.invoiceId,
             "createdOn": self.createdOn,
             "invoiceTo": self.invoiceTo,
             "studentId": self.studentId,
             "amount": self.amount,
             "dueDate": self.dueDate,
-            "status": self.status,
             "statusType": self.statusType,
-            "imageUrl": self.imageUrl
+            "imageUrl": self.imageUrl,
         }
         self.collection.insert_one(PaymentsData)
 
 
 paymentsData = [
     {
-        "id":"",
-        "createdOn":"",
-        "invoiceTo":"",
-        "studentId":"#00034",
-        "amount":"",
-        "dueDate":"",
-        "status":"",
-        "statusType":"",
-        "imageUrl":""
+        "invoiceId": "00345",
+        "createdOn": "5th May, 2024",
+        "invoiceTo": "John Lee",
+        "studentId": "#00034",
+        "amount": "",
+        "dueDate": "",
+        "statusType": "",
+        "imageUrl": "",
     }
-]      
+]
+
+for contents in paymentsData:
+    existing_payment = Payments_Data.collection.find_one(
+        {"invoiceId": contents["invoiceId"]}
+    )
+    if existing_payment:
+        continue
+    payments_Data = Payments_Data(
+        invoiceId=contents["invoiceId"],
+        createdOn=contents["createdOn"],
+        invoiceTo=contents["invoiceTo"],
+        studentId=contents["studentId"],
+        amount=contents["amount"],
+        dueDate=contents["dueDate"],
+        statusType=contents["statusType"],
+        imageUrl=contents["imageUrl"],
+    )
+
+    payments_Data.save()

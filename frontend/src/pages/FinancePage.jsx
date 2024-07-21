@@ -6,13 +6,41 @@ import studentData from "../components/studentData";
 import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg";
 import { Link } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
+import styled, { keyframes } from "styled-components";
+
+const bounce = keyframes`
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+`;
+
+const AnimatedDiv = styled.div`
+  animation: ${bounce} 2s infinite;
+  font-size: 6rem;
+  color: #333;
+`;
+
+const NoStudentSelected = () => (
+  <div className="flex flex-col justify-center items-center w-4/12 p-6 bg-white shadow-md">
+    <AnimatedDiv>😢</AnimatedDiv>
+    <p className="text-gray-500 font-semibold mt-4">No student selected</p>
+  </div>
+);
 
 const FinancePage = () => {
   const [financeData, setFinanceData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 3;
+  const itemsPerPage = 12;
+  const [selectedStudentId, setSelectedStudentId] = useState(null);
+  const [selectedStudent, setSelectedStudent] = useState(null);
 
   const fetchFinanceDetails = async () => {
     try {
@@ -54,8 +82,37 @@ const FinancePage = () => {
     );
   }
 
-  const StudentFinancialDetail = () => {
-    const student = studentData[0];
+  const totalPages = Math.ceil(financeData.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleCheckboxChange = (studentId) => {
+    setSelectedStudentId(studentId);
+    const selectedStudent = financeData.find(
+      (student) => student.id === studentId
+    );
+    setSelectedStudent(selectedStudent);
+  };
+
+  const StudentFinancialDetail = ({ selectedStudent }) => {
+    if (!selectedStudent) {
+      return <NoStudentSelected />;
+    }
+
+    const {
+      id,
+      name,
+      contact,
+      email,
+      description,
+      date_of_admission,
+      payment_status,
+      date_of_birth,
+      address,
+    } = selectedStudent;
+
     return (
       <div className="w-3/12 p-6 bg-white shadow-md mt-5 rounded-lg">
         <div className="mb-4 py-2">
@@ -67,12 +124,12 @@ const FinancePage = () => {
           <div className={""}>
             <div className={"pb-5 flex"}>
               <h3 className="text-gray-900 font-bold mb-5">ID:</h3>
-              <p className={"mx-2 text-gray-500 font-bold"}>{student.id}</p>
+              <p className={"mx-2 text-gray-500 font-bold"}>{id}</p>
             </div>
 
             <div className={"py-3 flex"}>
               <button>✉️</button>
-              <p className="text-gray-500 font-bold mx-2">{student.email}</p>
+              <p className="text-gray-500 font-bold mx-2">{email || "N/A"}</p>
             </div>
           </div>
         </div>
@@ -81,40 +138,40 @@ const FinancePage = () => {
           <div className={"py-2 flex"}>
             <h1 className="text-gray-900 font-bold mb-5">Student Name:</h1>
             <h2 className="text-gray-500 font-bold mx-2">
-              {student.name.toUpperCase()}
+            {name ? name.toUpperCase() : "N/A"}
             </h2>
           </div>
           <div className={"py-1 flex"}>
             <h3 className="text-gray-900 font-bold">Description:</h3>
-            <p>{student.description}</p>
+            <p>{description || "N/A"}</p>
           </div>
           <div className={"py-3 flex"}>
             <h3 className="text-gray-900 font-bold">Date of admission:</h3>
             <p className={"text-gray-500 font-bold mx-2"}>
-              {student.date_of_admission}
+            {date_of_admission || "N/A"}
             </p>
           </div>
           <div className={"py-3"}>
             <h3 className="text-gray-900 font-bold">Payment Status:</h3>
             <p
               className={`font-semibold h-9 w-4/12 rounded-lg border border-gray-500 shadow-2xl text-center cursor-pointer mt-3 ${
-                student.payment_status === "Have Paid"
+                payment_status === "Have Paid"
                   ? "bg-green-500 text-white py-1.5"
                   : "bg-red-500 text-white"
               }`}
             >
-              {student.payment_status}
+              {payment_status || "N/A"}
             </p>
           </div>
           <div className={"py-3 flex"}>
             <h3 className="text-gray-900 font-bold">Date of Birth:</h3>
             <p className={"text-gray-500 font-bold mx-2"}>
-              {student.date_of_birth.toUpperCase()}
+            {date_of_birth ? date_of_birth.toUpperCase() : "N/A"}
             </p>
           </div>
           <div className={"py-3 flex"}>
             <h3 className="text-gray-900 font-bold">Address:</h3>
-            <p className={"text-gray-500 font-bold mx-2"}>{student.address}</p>
+            <p className={"text-gray-500 font-bold mx-2"}>{address || "N/A"}</p>
           </div>
         </div>
 
@@ -159,35 +216,49 @@ const FinancePage = () => {
   };
 
   const TableComponent = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentData = financeData.slice(
+      startIndex,
+      startIndex + itemsPerPage
+    );
     return (
       <div className="overflow-x-auto mt-5 w-11/12">
         <table className="min-w-full bg-white">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 border">Select</th>
-              <th className="px-4 py-2 border">Student Name</th>
-              <th className="px-4 py-2 border">Date</th>
-              <th className="px-4 py-2 border">Course</th>
-              <th className="px-4 py-2 border">Student ID</th>
+          <thead className="bg-blue-500">
+            <tr className="text-white">
+              <th className="px-4 py-2 border text-center">Select</th>
+              <th className="px-4 py-2 border text-center">Image</th>
+              <th className="px-4 py-2 border text-center">Student Name</th>
+              <th className="px-4 py-2 border text-center">Date</th>
+              <th className="px-4 py-2 border text-center">Course</th>
+              <th className="px-4 py-2 border text-center">Student ID</th>
             </tr>
           </thead>
           <tbody>
-            {financeData.map((student, index) => (
+            {currentData.map((student) => (
               <tr key={student.id} className="hover:bg-gray-100">
                 <td className="px-4 py-2 border text-center">
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={selectedStudentId === student.id}
+                    onChange={() => handleCheckboxChange(student.id)}
+                  />
                 </td>
-                <td className="px-4 py-2 border flex items-center">
+                <td className="px-4 py-2 border text-center">
                   <img
                     src={profilepic}
                     alt={student.name}
-                    className="h-10 w-10 object-cover rounded-full mr-4"
+                    className="h-10 w-10 object-cover rounded-full"
                   />
-                  {student.name}
                 </td>
-                <td className="px-4 py-2 border">{student.date}</td>
-                <td className="px-4 py-2 border">{student.course}</td>
-                <td className="px-4 py-2 border">{student.id}</td>
+                <td className="px-4 py-2 border text-center">{student.name}</td>
+                <td className="px-4 py-2 border text-center">
+                  {student.date_of_admission}
+                </td>
+                <td className="px-4 py-2 border text-center">
+                  {student.program}
+                </td>
+                <td className="px-4 py-2 border text-center">{student.id}</td>
               </tr>
             ))}
           </tbody>
@@ -205,13 +276,14 @@ const FinancePage = () => {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
+            onPageChange={handlePageChange}
           />
         </div>
-        <StudentFinancialDetail />
+        <StudentFinancialDetail selectedStudent={selectedStudent} />
       </div>
     </div>
   );
 };
+
 
 export default FinancePage;
