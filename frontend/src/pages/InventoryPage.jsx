@@ -161,7 +161,7 @@ const InventoryPage = () => {
             </div>
             <FilterButtons />
           </div>
-
+          
           <InventoryTable />
         </div>
       </div>

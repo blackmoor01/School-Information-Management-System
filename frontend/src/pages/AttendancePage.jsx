@@ -156,7 +156,7 @@ const StudentsAttendancePage = () => {
               <tr key={item.id} className="hover:bg-gray-100">
                 <td className="px-6 py-4 whitespace-nowrap flex items-center">
                   <img
-                    src={profilepic}
+                    src={profilepicmy_}
                     alt={item.name}
                     className="h-10 w-10 rounded-full mr-4 object-cover"
                   />
