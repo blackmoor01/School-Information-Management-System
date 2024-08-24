@@ -45,7 +45,6 @@ const Payment = () => {
   return (
     <div className="mx-2 mt-2">
       <Header />
-
       <InvoiceTable />
     </div>
   );

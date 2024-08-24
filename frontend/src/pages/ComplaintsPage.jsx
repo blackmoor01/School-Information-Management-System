@@ -5,7 +5,7 @@ import { FadeLoader } from "react-spinners";
 
 const ComplaintsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 18;
   const [studentData, setStudentData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,46 +66,7 @@ const ComplaintsPage = () => {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     },
-    {
-      name: "James Sam",
-      issue: "Poor toilet condition",
-      checkin: "View Details",
-    },
-    {
-      name: "James Sam",
-      issue: "Poor toilet condition",
-      checkin: "View Details",
-    },
-    {
-      name: "James Sam",
-      issue: "Poor toilet condition",
-      checkin: "View Details",
-    },
-    {
-      name: "James Sam",
-      issue: "Poor toilet condition",
-      checkin: "View Details",
-    },
-    {
-      name: "James Sam",
-      issue: "Poor toilet condition",
-      checkin: "View Details",
-    },
-    {
-      name: "James Sam",
-      issue: "Poor toilet condition",
-      checkin: "View Details",
-    },
-    {
-      name: "James Sam",
-      issue: "Poor toilet condition",
-      checkin: "View Details",
-    },
-    {
-      name: "James Sam",
-      issue: "Poor toilet condition",
-      checkin: "View Details",
-    },
+    // More dummy data
   ];
   const position_1 = data[0];
 
@@ -116,23 +77,24 @@ const ComplaintsPage = () => {
       startIndex + itemsPerPage
     );
     return (
-      <div className="mx-2 grid grid-cols-3 gap-4 mt-8">
+      <div className="grid grid-cols-3 gap-4">
         {currentData.map((item, index) => (
-          <div className="shadow-2xl rounded-lg p-3 w-6/12" key={index}>
-            <div className="flex">
-              <div className="items-center justify-center mt-6">
-                <img
-                  src={teacher}
-                  className="h-14 w-24 object-fill rounded-lg"
-                  alt="Teachers"
-                />
-              </div>
+          <div
+            className="shadow-lg rounded-lg p-4 mb-4 hover:shadow-2xl transition-shadow duration-300"
+            key={index}
+          >
+            <div className="flex items-center">
+              <img
+                src={teacher}
+                className="h-14 w-24 object-cover rounded-lg"
+                alt="Teacher"
+              />
               <div className="ml-4">
-                <p className="text-xs font-bold text-gray-500">{item.name}</p>
-                <p className="text-xs py-2 text-red-900 font-semibold ">
+                <p className="text-sm font-bold text-gray-700">{item.name}</p>
+                <p className="text-sm py-2 text-red-900 font-semibold">
                   {item.issue}
                 </p>
-                <p className="text-xs text-blue-500 font-semibold cursor-pointer hover:scale-110 ">
+                <p className="text-sm text-blue-500 font-semibold cursor-pointer hover:scale-105 transition-transform duration-200">
                   {item.checkin}
                 </p>
               </div>
@@ -145,59 +107,58 @@ const ComplaintsPage = () => {
 
   const ComplaintDetails = () => {
     return (
-      <div className="w-3/12 p-6 bg-white shadow-md mt-10 rounded-lg">
-        <div className="items-center">
-          <div className="rounded-full">
-            <img
-              src={teacher}
-              alt="Profile"
-              className="w-24 h-24 rounded-full mx-auto border border-gray-900 cursor-pointer hover:scale-110"
-            />
+      <div className="flex flex-col bg-white shadow-md rounded-lg p-6 min-h-full">
+        <div className="text-center">
+          <img
+            src={teacher}
+            alt="Profile"
+            className="w-20 h-20 rounded-full mx-auto border border-gray-900"
+          />
+          <div className="mt-4">
+            <h2 className="font-bold text-lg">{position_1.name}</h2>
+            <p className="text-gray-500">{position_1.email}</p>
+            <p className="text-gray-500">{position_1.prospect}</p>
           </div>
-
-          <div className="text-center mt-5">
-            <p className="font-bold text-lg">{position_1.name}</p>
-            <p className="py-2">{position_1.email}</p>
-            <p>{position_1.prospect}</p>
-          </div>
-
-          <p className="text-xl font-bold text-gray-500 mt-5">Complaint</p>
-          <p className="text-gray-500 font-bold text-xs py-2">
-            {position_1.issue}
-          </p>
-          <p>{position_1.description}</p>
-
-          <div className="mt-8 justify-between">
-            <button className="h-10 w-4/12 bg-blue-500 text-white rounded-lg hover:bg-blue-700 cursor-pointer">
-              Reply
-            </button>
-            <button className="h-10 w-4/12 bg-green-500 text-white rounded-lg hover:bg-green-700 cursor-pointer ml-24">
-              Add Text
-            </button>
-          </div>
+        </div>
+        <div className="mt-6">
+          <h3 className="text-gray-900 font-bold">Complaint:</h3>
+          <p className="text-gray-500 mt-2">{position_1.issue}</p>
+          <p className="text-gray-500 mt-2">{position_1.description}</p>
+        </div>
+        <div className="mt-8 flex justify-between">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            Reply
+          </button>
+          <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700">
+            Add Text
+          </button>
         </div>
       </div>
     );
   };
 
   return (
-    <div>
-      <div className="py-2 px-6 bg-white shadow-md mt-5 justify-between">
+    <div className="flex flex-col min-h-screen mx-2 mt-2">
+      <div className="py-2 px-6 bg-white shadow-md mt-5">
         <h1 className="text-4xl font-bold">Complaints Dashboard</h1>
-        <p className="text-sm ml-6 mt-1">
-          All students complaints and enquiries are sent here!
+        <p className="text-sm mt-1">
+          All students' complaints and inquiries are sent here!
         </p>
       </div>
-
-      <ComplaintsCards />
-
-      <ComplaintDetails />
-      <div className="mt-auto">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+      <div className="flex flex-row mt-10">
+        <div className="flex-1 min-h-full p-4">
+          <ComplaintsCards />
+          <div className="mt-4">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </div>
+        <div className="w-1/4 p-4">
+          <ComplaintDetails />
+        </div>
       </div>
     </div>
   );

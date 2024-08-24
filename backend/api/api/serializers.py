@@ -24,7 +24,7 @@ class FlexibleDateField(serializers.DateField):
             return super().to_internal_value(value)
 
 class StudentSerializer(serializers.Serializer):
-    _id = serializers.CharField(read_only=True, required=False, default="") 
+    _id = serializers.CharField(read_only=True) 
     name = serializers.CharField(max_length=100, required=False, default="")
     id = serializers.CharField(max_length=15, required=False, default="")
     level = serializers.CharField(required=False, allow_null=True)
@@ -108,3 +108,19 @@ class PaymentsDataSerializer(serializers.Serializer):
     amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
     dueDate = FlexibleDateField(required=False, allow_null = True)
     statusType = serializers.CharField(max_length=20, required=False, default="")
+
+
+    def validate_amount(self, value):
+        if value is None or value == "":
+            return Decimal("0.00")  # Default value if amount is empty or null
+        try:
+            # Attempt to convert the value to a Decimal
+            return Decimal(str(value).strip())
+        except (InvalidOperation, ValueError):
+            # Raise a validation error if conversion fails
+            raise serializers.ValidationError("Invalid amount value. Please provide a valid decimal number.")
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Additional representation handling if necessary
+        return representation

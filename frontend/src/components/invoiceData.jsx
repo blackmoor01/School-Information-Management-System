@@ -4,6 +4,7 @@ import Pagination from './Pagination';
 import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg"
 
 const invoices = [
+    
     {
         id: '#2364240980763',
         createdOn: '23 March, 2024',

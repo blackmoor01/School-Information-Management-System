@@ -5,7 +5,7 @@ import pymongo
 from .uploadhelper import save_file
 import json
 from bson.objectid import ObjectId
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
@@ -67,7 +67,7 @@ class Student:
     @classmethod
     def save_or_update_many(cls, students_data):
         for student in students_data:
-             # Use the provided id or generate a new one if not provided
+            # Use the provided id or generate a new one if not provided
             student_id = student.get("id", cls.generate_student_id())
 
             # Check if the student already exists
@@ -204,8 +204,6 @@ students_data = [
 Student.save_or_update_many(students_data)
 
 
-
-
 # Teacher data
 class Teacher:
     collection = db["teachers"]
@@ -316,9 +314,6 @@ for teacher_data in teachers_data:
     teacher.save()
 
 
-
-
-
 class Inventory_Data:
     collection = db["inventoryData"]
 
@@ -381,9 +376,6 @@ for inventoryData in inventoriesData:
     inventory_Data.save()
 
 
-    
-
-
 class Payments_Data:
     collection = db["PaymentsData"]
 
@@ -402,8 +394,19 @@ class Payments_Data:
         self.createdOn = createdOn
         self.invoiceTo = invoiceTo
         self.studentId = studentId
-        self.amount = amount
-        self.dueDate = dueDate
+
+        # Handle empty or invalid amount
+        try:
+            self.amount = Decimal(amount)
+        except (InvalidOperation, ValueError):
+            self.amount = Decimal("0.00")
+
+        # Ensure dueDate is in correct format or set a default
+        try:
+            self.dueDate = datetime.strptime(dueDate, "%dth %B, %Y")
+        except ValueError:
+            self.dueDate = None  # or set a default date
+
         self.statusType = statusType
         self.imageUrl = imageUrl
 
@@ -427,8 +430,8 @@ paymentsData = [
         "createdOn": "5th May, 2024",
         "invoiceTo": "John Lee",
         "studentId": "#00034",
-        "amount": "",
-        "dueDate": "",
+        "amount": 45.6, 
+        "dueDate": "", 
         "statusType": "",
         "imageUrl": "",
     }
