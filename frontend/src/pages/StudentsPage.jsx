@@ -5,7 +5,7 @@ import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg";
 import Pagination from "../components/Pagination";
 import Header from "../components/Header";
 import initialStudentData from "../components/studentData";
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% {
@@ -25,13 +25,27 @@ const AnimatedDiv = styled.div`
   color: #333;
 `;
 
+const edgeAnimation = keyframes`
+  0% {     border-color: #e2e8f0;
+  }
+  50% {
+    border-color: #63b3ed;
+  }
+  100% {
+    border-color: #e2e8f0;
+  }
+`;
+
+const AnimatedContainer = styled.div`
+  animation: ${edgeAnimation} 2s infinite;
+`;
+
 const NoStudentSelected = () => (
   <div className="flex flex-col justify-center items-center w-4/12 p-6 bg-white shadow-md">
     <AnimatedDiv>😢</AnimatedDiv>
     <p className="text-gray-500 font-semibold mt-4">No student selected</p>
   </div>
 );
-
 
 const StudentsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,6 +77,27 @@ const StudentsPage = () => {
     fetchStudents();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <FadeLoader color={"#123abc"} loading={loading} size={50} />
+          <p className="text-blue-500 font-semibold mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <p className="font-bold text-red-700">Ooops! {error}</p>
+        </div>
+      </div>
+    );
+  }
+
   const totalPages = Math.ceil(studentData.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
@@ -83,27 +118,6 @@ const StudentsPage = () => {
       startIndex,
       startIndex + itemsPerPage
     );
-
-    if (loading) {
-      return (
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="text-center">
-            <FadeLoader color={"#123abc"} loading={loading} size={50} />
-            <p className="text-blue-500 font-semibold mt-4">Loading...</p>
-          </div>
-        </div>
-      );
-    }
-
-    if (error) {
-      return (
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="text-center">
-            <p className="font-bold text-red-700">Ooops! {error}</p>
-          </div>
-        </div>
-      );
-    }
 
     return (
       <div className="p-4">
@@ -183,11 +197,8 @@ const StudentsPage = () => {
 };
 
 const StudentDetail = ({ selectedStudent }) => {
- 
   if (!selectedStudent) {
-    return (
-      <NoStudentSelected/>
-    );
+    return <NoStudentSelected />;
   }
 
   const {
@@ -203,7 +214,7 @@ const StudentDetail = ({ selectedStudent }) => {
   } = selectedStudent;
 
   return (
-    <div className="w-4/12 p-6 bg-white shadow-md rounded-lg mt-5">
+    <AnimatedContainer className="w-4/12 p-6 bg-white shadow-md rounded-lg mt-5 border-4 border-gray-300">
       <div className="pb-5 flex">
         <h3 className="text-gray-900 font-bold mb-5">ID:</h3>
         <p className="mx-2 text-gray-500 font-bold">{id}</p>
@@ -269,16 +280,20 @@ const StudentDetail = ({ selectedStudent }) => {
         </div>
       </div>
 
-      <Link to={"/studentspage/studentsassetspage"}>
-        <div className="flex justify-center mt-8">
-          <div className="h-10 w-7/12 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer">
-            <p className="text-lg font-bold text-white text-center mt-1">
-              Assets
-            </p>
+      <div className="flex justify-between items-center mt-8">
+        <Link to={"/studentspage/studentsassetspage"}>
+          <div className="h-10 w-48 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer flex items-center justify-center">
+            <p className="text-lg font-bold text-white text-center">Assets</p>
           </div>
-        </div>
-      </Link>
-    </div>
+        </Link>
+
+        <Link to={"/studentspage/studentsdata_edit"}>
+          <div className="h-10 w-48 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer flex items-center justify-center">
+            <p className="text-lg font-bold text-white text-center">Edit</p>
+          </div>
+        </Link>
+      </div>
+    </AnimatedContainer>
   );
 };
 

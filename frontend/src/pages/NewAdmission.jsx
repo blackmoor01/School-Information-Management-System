@@ -45,6 +45,11 @@ const NewAdmission = () => {
   // Handles changes in file upload
   const handleFileChange = (name, file) => {
     if (file instanceof File) {
+      if (file.size > 5000000) {
+        // Example limit: 5MB
+        alert(`${name} file is too large.`);
+        return;
+      }
       setFileData((prevFileData) => ({
         ...prevFileData,
         [name]: file,
@@ -196,10 +201,8 @@ const NewAdmission = () => {
           student_id_card: null,
           admission_letter: null,
         });
-  
 
         setResetFiles(true); // Trigger reset in child component
-
       } catch (error) {
         console.error("Error:", error);
         if (error.response) {

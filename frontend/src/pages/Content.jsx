@@ -20,6 +20,7 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "../components/studentPageMainLayout/mainLayout.jsx";
 import Settings from "./Settings.jsx";
 import PaymentsEditPage from "../components/PaymentsEditPage.jsx";
+import StudentsDataEdit from "../components/studentsEdit.jsx";
 
 const Content = () => {
     return (
@@ -34,6 +35,7 @@ const Content = () => {
                     <Route path="/studentspage" element={<StudentsPage/>}/>
                     <Route path="/studentspage/studentsassetspage" element={<StudentsAssetsPage/>}/>
                     <Route path="/studentspage/newstudentsadmission" element={<NewAdmission/>}/>
+                    <Route path="/studentspage/studentsdata_edit" element={<StudentsDataEdit/>}/>
                     
                     <Route path="/teacherspage" element={<TeachersPage/>}/>
                     <Route path="/teacherspage/newteacheradmission" element={<NewTeacherAdmission/>}/>
