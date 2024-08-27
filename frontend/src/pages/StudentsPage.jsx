@@ -93,6 +93,12 @@ const StudentsPage = () => {
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
           <p className="font-bold text-red-700">Ooops! {error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
+          >
+            Retry
+          </button>
         </div>
       </div>
     );

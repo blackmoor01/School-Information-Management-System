@@ -8,7 +8,7 @@ from .api.serializers import (
     StudentSerializer,
     TeacherSerializer,
     InventoryDataSerializer,
-    PaymentsDataSerializer
+    PaymentsDataSerializer,
 )
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -52,6 +52,8 @@ class StudentListView(APIView):
     def get(self, request):
         try:
             students_data = list(Student.collection.find())
+            # Calculate total number of students
+            total_students = Student.collection.count_documents({})
             for student in students_data:
                 student["_id"] = str(student["_id"])  # Convert ObjectId to string
 
@@ -105,7 +107,7 @@ class StudentListView(APIView):
 
             if serializer.is_valid():
                 validated_data = serializer.validated_data
-                 # Debug log for validated data
+                # Debug log for validated data
                 logger.debug(f"Validated Data: {validated_data}")
 
                 if not isinstance(validated_data, list):
@@ -157,10 +159,9 @@ class StudentListView(APIView):
                         else None
                     )
 
-                 # Debug log for data to be saved
+                # Debug log for data to be saved
                 logger.debug(f"Data to be saved: {validated_data}")
                 logger.info(f"Processing files: {request.FILES}")
-
 
                 # Save or update the student data in the database
                 Student.save_or_update_many(validated_data)
@@ -199,6 +200,8 @@ class StudentListView(APIView):
 class TeacherListView(APIView):
     def get(self, request):
         teachers_data = list(Teacher.collection.find())
+          # Calculate total number of teachers
+        total_teachers = Teacher.collection.count_documents({})
         for teacher in teachers_data:
             teacher["_id"] = str(teacher["_id"])
         serializer = TeacherSerializer(teachers_data, many=True)
@@ -217,14 +220,15 @@ class TeacherListView(APIView):
                 {"status": "error", "message": str(e)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-    
+
+
 # Payment API View Class
 class PaymentsDataListView(APIView):
     def get(self, request):
         payments_data = list(Payments_Data.collection.find())
         for contents in payments_data:
             contents["_id"] = str(contents["_id"])
-        serializer = PaymentsDataSerializer(payments_data, many = True)
+        serializer = PaymentsDataSerializer(payments_data, many=True)
         return Response({"paymentsdata": serializer.data})
 
     def post(self, request):
@@ -232,12 +236,12 @@ class PaymentsDataListView(APIView):
             data = json.loads(request.body)
             payments_id = Payments_Data.collection.insert_one(data).inserted_id
             return Response(
-                {"status": "success", "payments_id":str(payments_id)},
+                {"status": "success", "payments_id": str(payments_id)},
                 status=status.HTTP_201_CREATED,
             )
         except Exception as e:
             return Response(
-                {"status":"error", "message": str(e)},
+                {"status": "error", "message": str(e)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -250,9 +254,6 @@ class InventoryDataListView(APIView):
             inventory_Data["_id"] = str(inventory_Data["_id"])
         serializer = InventoryDataSerializer(inventories_Data, many=True)
         return Response({"inventoryData": serializer.data})
-
-
-
 
 
 class FileUploadView(APIView):
@@ -271,31 +272,6 @@ class FileUploadView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # The below is to be editted.

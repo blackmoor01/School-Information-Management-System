@@ -22,8 +22,16 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { FadeLoader } from "react-spinners";
 
 const AdministratorDashboard = () => {
+  const [studentData, setStudentData] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [totalTeachers, setTotalTeachers] = useState(0);
+  const [teacherData, setTeacherData] = useState([]);
+
   const Greeting = () => {
     const [greeting, setGreeting] = useState("");
 
@@ -44,7 +52,7 @@ const AdministratorDashboard = () => {
     }, []);
 
     return (
-      <div className="container mx-auto p-8 bg-white shadow-md rounded-lg mt-8">
+      <div className="container mx-auto p-8 bg-white shadow-md rounded-lg mt-8 border-4 border-transparent hover:border-blue-500 transition-all duration-300">
         <p className="text-4xl font-extrabold">{greeting} Dennis</p>
         <div className="max-w-sm mt-2">
           <p className="text-lg font-medium text-gray-700">
@@ -55,6 +63,70 @@ const AdministratorDashboard = () => {
       </div>
     );
   };
+
+  const fetchStudents = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/students/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setStudentData(data.students);
+      setTotalStudents(data.students.length);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchTeachers = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/teachers/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setTeacherData(data.teachers);
+      setTotalTeachers(data.teachers.length);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+    fetchTeachers();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <FadeLoader color={"#123abc"} loading={loading} size={50} />
+          <p className="text-blue-500 font-semibold mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <p className="font-bold text-red-700">Ooops! {error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const data = [
     { week: 1, Students: 10, Teachers: 40 },
@@ -133,7 +205,7 @@ const AdministratorDashboard = () => {
           boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <h3 style={{ marginBottom: "20px", fontWeight:"bold" }}>Earnings</h3>
+        <h3 style={{ marginBottom: "20px", fontWeight: "bold" }}>Earnings</h3>
         <BarChart
           width={450}
           height={300}
@@ -195,7 +267,7 @@ const AdministratorDashboard = () => {
           }
         >
           <div className="">
-            <p className={"text-4xl font-extrabold"}>1,400</p>
+            <p className={"text-4xl font-extrabold"}>{totalStudents}</p>
             <p className={"py-2 text-lg font-bold text-gray-700"}>
               Total Students
             </p>
@@ -222,7 +294,7 @@ const AdministratorDashboard = () => {
           }
         >
           <div>
-            <p className={"text-4xl font-extrabold"}>300</p>
+            <p className={"text-4xl font-extrabold"}>{totalTeachers}</p>
             <p className={"py-2 text-lg font-bold text-gray-700"}>
               Total Teachers
             </p>
