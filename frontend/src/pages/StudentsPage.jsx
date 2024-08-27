@@ -203,6 +203,8 @@ const StudentsPage = () => {
 };
 
 const StudentDetail = ({ selectedStudent }) => {
+  const [originalStudent, setOriginalStudent] = useState(null);
+
   if (!selectedStudent) {
     return <NoStudentSelected />;
   }
@@ -218,6 +220,10 @@ const StudentDetail = ({ selectedStudent }) => {
     date_of_birth,
     address,
   } = selectedStudent;
+
+  const handleEditClick = () => {
+    setOriginalStudent(selectedStudent);
+  };
 
   return (
     <AnimatedContainer className="w-4/12 p-6 bg-white shadow-md rounded-lg mt-5 border-4 border-gray-300">
@@ -293,7 +299,7 @@ const StudentDetail = ({ selectedStudent }) => {
           </div>
         </Link>
 
-        <Link to={"/studentspage/studentsdata_edit"}>
+        <Link to={"/studentspage/studentsdata_edit"}  onClick={handleEditClick}>
           <div className="h-10 w-48 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer flex items-center justify-center">
             <p className="text-lg font-bold text-white text-center">Edit</p>
           </div>

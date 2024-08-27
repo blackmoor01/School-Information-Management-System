@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const StudentsDataEdit = () => {
-  const [formData, setFormData] = useState({
+const StudentsDataEdit = ({ student_id={selectedStudentId},initialData={initialStudentData} }) => {
+  const [formData, setFormData] = useState(initialData || {
     image: null,
     name: "",
     level: "",
@@ -16,6 +16,31 @@ const StudentsDataEdit = () => {
   });
   const [messageVisible, setMessageVisible] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      if (!student_id) {
+        console.error('No student_id provided');
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/students/${student_id}/`
+        );
+        if (!response.ok) {
+           throw new Error(`Failed to fetch student data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setFormData(data); // Assuming 'data' contains the student details
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+        setMessageVisible(true);
+        setFormErrors({ message: "Failed to load student data." });
+      }
+    };
+    fetchStudentData();
+  }, [student_id, initialData]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;

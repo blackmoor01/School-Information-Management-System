@@ -401,7 +401,7 @@ class Payments_Data:
         except (InvalidOperation, ValueError):
             self.amount = Decimal("0.00")
 
-        # Ensure dueDate is in correct format or set a default
+    
         try:
             self.dueDate = datetime.strptime(dueDate, "%dth %B, %Y")
         except ValueError:

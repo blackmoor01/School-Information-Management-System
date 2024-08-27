@@ -365,36 +365,35 @@ const AdministratorDashboard = () => {
         </div>
       </div>
 
-      <div className={"flex mt-10"}>
-        <div className={"h-84 w-8/12 shadow-2xl rounded-2xl border p-5"}>
-          <div className={"flex justify-between items-center"}>
-            <h1 className={"text-2xl text-gray-900 font-bold"}>
+      <div className="flex mt-10">
+        <div className="flex flex-col w-8/12 shadow-2xl rounded-2xl border p-5 overflow-hidden">
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl text-gray-900 font-bold">
               School Attendance
             </h1>
-            <MonthDropdown />
-            <div
-              className={
-                "h-10 w-3/12 rounded-lg border border-gray-500 shadow-2xl"
-              }
-            >
-              <div className={"flex items-center justify-between mx-2 py-2.5"}>
-                <div className={"flex"}>
-                  <div className={"h-5 w-5 bg-green-600"}></div>
-                  <p className={"text-gray-600 font-bold text-xs ml-1"}>
+            <div className="relative">
+              <MonthDropdown />
+            </div>
+            <div className="flex h-10 w-3/12 rounded-lg border border-gray-500 shadow-2xl">
+              <div className="flex items-center justify-between mx-2 py-2.5 w-full">
+                <div className="flex">
+                  <div className="h-5 w-5 bg-green-600"></div>
+                  <p className="text-gray-600 font-bold text-xs ml-1">
                     Teachers
                   </p>
                 </div>
-
-                <div className={"flex ml-2"}>
-                  <div className={"h-5 w-5 bg-red-600"}></div>
-                  <p className={"text-gray-600 font-bold text-xs ml-1"}>
+                <div className="flex ml-2">
+                  <div className="h-5 w-5 bg-red-600"></div>
+                  <p className="text-gray-600 font-bold text-xs ml-1">
                     Students
                   </p>
                 </div>
               </div>
             </div>
           </div>
-          <Graph />
+          <div className="flex-grow mt-8">
+            <Graph />
+          </div>
         </div>
         <div className="ml-8">
           <CustomBarChart />
