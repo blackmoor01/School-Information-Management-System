@@ -1,46 +1,63 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-const StudentsDataEdit = ({ student_id={selectedStudentId},initialData={initialStudentData} }) => {
-  const [formData, setFormData] = useState(initialData || {
-    image: null,
-    name: "",
-    level: "",
-    program: "",
-    gender: "",
-    contact: "",
-    email: "",
-    description: "",
-    date_of_admission: "",
-    date_of_birth: "",
-    address: "",
-  });
+const StudentsDataEdit = ({initialData}) => {
+  const [formData, setFormData] = useState(
+    initialData || {
+      image: null,
+      name: "",
+      level: "",
+      program: "",
+      gender: "",
+      contact: "",
+      email: "",
+      description: "",
+      date_of_admission: "",
+      date_of_birth: "",
+      address: "",
+    }
+  );
   const [messageVisible, setMessageVisible] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const location = useLocation();
+
+
+  const studentId = location.state?.studentId || null;
+  console.log("Location state:", location.state);
+  console.log("Student ID:", studentId);
 
   useEffect(() => {
-    const fetchStudentData = async () => {
-      if (!student_id) {
-        console.error('No student_id provided');
-        return;
-      }
+    console.log("Location object:", location);
+    if (!studentId) {
+      console.error("No student_id provided");
+      setMessageVisible(true);
+      setFormErrors({
+        message: "No student ID provided. Please go back and try again.",
+      });
+      return;
+    }
 
+    const fetchStudentData = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/students/${student_id}/`
+          `http://127.0.0.1:8000/api/students/${studentId}/`
         );
         if (!response.ok) {
-           throw new Error(`Failed to fetch student data: ${response.statusText}`);
+          throw new Error(
+            `Failed to fetch student data: ${response.statusText}`
+          );
         }
         const data = await response.json();
-        setFormData(data); // Assuming 'data' contains the student details
+        setFormData(data);
       } catch (error) {
         console.error("Error fetching student data:", error);
         setMessageVisible(true);
         setFormErrors({ message: "Failed to load student data." });
       }
     };
+
     fetchStudentData();
-  }, [student_id, initialData]);
+  }, [studentId]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { FadeLoader, ClipLoader } from "react-spinners";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import profilepic from "../assets/medium-shot-female-nurse-outdoors.jpg";
 import Pagination from "../components/Pagination";
 import Header from "../components/Header";
@@ -56,6 +57,7 @@ const StudentsPage = () => {
   const [selectedStudentId, setSelectedStudentId] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
+
   // Function to fetch student data from Django API
   const fetchStudents = async () => {
     try {
@@ -77,6 +79,12 @@ const StudentsPage = () => {
     fetchStudents();
   }, []);
 
+
+  const retryFetch = () => {
+    setLoading(true);
+    setError(null);
+    fetchStudents();
+  };
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -94,7 +102,7 @@ const StudentsPage = () => {
         <div className="text-center">
           <p className="font-bold text-red-700">Ooops! {error}</p>
           <button
-            onClick={() => window.location.reload()}
+            onClick={retryFetch}
             className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
           >
             Retry
@@ -202,6 +210,10 @@ const StudentsPage = () => {
   );
 };
 
+
+
+
+
 const StudentDetail = ({ selectedStudent }) => {
   const [originalStudent, setOriginalStudent] = useState(null);
 
@@ -221,10 +233,12 @@ const StudentDetail = ({ selectedStudent }) => {
     address,
   } = selectedStudent;
 
-  const handleEditClick = () => {
-    setOriginalStudent(selectedStudent);
-  };
+  const navigate = useNavigate();
 
+  const handleEditClick = (studentId) => {
+    navigate('/studentspage/studentsdata_edit', { state: { studentId } });
+  };
+  
   return (
     <AnimatedContainer className="w-4/12 p-6 bg-white shadow-md rounded-lg mt-5 border-4 border-gray-300">
       <div className="pb-5 flex">
@@ -239,12 +253,12 @@ const StudentDetail = ({ selectedStudent }) => {
         />
         <div>
           <div className="py-3 flex">
-            <button className="mr-2">📞</button>
+            <button className="mr-2" aria-label="Call">📞</button>
             <h2 className="font-bold mx-2 text-gray-500">{contact || "N/A"}</h2>
           </div>
           <div className="py-3 flex">
             <a href={`mailto:${email || "N/A"}`} className="flex items-center">
-              <button>✉️</button>
+              <button aria-label="Send Email">✉️</button>
               <p className="text-gray-500 font-bold mx-2">{email || "N/A"}</p>
             </a>
           </div>
@@ -299,11 +313,11 @@ const StudentDetail = ({ selectedStudent }) => {
           </div>
         </Link>
 
-        <Link to={"/studentspage/studentsdata_edit"}  onClick={handleEditClick}>
+        <button to={"/studentspage/studentsdata_edit"}  onClick={handleEditClick}>
           <div className="h-10 w-48 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer flex items-center justify-center">
             <p className="text-lg font-bold text-white text-center">Edit</p>
           </div>
-        </Link>
+        </button>
       </div>
     </AnimatedContainer>
   );
