@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const StudentsDataEdit = ({initialData}) => {
+const StudentsDataEdit = ({ initialData }) => {
   const [formData, setFormData] = useState(
     initialData || {
       image: null,
@@ -20,7 +20,6 @@ const StudentsDataEdit = ({initialData}) => {
   const [messageVisible, setMessageVisible] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const location = useLocation();
-
 
   const studentId = location.state?.studentId || null;
   console.log("Location state:", location.state);
@@ -74,10 +73,72 @@ const StudentsDataEdit = ({initialData}) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.name) errors.name = "Name is required.";
+    if (!formData.date_of_birth)
+      errors.date_of_birth = "Date of Birth is required.";
+    if (!formData.program) errors.program = "Program is required.";
+    if (!formData.contact) {
+      errors.contact = "Contact number is required.";
+    } else if (!/^\d{10}$/.test(formData.contact)) {
+      errors.contact = "Contact number must be 10 digits.";
+    }
+    if (!formData.email) {
+      errors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Email address is invalid.";
+    }
+    if (!formData.level) errors.level = "Level is required.";
+    if (!formData.gender) errors.gender = "Gender is required.";
+    if (!formData.address) errors.address = "Address is required.";
+    if (!formData.date_of_admission)
+      errors.date_of_admission = "Date of Admission is required.";
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+    if (!validateForm()) return;
+
+    try {
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        // Check if the formData[key] is a File object before appending
+        if (formData[key] instanceof File) {
+          formDataToSend.append(key, formData[key]);
+          console.log(`${key}:`, formData[key]);
+        } else {
+          formDataToSend.append(key, formData[key]);
+          console.log(`${key}:`, formData[key]);
+        }
+      });
+
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/students/${studentId}/`,
+        {
+          method: "PUT",
+          body: formDataToSend,
+        }
+      );
+
+      if (response.ok) {
+        const errorData = await response.json();
+        console.error("Server error:", errorData);
+        setMessageVisible(true);
+        setFormErrors({ message: "Student data updated successfully!" });
+      } else {
+        throw new Error(
+          `Failed to update student data: ${response.statusText}`
+        );
+      }
+    } catch (error) {
+      setMessageVisible(true);
+      setFormErrors({ message: "Failed to save student data." });
+    }
   };
 
   return (
@@ -89,7 +150,7 @@ const StudentsDataEdit = ({initialData}) => {
         encType="multipart/form-data"
       >
         <h1 className="text-2xl font-bold mb-6 text-gray-800">
-          Student's Information
+          Edit Student's Information
         </h1>
 
         {messageVisible && (

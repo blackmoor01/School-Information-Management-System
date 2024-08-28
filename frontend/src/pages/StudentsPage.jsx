@@ -216,6 +216,7 @@ const StudentsPage = () => {
 
 const StudentDetail = ({ selectedStudent }) => {
   const [originalStudent, setOriginalStudent] = useState(null);
+  const navigate = useNavigate();
 
   if (!selectedStudent) {
     return <NoStudentSelected />;
@@ -233,7 +234,7 @@ const StudentDetail = ({ selectedStudent }) => {
     address,
   } = selectedStudent;
 
-  const navigate = useNavigate();
+
 
   const handleEditClick = (studentId) => {
     navigate('/studentspage/studentsdata_edit', { state: { studentId } });
@@ -313,7 +314,7 @@ const StudentDetail = ({ selectedStudent }) => {
           </div>
         </Link>
 
-        <button to={"/studentspage/studentsdata_edit"}  onClick={handleEditClick}>
+        <button   onClick={() => handleEditClick(selectedStudent.id)}>
           <div className="h-10 w-48 rounded-lg border border-gray-500 bg-blue-500 shadow-2xl hover:bg-blue-700 cursor-pointer flex items-center justify-center">
             <p className="text-lg font-bold text-white text-center">Edit</p>
           </div>

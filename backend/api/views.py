@@ -77,6 +77,8 @@ class StudentListView(APIView):
         except Exception as e:
             logger.error(f"Failed to fetch students data: {str(e)}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
 
     def post(self, request, *args, **kwargs):
         try:
@@ -176,6 +178,88 @@ class StudentListView(APIView):
 
 
 class StudentDetailView(StudentListView):
+    
+    def put(self, request, *args, **kwargs,):
+        try:
+
+            student_id = kwargs.get('student_id')  # Assuming student_id is passed in the URL
+
+            if isinstance(request.data, QueryDict):
+                data = request.data.dict()
+            else:
+                data = request.data
+
+               # Fetch the student data from the database
+                student = Student.collection.find_one({"student_id": student_id})
+
+            if not student:
+                return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+
+            serializer = StudentSerializer(data=data, partial=True)  # `partial=True` allows partial updates
+
+            if serializer.is_valid():
+                validated_data = serializer.validated_data
+
+                if "medical_forms" in request.FILES:
+                    medical_forms = request.FILES["medical_forms"]
+                    validated_data["medical_forms"] = self.handle_file_upload(
+                        medical_forms, "medical_forms/"
+                    )
+                if "student_id_card" in request.FILES:
+                    student_id_card = request.FILES["student_id_card"]
+                    validated_data["student_id_card"] = self.handle_file_upload(
+                        student_id_card, "student_id_cards/"
+                    )
+                if "admission_letter" in request.FILES:
+                    admission_letter = request.FILES["admission_letter"]
+                    validated_data["admission_letter"] = self.handle_file_upload(
+                        admission_letter, "admission_letters/"
+                    )
+
+                # Convert Decimal and Date fields back to strings
+                validated_data["amount_due"] = (
+                    str(validated_data.get("amount_due"))
+                    if validated_data.get("amount_due") is not None
+                    else None
+                )
+                validated_data["tuition_fee"] = (
+                    str(validated_data.get("tuition_fee"))
+                    if validated_data.get("tuition_fee") is not None
+                    else None
+                )
+                validated_data["balance"] = (
+                    str(validated_data.get("balance"))
+                    if validated_data.get("balance") is not None
+                    else None
+                )
+
+                validated_data["date_of_admission"] = (
+                    validated_data.get("date_of_admission").strftime("%Y-%m-%d")
+                    if validated_data.get("date_of_admission")
+                    else None
+                )
+                validated_data["date_of_birth"] = (
+                    validated_data.get("date_of_birth").strftime("%Y-%m-%d")
+                    if validated_data.get("date_of_birth")
+                    else None
+                )
+
+                  # Update the student data in the database
+                Student.collection.update_one({"student_id": student_id}, {"$set": validated_data})
+
+                return Response(
+                    {"message": "Student data updated successfully"},
+                    status=status.HTTP_200_OK,
+                )
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            logger.error(f"Failed to update student data: {str(e)}")
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    
 
     def get(self, request, id):
         try:
@@ -206,6 +290,11 @@ class StudentDetailView(StudentListView):
         except Exception as e:
             logger.error(f"Failed to fetch student data for ID {id}: {str(e)}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+
+
+
 
 
 
