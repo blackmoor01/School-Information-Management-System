@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 const StudentsDataEdit = ({ initialData }) => {
   const [formData, setFormData] = useState(
     initialData || {
-      image: null,
+      image: "",
       name: "",
       level: "",
       program: "",
@@ -23,7 +23,7 @@ const StudentsDataEdit = ({ initialData }) => {
 
   const studentId = location.state?.studentId || null;
   console.log("Location state:", location.state);
-  console.log("Student ID:", studentId);
+  console.log("Student ID:",studentId)
 
   useEffect(() => {
     console.log("Location object:", location);
@@ -107,7 +107,6 @@ const StudentsDataEdit = ({ initialData }) => {
     try {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
-        // Check if the formData[key] is a File object before appending
         if (formData[key] instanceof File) {
           formDataToSend.append(key, formData[key]);
           console.log(`${key}:`, formData[key]);
@@ -126,14 +125,15 @@ const StudentsDataEdit = ({ initialData }) => {
       );
 
       if (response.ok) {
-        const errorData = await response.json();
-        console.error("Server error:", errorData);
+        const successData = await response.json();
+        console.log("Update successful:", successData);
         setMessageVisible(true);
         setFormErrors({ message: "Student data updated successfully!" });
       } else {
-        throw new Error(
-          `Failed to update student data: ${response.statusText}`
-        );
+        const errorData = await response.json();
+        console.error("Server error:", errorData);
+        setMessageVisible(true);
+        setFormErrors({ message: "Failed to update student data." });
       }
     } catch (error) {
       setMessageVisible(true);
@@ -173,7 +173,7 @@ const StudentsDataEdit = ({ initialData }) => {
                 type="text"
                 name="name"
                 placeholder="Name"
-                value={formData.name}
+                value={formData.name || ""}
                 onChange={handleChange}
                 className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-pulse"
               />
@@ -189,7 +189,7 @@ const StudentsDataEdit = ({ initialData }) => {
               <input
                 type="date"
                 name="date_of_birth"
-                value={formData.date_of_birth}
+                value={formData.date_of_birth || ""}
                 onChange={handleChange}
                 className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-pulse"
               />
@@ -207,7 +207,7 @@ const StudentsDataEdit = ({ initialData }) => {
               <input
                 type="text"
                 name="program"
-                value={formData.program}
+                value={formData.program || ""}
                 onChange={handleChange}
                 placeholder="Programme"
                 className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-pulse"
@@ -226,7 +226,7 @@ const StudentsDataEdit = ({ initialData }) => {
               <input
                 type="tel"
                 name="contact"
-                value={formData.contact}
+                value={formData.contact || ""}
                 onChange={(e) => {
                   const { value } = e.target;
                   if (/^\d*$/.test(value)) {
@@ -250,7 +250,7 @@ const StudentsDataEdit = ({ initialData }) => {
               <input
                 type="text"
                 name="address"
-                value={formData.address}
+                value={formData.address || ""}
                 onChange={handleChange}
                 placeholder="Address"
                 className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-pulse"
@@ -269,7 +269,7 @@ const StudentsDataEdit = ({ initialData }) => {
               <input
                 type="date"
                 name="date_of_admission"
-                value={formData.date_of_admission}
+                value={formData.date_of_admission || ""}
                 onChange={handleChange}
                 className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-pulse"
               />
@@ -288,7 +288,7 @@ const StudentsDataEdit = ({ initialData }) => {
               </label>
               <select
                 name="gender"
-                value={formData.gender}
+                value={formData.gender || ""}
                 onChange={handleChange}
                 className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-pulse"
               >
@@ -311,7 +311,7 @@ const StudentsDataEdit = ({ initialData }) => {
               <input
                 type="text"
                 name="level"
-                value={formData.level}
+                value={formData.level || ""}
                 onChange={handleChange}
                 placeholder="e.g., Level 100"
                 className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-pulse"
@@ -330,7 +330,7 @@ const StudentsDataEdit = ({ initialData }) => {
               <input
                 type="email"
                 name="email"
-                value={formData.email}
+                value={formData.email || ""}
                 onChange={handleChange}
                 placeholder="Email Address"
                 className="shadow appearance-none border-2 border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-pulse"

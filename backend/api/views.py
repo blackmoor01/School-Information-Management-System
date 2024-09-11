@@ -55,12 +55,20 @@ class StudentListView(APIView):
             for student in students_data:
                 student["_id"] = str(student["_id"])
 
-                student["amount_due"] = self.convert_to_decimal(student.get("amount_due"))
-                student["tuition_fee"] = self.convert_to_decimal(student.get("tuition_fee"))
+                student["amount_due"] = self.convert_to_decimal(
+                    student.get("amount_due")
+                )
+                student["tuition_fee"] = self.convert_to_decimal(
+                    student.get("tuition_fee")
+                )
                 student["balance"] = self.convert_to_decimal(student.get("balance"))
 
-                student["date_of_admission"] = self.convert_to_date(student.get("date_of_admission"))
-                student["date_of_birth"] = self.convert_to_date(student.get("date_of_birth"))
+                student["date_of_admission"] = self.convert_to_date(
+                    student.get("date_of_admission")
+                )
+                student["date_of_birth"] = self.convert_to_date(
+                    student.get("date_of_birth")
+                )
 
                 file_fields = ["medical_forms", "student_id_card", "admission_letter"]
                 for field in file_fields:
@@ -76,9 +84,9 @@ class StudentListView(APIView):
             return Response({"students": serializer.data})
         except Exception as e:
             logger.error(f"Failed to fetch students data: {str(e)}")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     def post(self, request, *args, **kwargs):
         try:
@@ -156,7 +164,9 @@ class StudentListView(APIView):
 
         except Exception as e:
             logger.error(f"Failed to process student data: {str(e)}")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     def handle_file_upload(self, file, directory):
         try:
@@ -178,28 +188,37 @@ class StudentListView(APIView):
 
 
 class StudentDetailView(StudentListView):
-    
-    def put(self, request, *args, **kwargs,):
-        try:
 
-            student_id = kwargs.get('student_id')  # Assuming student_id is passed in the URL
+    def put(self, request, *args, **kwargs):
+        try:
+            student_id = kwargs.get("student_id")
+            
+            # Check if student_id exists
+            if not student_id:
+                return Response(
+                    {"error": "Student ID is required"}, status=status.HTTP_400_BAD_REQUEST
+                )
 
             if isinstance(request.data, QueryDict):
                 data = request.data.dict()
             else:
                 data = request.data
 
-               # Fetch the student data from the database
-                student = Student.collection.find_one({"student_id": student_id})
+            # Fetch the student data from the database
+            student = Student.collection.find_one({"student_id": student_id})
 
             if not student:
-                return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    {"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND
+                )
 
-            serializer = StudentSerializer(data=data, partial=True)  # `partial=True` allows partial updates
+            # Partial update allows to modify only a part of the fields
+            serializer = StudentSerializer(data=data, partial=True)
 
             if serializer.is_valid():
                 validated_data = serializer.validated_data
 
+                ''''# Handle file uploads if any
                 if "medical_forms" in request.FILES:
                     medical_forms = request.FILES["medical_forms"]
                     validated_data["medical_forms"] = self.handle_file_upload(
@@ -216,7 +235,7 @@ class StudentDetailView(StudentListView):
                         admission_letter, "admission_letters/"
                     )
 
-                # Convert Decimal and Date fields back to strings
+                # Convert Decimal and Date fields
                 validated_data["amount_due"] = (
                     str(validated_data.get("amount_due"))
                     if validated_data.get("amount_due") is not None
@@ -232,7 +251,6 @@ class StudentDetailView(StudentListView):
                     if validated_data.get("balance") is not None
                     else None
                 )
-
                 validated_data["date_of_admission"] = (
                     validated_data.get("date_of_admission").strftime("%Y-%m-%d")
                     if validated_data.get("date_of_admission")
@@ -242,40 +260,50 @@ class StudentDetailView(StudentListView):
                     validated_data.get("date_of_birth").strftime("%Y-%m-%d")
                     if validated_data.get("date_of_birth")
                     else None
+                )'''
+
+                # Update the student data in the database
+                Student.collection.update_one(
+                    {"student_id": student_id}, {"$set": validated_data}
                 )
 
-                  # Update the student data in the database
-                Student.collection.update_one({"student_id": student_id}, {"$set": validated_data})
-
                 return Response(
-                    {"message": "Student data updated successfully"},
-                    status=status.HTTP_200_OK,
+                    {"message": "Student data updated successfully", "student": validated_data},
+                    status=status.HTTP_200_OK
                 )
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as e:
             logger.error(f"Failed to update student data: {str(e)}")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-    
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     def get(self, request, id):
         try:
             student = Student.collection.find_one({"id": str(id)})
             if not student:
-                return Response({"error": "Student not found."}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    {"error": "Student not found."}, status=status.HTTP_404_NOT_FOUND
+                )
 
             student["_id"] = str(student["_id"])
 
+            # Convert numeric fields
             student["amount_due"] = self.convert_to_decimal(student.get("amount_due"))
             student["tuition_fee"] = self.convert_to_decimal(student.get("tuition_fee"))
             student["balance"] = self.convert_to_decimal(student.get("balance"))
 
-            student["date_of_admission"] = self.convert_to_date(student.get("date_of_admission"))
-            student["date_of_birth"] = self.convert_to_date(student.get("date_of_birth"))
+            # Convert date fields
+            student["date_of_admission"] = self.convert_to_date(
+                student.get("date_of_admission")
+            )
+            student["date_of_birth"] = self.convert_to_date(
+                student.get("date_of_birth")
+            )
 
+            # Handle file fields
             file_fields = ["medical_forms", "student_id_card", "admission_letter"]
             for field in file_fields:
                 file_path = student.get(field)
@@ -289,19 +317,15 @@ class StudentDetailView(StudentListView):
             return Response(student)
         except Exception as e:
             logger.error(f"Failed to fetch student data for ID {id}: {str(e)}")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-
-
-
-
-
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class TeacherListView(APIView):
     def get(self, request):
         teachers_data = list(Teacher.collection.find())
-          # Calculate total number of teachers
+        # Calculate total number of teachers
         total_teachers = Teacher.collection.count_documents({})
         for teacher in teachers_data:
             teacher["_id"] = str(teacher["_id"])
